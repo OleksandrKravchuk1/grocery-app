@@ -28,8 +28,7 @@ type PaymentMethod = "apple" | "card";
 export default function PaymentScreen() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
-    const colorScheme = useColorScheme();
-    const isDark = colorScheme === "dark";
+    const isDark = useColorScheme() === "dark";
 
     const {items, clearCart} = useCart();
     const total = getCartSubtotal(items);
@@ -81,7 +80,7 @@ export default function PaymentScreen() {
                 ]}
             >
                 <PaymentOption
-                    icon={<FontAwesome6 name="apple-pay" size={22} color="#111"/>}
+                    icon={<FontAwesome6 name="apple-pay" size={22} color={theme.text}/>}
                     label="Apple pay"
                     selected={method === "apple"}
                     onPress={() => setMethod("apple")}
@@ -89,7 +88,7 @@ export default function PaymentScreen() {
                 />
 
                 <PaymentOption
-                    icon={<Ionicons name="card-outline" size={22} color="#111"/>}
+                    icon={<Ionicons name="card-outline" size={22} color={theme.text}/>}
                     label="Pay with card"
                     selected={method === "card"}
                     onPress={() => setMethod("card")}

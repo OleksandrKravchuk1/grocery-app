@@ -94,6 +94,7 @@ export default function CheckoutScreen() {
     }
 
 
+    //TODO add text input for product amount
     return (
         <ScrollView
             style={[styles.container, {backgroundColor: theme.screen}]}
@@ -191,7 +192,7 @@ export default function CheckoutScreen() {
             <View style={[styles.card, {backgroundColor: theme.card, borderColor: theme.border}]}>
                 <Pressable style={styles.paymentRow} onPress={() => router.push('/home/payment')}>
                     <View style={styles.paymentIcon}>
-                        <FontAwesome6 name="apple-pay" size={24} color="black"/>
+                        <FontAwesome6 name="apple-pay" size={24} color={theme.text}/>
                     </View>
                     <Text style={[styles.paymentLabel, {color: theme.text}]}>Apple pay</Text>
                     <MaterialCommunityIcons name="chevron-right" size={24} color={theme.text}/>

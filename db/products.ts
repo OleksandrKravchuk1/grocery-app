@@ -27,3 +27,16 @@ export async function getProductsByIds(productIds: number[]) {
 
     return data;
 }
+
+export async function searchProduct(query: string) {
+    const {data, error} = await supabase
+        .from('products')
+        .select()
+        .ilike('title', `%${query}%`);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+}
