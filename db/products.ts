@@ -32,7 +32,9 @@ export async function searchProduct(query: string) {
     const {data, error} = await supabase
         .from('products')
         .select()
-        .ilike('title', `%${query}%`);
+        .ilike('title', `%${query}%`)
+        .order('title', {ascending: true})
+        .limit(40);
 
     if (error) {
         throw new Error(error.message);

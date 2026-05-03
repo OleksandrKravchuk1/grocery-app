@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import {
     ActivityIndicator, Alert,
     FlatList,
@@ -7,8 +7,8 @@ import {
     TextInput,
     View,
 } from "react-native";
-import { useTheme } from "@/constants/theme";
-import { searchProduct } from "@/db/products";
+import {useTheme} from "@/constants/theme";
+import {searchProduct} from "@/db/products";
 import ProductCard from "@/components/ProductCard";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {useAuth} from "@/context/AuthContext";
@@ -34,6 +34,7 @@ export default function SearchScreen() {
     const [favouriteIds, setFavouriteIds] = useState<number[]>([]);
 
     useEffect(() => {
+        let cancelled = false;
         const loadFavourites = async () => {
             if (!user) {
                 setFavouriteIds([]);
@@ -43,13 +44,20 @@ export default function SearchScreen() {
             try {
                 const data = await getFavourites(user.id);
                 const ids = (data ?? []).map((item) => item.product_id);
-                setFavouriteIds(ids);
+                if (!cancelled) {
+                    setFavouriteIds(ids);
+                }
             } catch (error) {
-                console.error("Failed to load favourites:", error);
+                if (!cancelled) {
+                    console.error("Failed to load favourites:", error);
+                }
             }
         };
 
         void loadFavourites();
+        return () => {
+            cancelled = true;
+        };
     }, [user]);
 
     useEffect(() => {
@@ -59,6 +67,7 @@ export default function SearchScreen() {
             const trimmedQuery = query.trim();
 
             if (!trimmedQuery) {
+                setLoading(false);
                 setResults([]);
                 return;
             }
@@ -120,7 +129,7 @@ export default function SearchScreen() {
     };
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.screen }]}>
+        <View style={[styles.container, {backgroundColor: theme.screen}]}>
             <TextInput
                 value={query}
                 onChangeText={setQuery}
@@ -138,7 +147,7 @@ export default function SearchScreen() {
             />
 
             {loading ? (
-                <ActivityIndicator color={theme.accent} style={styles.loader} />
+                <ActivityIndicator color={theme.accent} style={styles.loader}/>
             ) : (
                 <FlatList
                     data={results}
@@ -148,16 +157,16 @@ export default function SearchScreen() {
                     contentContainerStyle={styles.listContent}
                     ListEmptyComponent={
                         query.trim() ? (
-                            <Text style={[styles.emptyText, { color: theme.text }]}>
+                            <Text style={[styles.emptyText, {color: theme.text}]}>
                                 Nothing found for `{query.trim()}`
                             </Text>
                         ) : (
-                            <Text style={[styles.emptyText, { color: theme.muted }]}>
+                            <Text style={[styles.emptyText, {color: theme.muted}]}>
                                 Start typing to search for products
                             </Text>
                         )
                     }
-                    renderItem={({ item }) => (
+                    renderItem={({item}) => (
                         <ProductCard
                             id={item.id}
                             image={item.image}
