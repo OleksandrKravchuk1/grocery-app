@@ -15,3 +15,11 @@ export type CartItem = {
     product: Product;
     quantity: number;
 };
+
+export type SearchProductItem = {
+    id: number;
+    image: string;
+    title: string;
+    rating: number;
+    price: number;
+};

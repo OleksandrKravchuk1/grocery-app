@@ -105,6 +105,7 @@ export default function Index() {
             renderItem={({item}) => (
                 <View style={styles.itemWrapper}>
                     <ProductCard
+                        id={item.id}
                         image={item.image}
                         title={item.title}
                         rating={item.rating}
