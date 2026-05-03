@@ -1,64 +1,28 @@
 import {useEffect, useState} from "react";
 import {
-    ActivityIndicator, Alert,
+    ActivityIndicator,
     FlatList,
     StyleSheet,
     Text,
     TextInput,
     View,
 } from "react-native";
-import {useTheme} from "@/constants/theme";
-import {searchProduct} from "@/db/products";
-import ProductCard from "@/components/ProductCard";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {useAuth} from "@/context/AuthContext";
-import {addFavourite, getFavourites, removeFavourite} from "@/db/favourites";
-
-type ProductItem = {
-    id: number;
-    image: string;
-    title: string;
-    rating: number;
-    price: number;
-};
+import ProductCard from "@/components/ProductCard";
+import {useTheme} from "@/constants/theme";
+import {useFavouriteProducts} from "@/hooks/useFavouriteProducts";
+import {searchProduct} from "@/db/products";
+import {SearchProductItem} from "@/types/product";
 
 export default function SearchScreen() {
     const theme = useTheme();
     const insets = useSafeAreaInsets();
 
-    const {user} = useAuth();
+    const {favouriteIds, toggleFavourite} = useFavouriteProducts();
 
     const [query, setQuery] = useState("");
-    const [results, setResults] = useState<ProductItem[]>([]);
+    const [results, setResults] = useState<SearchProductItem[]>([]);
     const [loading, setLoading] = useState(false);
-    const [favouriteIds, setFavouriteIds] = useState<number[]>([]);
-
-    useEffect(() => {
-        let cancelled = false;
-        const loadFavourites = async () => {
-            if (!user) {
-                setFavouriteIds([]);
-                return;
-            }
-
-            try {
-                const data = await getFavourites(user.id);
-                const ids = (data ?? []).map((item) => item.product_id);
-                if (!cancelled) {
-                    setFavouriteIds(ids);
-                }
-            } catch (error) {
-                if (!cancelled) {
-                    console.error("Failed to load favourites:", error);
-                }
-            }
-        };
-
-        void loadFavourites();
-        return () => {
-            cancelled = true;
-        };
-    }, [user]);
 
     useEffect(() => {
         let cancelled = false;
@@ -77,7 +41,7 @@ export default function SearchScreen() {
                 const data = await searchProduct(trimmedQuery);
 
                 if (!cancelled) {
-                    setResults((data ?? []) as ProductItem[]);
+                    setResults((data ?? []) as SearchProductItem[]);
                 }
             } catch (error) {
                 if (!cancelled) {
@@ -98,35 +62,6 @@ export default function SearchScreen() {
             clearTimeout(timeout);
         };
     }, [query]);
-
-    const toggleFavourite = async (productId: number) => {
-        if (!user) {
-            Alert.alert("Sign in required", "Please sign in to use favourites.");
-            return;
-        }
-
-        const isFavourite = favouriteIds.includes(productId);
-
-        setFavouriteIds((prev) =>
-            isFavourite ? prev.filter((id) => id !== productId) : [...prev, productId]
-        );
-
-        try {
-            if (isFavourite) {
-                await removeFavourite(user.id, productId);
-            } else {
-                await addFavourite(user.id, productId);
-            }
-        } catch (error) {
-            setFavouriteIds((prev) =>
-                isFavourite ? [...prev, productId] : prev.filter((id) => id !== productId)
-            );
-            Alert.alert(
-                "Favourite error",
-                error instanceof Error ? error.message : "Failed to update favourites"
-            );
-        }
-    };
 
     return (
         <View style={[styles.container, {backgroundColor: theme.screen}]}>
@@ -158,7 +93,7 @@ export default function SearchScreen() {
                     ListEmptyComponent={
                         query.trim() ? (
                             <Text style={[styles.emptyText, {color: theme.text}]}>
-                                Nothing found for `{query.trim()}`
+                                {`Nothing found for "${query.trim()}"`}
                             </Text>
                         ) : (
                             <Text style={[styles.emptyText, {color: theme.muted}]}>
