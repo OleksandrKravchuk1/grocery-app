@@ -17,8 +17,14 @@ export default function MenuScreen() {
                 {borderBottomColor: theme.inputBorder},
                 pressed && {backgroundColor: theme.inputBg}
             ]}
+            accessibilityRole='button'
+            accessibilityLabel={item.title}
             onPress={() => {
-                router.push(item.route as any);
+                if (item.route !== 'menu/about') {
+                    router.push(item.route as any);
+                    return;
+                }
+                router.push('https://github.com/mobileapp-developer/grocery-app');
             }}
         >
             <View style={styles.menuItemContent}>

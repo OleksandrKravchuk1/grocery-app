@@ -37,6 +37,12 @@ export default function MenuLayout() {
                     headerTitle: "Settings",
                 }}
             />
+            <Stack.Screen
+                name="support"
+                options={{
+                    headerTitle: "Support",
+                }}
+            />
         </Stack>
     );
 }

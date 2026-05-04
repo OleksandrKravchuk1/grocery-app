@@ -2,11 +2,11 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {useTheme} from "@/constants/theme";
 
-export default function OrdersScreen() {
+export default function SupportScreen() {
     const theme = useTheme();
     return (
         <View style={[styles.container, {backgroundColor: theme.screen}]}>
-            <Text style={[styles.text, {color: theme.text}]}>Orders Screen</Text>
+            <Text style={[styles.text, {color: theme.text}]}>Support Screen</Text>
         </View>
     );
 }
