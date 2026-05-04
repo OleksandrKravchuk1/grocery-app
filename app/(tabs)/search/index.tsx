@@ -3,6 +3,7 @@ import {
     ActivityIndicator,
     FlatList,
     StyleSheet,
+    Platform,
     Text,
     TextInput,
     View,
@@ -76,7 +77,7 @@ export default function SearchScreen() {
                         color: theme.text,
                         backgroundColor: theme.inputBg,
                         borderColor: theme.inputBorder,
-                        marginTop: insets.top + 56,
+                        marginTop: Platform.OS === 'android' ? insets.top + 56 : insets.top + 90,
                     },
                 ]}
             />

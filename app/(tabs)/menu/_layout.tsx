@@ -7,7 +7,7 @@ export default function MenuLayout() {
         <Stack
             screenOptions={{
                 headerShown: true,
-                headerLargeTitle: true,
+                headerLargeTitle: false,
                 headerTransparent: true,
                 headerBlurEffect: colorScheme === 'dark' ? 'systemChromeMaterial' : 'light',
             }}
@@ -15,7 +15,32 @@ export default function MenuLayout() {
             <Stack.Screen
                 name="index"
                 options={{
+                    headerLargeTitle: true,
                     headerTitle: "Menu",
+                }}
+            />
+            <Stack.Screen
+                name="orders"
+                options={{
+                    headerTitle: "Your orders",
+                }}
+            />
+            <Stack.Screen
+                name="payment"
+                options={{
+                    headerTitle: "Payment methods",
+                }}
+            />
+            <Stack.Screen
+                name="settings"
+                options={{
+                    headerTitle: "Settings",
+                }}
+            />
+            <Stack.Screen
+                name="support"
+                options={{
+                    headerTitle: "Support",
                 }}
             />
         </Stack>
