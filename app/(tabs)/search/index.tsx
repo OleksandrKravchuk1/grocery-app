@@ -1,62 +1,58 @@
-import {useEffect, useState} from "react";
-import {
-    ActivityIndicator,
-    FlatList,
-    StyleSheet,
-    Platform,
-    Text,
-    TextInput,
-    View,
-} from "react-native";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
+import {useEffect, useMemo, useState} from "react";
+import {ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, View} from "react-native";
+import SearchBar from "@/components/SearchBar";
 import ProductCard from "@/components/ProductCard";
 import {useTheme} from "@/constants/theme";
 import {useFavouriteProducts} from "@/hooks/useFavouriteProducts";
 import {searchProduct} from "@/db/products";
 import {SearchProductItem} from "@/types/product";
+import {useInsets} from "@/hooks/useInsets";
 
 export default function SearchScreen() {
     const theme = useTheme();
-    const insets = useSafeAreaInsets();
-
+    const {topInset} = useInsets();
     const {favouriteIds, toggleFavourite} = useFavouriteProducts();
 
-    const [query, setQuery] = useState("");
-    const [results, setResults] = useState<SearchProductItem[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [query, setQuery]           = useState("");
+    const [results, setResults]       = useState<SearchProductItem[]>([]);
+    const [loading, setLoading]       = useState(false);
+    const [error, setError]           = useState<string | null>(null);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const trimmedQuery = useMemo(() => query.trim(), [query]);
+
+    const runSearch = async (value: string) => {
+        const q = value.trim();
+
+        if (!q) {
+            setError(null);
+            setResults([]);
+            setLoading(false);
+            return;
+        }
+
+        try {
+            setError(null);
+            setLoading(true);
+
+            const data = await searchProduct(q);
+            setResults((data ?? []) as SearchProductItem[]);
+        } catch (error) {
+            setResults([]);
+            setError(error instanceof Error ? error.message : "Failed to search products");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         let cancelled = false;
 
-        const runSearch = async () => {
-            const trimmedQuery = query.trim();
-
-            if (!trimmedQuery) {
-                setLoading(false);
-                setResults([]);
-                return;
+        const timeout = setTimeout(() => {
+            if (!cancelled) {
+                runSearch(query);
             }
-
-            try {
-                setLoading(true);
-                const data = await searchProduct(trimmedQuery);
-
-                if (!cancelled) {
-                    setResults((data ?? []) as SearchProductItem[]);
-                }
-            } catch (error) {
-                if (!cancelled) {
-                    setResults([]);
-                }
-                console.error("Search error:", error);
-            } finally {
-                if (!cancelled) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        const timeout = setTimeout(runSearch, 300);
+        }, 300);
 
         return () => {
             cancelled = true;
@@ -64,23 +60,70 @@ export default function SearchScreen() {
         };
     }, [query]);
 
+    const handleRefresh = async () => {
+        if (!trimmedQuery) return;
+
+        setRefreshing(true);
+        try {
+            await runSearch(trimmedQuery);
+        } finally {
+            setRefreshing(false);
+        }
+    };
+
+    const renderEmpty = () => {
+        if (loading) return null;
+
+        if (error) {
+            return (
+                <View style={styles.emptyState}>
+                    <Text style={[styles.emptyTitle, {color: theme.text}]}>
+                        Search failed
+                    </Text>
+                    <Text style={[styles.emptySubtitle, {color: theme.muted}]}>
+                        {error}
+                    </Text>
+                </View>
+            );
+        }
+        if (trimmedQuery) {
+            return (
+                <View style={styles.emptyState}>
+                    <Text style={[styles.emptyTitle, {color: theme.text}]}>
+                        Nothing found
+                    </Text>
+                    <Text style={[styles.emptySubtitle, {color: theme.muted}]}>
+                        Try a different keyword
+                    </Text>
+                </View>
+            );
+        }
+        return (
+            <View style={styles.emptyState}>
+                <Text style={[styles.emptyTitle, {color: theme.text}]}>
+                    Search products
+                </Text>
+                <Text style={[styles.emptySubtitle, {color: theme.muted}]}>
+                    Start typing to find items quickly
+                </Text>
+            </View>
+        );
+    };
+
     return (
         <View style={[styles.container, {backgroundColor: theme.screen}]}>
-            <TextInput
+            <SearchBar
                 value={query}
                 onChangeText={setQuery}
-                placeholder="Find products..."
-                placeholderTextColor={theme.muted}
-                style={[
-                    styles.input,
-                    {
-                        color: theme.text,
-                        backgroundColor: theme.inputBg,
-                        borderColor: theme.inputBorder,
-                        marginTop: Platform.OS === 'android' ? insets.top + 56 : insets.top + 90,
-                    },
-                ]}
+                onClear={() => setQuery("")}
+                topInset={topInset}
             />
+
+            {trimmedQuery ? (
+                <Text style={[styles.meta, {color: theme.muted}]}>
+                    {loading ? "Searching..." : `${results.length} result(s) for "${trimmedQuery}"`}
+                </Text>
+            ) : null}
 
             {loading ? (
                 <ActivityIndicator color={theme.accent} style={styles.loader}/>
@@ -91,17 +134,16 @@ export default function SearchScreen() {
                     numColumns={2}
                     columnWrapperStyle={styles.row}
                     contentContainerStyle={styles.listContent}
-                    ListEmptyComponent={
-                        query.trim() ? (
-                            <Text style={[styles.emptyText, {color: theme.text}]}>
-                                {`Nothing found for "${query.trim()}"`}
-                            </Text>
-                        ) : (
-                            <Text style={[styles.emptyText, {color: theme.muted}]}>
-                                Start typing to search for products
-                            </Text>
-                        )
+                    keyboardShouldPersistTaps="handled"
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={handleRefresh}
+                            tintColor={theme.accent}
+                            colors={[theme.accent]}
+                        />
                     }
+                    ListEmptyComponent={renderEmpty}
                     renderItem={({item}) => (
                         <ProductCard
                             id={item.id}
@@ -123,20 +165,18 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
-    },
-    input: {
-        height: 48,
-        borderWidth: 1,
-        borderRadius: 12,
-        paddingHorizontal: 14,
-        marginBottom: 16,
-        fontSize: 16,
+        paddingHorizontal: 16,
     },
     loader: {
         marginTop: 24,
     },
+    meta: {
+        marginTop: 12,
+        marginBottom: 8,
+        fontSize: 13,
+    },
     listContent: {
+        paddingTop: 8,
         paddingBottom: 24,
     },
     row: {
@@ -146,6 +186,22 @@ const styles = StyleSheet.create({
     card: {
         width: "48%",
         marginRight: 0,
+    },
+    emptyState: {
+        marginTop: 40,
+        alignItems: "center",
+        paddingHorizontal: 24,
+    },
+    emptyTitle: {
+        fontSize: 18,
+        fontWeight: "700",
+        marginBottom: 8,
+        textAlign: "center",
+    },
+    emptySubtitle: {
+        fontSize: 14,
+        textAlign: "center",
+        lineHeight: 20,
     },
     emptyText: {
         textAlign: "center",
