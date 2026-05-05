@@ -2,14 +2,15 @@ import {Stack} from "expo-router";
 import {useColorScheme} from "react-native";
 
 export default function SearchLayout() {
-    const colorScheme = useColorScheme();
+    const isDark = useColorScheme() === 'dark';
     return (
         <Stack
             screenOptions={{
                 headerShown: true,
                 headerLargeTitle: true,
                 headerTransparent: true,
-                headerBlurEffect: colorScheme === 'dark' ? 'systemChromeMaterial' : 'light',
+                headerTintColor: isDark ? 'white' : 'black',
+                headerBlurEffect: isDark ? 'systemChromeMaterial' : 'light',
             }}
         >
             <Stack.Screen

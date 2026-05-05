@@ -1,4 +1,4 @@
-import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
+import {FlatList, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import {MENU_ITEMS} from "@/constants/menu";
 import {useTheme} from "@/constants/theme";
@@ -36,7 +36,7 @@ export default function MenuScreen() {
     );
 
     return (
-        <View style={[styles.container, {
+        <ScrollView style={[styles.container, {
             backgroundColor: theme.screen,
             paddingTop: topInset,
         }
@@ -45,9 +45,10 @@ export default function MenuScreen() {
                 data={MENU_ITEMS}
                 keyExtractor={(item) => item.title}
                 renderItem={renderItem}
+                scrollEnabled={false}
                 contentContainerStyle={styles.listContent}
             />
-        </View>
+        </ScrollView>
     );
 };
 
