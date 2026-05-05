@@ -4,6 +4,7 @@ import {Stack} from "expo-router";
 import {AuthProvider} from "@/context/AuthContext";
 import {CartProvider} from "@/context/CartContext";
 import {LocationProvider} from "@/context/LocationContext";
+import {SearchFiltersProvider} from "@/context/SearchFiltersContext";
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -38,24 +39,26 @@ export default function RootLayout() {
         <AuthProvider>
             <LocationProvider>
                 <CartProvider>
-                    <Stack>
-                        <Stack.Screen
-                            name="(tabs)"
-                            options={{
-                                headerShown: false,
-                            }}
-                        />
-                        <Stack.Screen
-                            name="(modals)"
-                            options={{
-                                headerShown: false,
-                                headerTitle: "modals",
-                                headerLargeTitle: false,
-                                headerTransparent: true,
-                                headerBlurEffect: "light",
-                            }}
-                        />
-                    </Stack>
+                    <SearchFiltersProvider>
+                        <Stack>
+                            <Stack.Screen
+                                name="(tabs)"
+                                options={{
+                                    headerShown: false,
+                                }}
+                            />
+                            <Stack.Screen
+                                name="(modals)"
+                                options={{
+                                    headerShown: false,
+                                    headerTitle: "modals",
+                                    headerLargeTitle: false,
+                                    headerTransparent: true,
+                                    headerBlurEffect: "light",
+                                }}
+                            />
+                        </Stack>
+                    </SearchFiltersProvider>
                 </CartProvider>
             </LocationProvider>
         </AuthProvider>

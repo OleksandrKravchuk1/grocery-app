@@ -22,4 +22,11 @@ export type SearchProductItem = {
     title: string;
     rating: number;
     price: number;
+    category_id: number;
 };
+
+export type SearchSortBy =
+    | "relevance"
+    | "price_asc"
+    | "price_desc"
+    | "rating_desc";

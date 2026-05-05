@@ -9,6 +9,7 @@ export default function HomeLayout() {
             screenOptions={{
                 headerTransparent: true,
                 headerLargeTitleEnabled: true,
+                headerTintColor: isDark ? 'white' : 'black',
                 headerBlurEffect: isDark ? 'systemChromeMaterial' : 'light',
             }}
         >

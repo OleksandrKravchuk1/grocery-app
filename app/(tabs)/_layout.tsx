@@ -4,17 +4,17 @@ import {colors} from "@/constants/colors";
 import {useColorScheme} from "react-native";
 
 export default function TabLayout() {
-    const colorScheme = useColorScheme();
+    const isDark = useColorScheme() === 'dark'
 
     return (
         <Tabs screenOptions={{
             headerShown: false,
             animation: "shift",
             tabBarActiveTintColor: colors.green,
-            tabBarInactiveTintColor: colorScheme === "dark" ? colors.mutedDark : colors.black,
+            tabBarInactiveTintColor: isDark ? colors.mutedDark : colors.black,
             tabBarStyle: {
-                backgroundColor: colorScheme === 'dark' ? colors.black : colors.white,
-                borderTopColor: colorScheme === 'dark' ? colors.black : colors.white,
+                backgroundColor: isDark ? colors.black : colors.white,
+                borderTopColor: isDark ? colors.black : colors.white,
             }
         }}>
             <Tabs.Screen

@@ -8,13 +8,13 @@ const ModalLayout = () => {
     return (
         <Stack
             screenOptions={{
-                presentation: 'modal',
                 headerBlurEffect: colorScheme === 'dark' ? 'systemThickMaterialDark' : 'light',
             }}
         >
             <Stack.Screen
                 name="location-picker"
                 options={{
+                    presentation: 'modal',
                     headerShown: true,
                     headerLargeTitle: true,
                     headerTransparent: true,
@@ -27,6 +27,16 @@ const ModalLayout = () => {
                             style={{right: 10}}
                         />
                     ),
+                }}
+            />
+            <Stack.Screen
+                name="search-filters"
+                options={{
+                    presentation: 'modal',
+                    headerShown: true,
+                    headerLargeTitle: false,
+                    headerTransparent: true,
+                    headerTitle: 'Filters',
                 }}
             />
         </Stack>
