@@ -3,8 +3,9 @@ import {SearchSortBy} from "@/types/product";
 
 export function parseNullableNumber(value: string | string[] | undefined) {
     const raw = Array.isArray(value) ? value[0] : value;
-    if (!raw || raw === "null") return null;
-    const parsed = Number(raw);
+    const normalized = raw?.trim();
+    if (!normalized || normalized === "null") return null;
+    const parsed = Number(normalized);
     return Number.isFinite(parsed) ? parsed : null;
 }
 
