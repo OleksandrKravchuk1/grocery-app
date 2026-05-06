@@ -11,11 +11,15 @@ type Props = {
 }
 
 export const Row = ({icon, label, subtitle, color, borderColor, onPress}: Props) => {
+    const Container = onPress ? Pressable : View;
+
     return (
-        <Pressable onPress={onPress}
-            style={[styles.row, borderColor ? {borderBottomColor: borderColor, borderBottomWidth: 1} : null]}>
+        <Container
+            {...(onPress ? {onPress, accessibilityRole: "button", accessibilityLabel: label, accessibilityHint: subtitle ?? "Opens this row"} : {})}
+            style={[styles.row, borderColor ? {borderBottomColor: borderColor, borderBottomWidth: 1} : null]}
+        >
             <View style={styles.rowLeft}>
-                <Ionicons name={icon} size={20} color={color}/>
+                <Ionicons name={icon} size={20} color={color} accessible={false}/>
                 <View style={styles.rowTextWrap}>
                     <Text style={[styles.rowLabel, {color}]}>{label}</Text>
                     {!!subtitle && (
@@ -25,8 +29,8 @@ export const Row = ({icon, label, subtitle, color, borderColor, onPress}: Props)
                     )}
                 </View>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={color}/>
-        </Pressable>
+            {onPress ? <Ionicons name="chevron-forward" size={20} color={color} accessible={false}/> : null}
+        </Container>
     );
 }
 

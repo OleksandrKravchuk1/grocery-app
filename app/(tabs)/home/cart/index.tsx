@@ -22,6 +22,9 @@ export default function Index() {
                 keyExtractor={(item) => item.key}
                 contentContainerStyle={[styles.listContent, {paddingTop: insets.top + 56}]}
                 style={styles.list}
+                accessibilityRole="list"
+                accessibilityLabel="Cart items"
+                accessibilityHint="Browse the products in your cart"
                 renderItem={({item}) => (
                     <CartItem
                         title={item.product.title}
@@ -34,8 +37,9 @@ export default function Index() {
                     />
                 )}
                 ListEmptyComponent={
-                    <Text style={[styles.emptyText, {color: isDark ? colors.white : colors.black}]}>Your cart is
-                        empty.</Text>
+                    <Text style={[styles.emptyText, {color: isDark ? colors.white : colors.black}]} accessibilityRole="text">
+                        Your cart is empty.
+                    </Text>
                 }
             />
             <View style={styles.summaryRow}>
@@ -51,6 +55,10 @@ export default function Index() {
                 style={[styles.button, !canCheckout && styles.buttonDisabled]}
                 onPress={() => router.push('/home/checkout')}
                 disabled={!canCheckout}
+                accessibilityRole="button"
+                accessibilityLabel="Go to checkout"
+                accessibilityHint="Opens the checkout screen to review your order"
+                accessibilityState={{disabled: !canCheckout}}
             >
                 <Text style={styles.buttonText}>Go to checkout</Text>
             </Pressable>

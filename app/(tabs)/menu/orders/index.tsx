@@ -6,7 +6,7 @@ export default function OrdersScreen() {
     const theme = useTheme();
     return (
         <View style={[styles.container, {backgroundColor: theme.screen}]}>
-            <Text style={[styles.text, {color: theme.text}]}>Orders Screen</Text>
+            <Text style={[styles.text, {color: theme.text}]} accessibilityRole="header">Orders Screen</Text>
         </View>
     );
 }

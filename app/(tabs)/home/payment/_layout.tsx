@@ -21,11 +21,18 @@ export default function PaymentLayout() {
                 options={{
                     headerShown: true,
                     headerLeft: () => (
-                        <Pressable onPress={() => router.back()} style={{ marginRight: 12 }}>
+                        <Pressable
+                            onPress={() => router.back()}
+                            style={{ marginRight: 12 }}
+                            accessibilityRole="button"
+                            accessibilityLabel="Go back"
+                            accessibilityHint="Returns to the previous screen"
+                        >
                             <Ionicons
                                 name="chevron-back"
                                 size={24}
                                 color={isDark ? colors.white : colors.textLight}
+                                accessible={false}
                             />
                         </Pressable>
                     ),

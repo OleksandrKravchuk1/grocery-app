@@ -6,7 +6,7 @@ export default function PaymentScreen() {
     const theme = useTheme();
     return (
         <View style={[styles.container, {backgroundColor: theme.screen}]}>
-            <Text style={[styles.text, {color: theme.text}]}>Payment Screen</Text>
+            <Text style={[styles.text, {color: theme.text}]} accessibilityRole="header">Payment Screen</Text>
         </View>
     );
 }

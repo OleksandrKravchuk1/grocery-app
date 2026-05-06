@@ -126,7 +126,7 @@ export default function Index() {
     if (loadingProfile) {
         return (
             <View style={[styles.loader, {backgroundColor: theme.screen}]}>
-                <ActivityIndicator/>
+                <ActivityIndicator accessibilityLabel="Loading profile"/>
             </View>
         );
     }
@@ -140,12 +140,12 @@ export default function Index() {
         >
             <View style={styles.avatarWrap}>
                 <View style={[styles.avatarCircle, {borderColor: theme.inputBorder}]}>
-                    <Ionicons name="person" size={64} color={theme.muted}/>
+                    <Ionicons name="person" size={64} color={theme.muted} accessible={false}/>
                 </View>
             </View>
 
             <View style={[styles.card, {backgroundColor: theme.card}]}>
-                <Text style={[styles.sectionTitle, {color: theme.text}]}>Personal data</Text>
+                <Text style={[styles.sectionTitle, {color: theme.text}]} accessibilityRole="header">Personal data</Text>
                 <Text style={[styles.sectionHint, {color: theme.muted}]}>Name and surname</Text>
 
                 <InputRow
@@ -153,14 +153,12 @@ export default function Index() {
                     value={form.first_name}
                     onChangeText={(value) => setForm((prev) => ({...prev, first_name: value}))}
                     placeholder="Name"
-                    theme={theme}
                 />
                 <InputRow
                     iconName="person"
                     value={form.last_name}
                     onChangeText={(value) => setForm((prev) => ({...prev, last_name: value}))}
                     placeholder="Surname"
-                    theme={theme}
                     style={styles.mt8}
                 />
 
@@ -170,7 +168,6 @@ export default function Index() {
                     value={form.birthday}
                     onChangeText={(value) => setForm((prev) => ({...prev, birthday: value}))}
                     placeholder="Birthday"
-                    theme={theme}
                 />
             </View>
 
@@ -193,6 +190,10 @@ export default function Index() {
                                     },
                                 ]}
                                 onPress={() => setForm((prev) => ({...prev, gender: item}))}
+                                accessibilityRole="radio"
+                                accessibilityState={{selected}}
+                                accessibilityLabel={item}
+                                accessibilityHint="Selects this gender option"
                             >
                                 <Text
                                     style={[styles.genderText, {color: selected ? theme.accent : theme.text}]}>{item}</Text>
@@ -203,7 +204,7 @@ export default function Index() {
             </View>
 
             <View style={[styles.card, {backgroundColor: theme.card}]}>
-                <Text style={[styles.sectionTitle, styles.mt18, {color: theme.text}]}>Contact</Text>
+                <Text style={[styles.sectionTitle, styles.mt18, {color: theme.text}]} accessibilityRole="header">Contact</Text>
                 <Text style={[styles.sectionHint, {color: theme.muted}]}>Phone number</Text>
                 <InputRow
                     iconName="phone"
@@ -211,12 +212,11 @@ export default function Index() {
                     onChangeText={(value) => setForm((prev) => ({...prev, phone: value}))}
                     placeholder="+380 XX XXX XX XX"
                     keyboardType="phone-pad"
-                    theme={theme}
                 />
 
                 <Text style={[styles.sectionHint, styles.mt14, {color: theme.muted}]}>Email</Text>
                 <View style={[styles.inputRow, {backgroundColor: theme.inputBg, borderColor: theme.inputBorder}]}>
-                    <MaterialIcons name="email" size={18} color={theme.accent}/>
+                    <MaterialIcons name="email" size={18} color={theme.accent} accessible={false}/>
                     <Text style={[styles.emailText, {color: theme.muted}]}>{user?.email ?? "E-mail"}</Text>
                 </View>
 
@@ -224,11 +224,21 @@ export default function Index() {
                     onPress={handleSaveProfile}
                     disabled={savingProfile}
                     style={[styles.saveButton, {backgroundColor: theme.accent}, savingProfile && styles.disabled]}
+                    accessibilityRole="button"
+                    accessibilityLabel="Save profile"
+                    accessibilityHint="Saves your profile changes"
+                    accessibilityState={{disabled: savingProfile}}
                 >
                     <Text style={styles.saveButtonText}>{savingProfile ? "Saving..." : "Save"}</Text>
                 </Pressable>
 
-                <Pressable onPress={handleSignOut} style={[styles.dangerButton, {borderColor: theme.danger}]}>
+                <Pressable
+                    onPress={handleSignOut}
+                    style={[styles.dangerButton, {borderColor: theme.danger}]}
+                    accessibilityRole="button"
+                    accessibilityLabel="Sign out"
+                    accessibilityHint="Signs you out of the app"
+                >
                     <Text style={[styles.dangerButtonText, {color: theme.danger}]}>Sign out</Text>
                 </Pressable>
             </View>

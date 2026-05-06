@@ -6,7 +6,7 @@ export default function SupportScreen() {
     const theme = useTheme();
     return (
         <View style={[styles.container, {backgroundColor: theme.screen}]}>
-            <Text style={[styles.text, {color: theme.text}]}>Support Screen</Text>
+            <Text style={[styles.text, {color: theme.text}]} accessibilityRole="header">Support Screen</Text>
         </View>
     );
 }

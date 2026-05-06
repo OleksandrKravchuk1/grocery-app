@@ -6,7 +6,7 @@ export default function SettingsScreen() {
     const theme = useTheme();
     return (
         <View style={[styles.container, {backgroundColor: theme.screen}]}>
-            <Text style={[styles.text, {color: theme.text}]}>Settings Screen</Text>
+            <Text style={[styles.text, {color: theme.text}]} accessibilityRole="header">Settings Screen</Text>
         </View>
     );
 }

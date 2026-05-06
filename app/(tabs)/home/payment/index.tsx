@@ -78,6 +78,8 @@ export default function PaymentScreen() {
                     styles.content,
                     {paddingTop: insets.top + 56, paddingBottom: insets.bottom + 24},
                 ]}
+                accessibilityLabel="Payment"
+                accessibilityHint="Choose how you want to pay and enter your card details if needed"
             >
                 <PaymentOption
                     icon={<FontAwesome6 name="apple-pay" size={22} color={theme.text}/>}
@@ -107,12 +109,14 @@ export default function PaymentScreen() {
                                 keyboardType="number-pad"
                                 style={[styles.input, {color: theme.text}]}
                                 maxLength={19}
+                                accessibilityLabel="Card number"
+                                accessibilityHint="Enter your 16 digit card number"
                             />
                             <View style={styles.brandRow}>
-                                <FontAwesome6 name="cc-mastercard" size={22} color="#EB001B"/>
-                                <FontAwesome6 name="cc-visa" size={22} color="#1A1F71"/>
-                                <FontAwesome6 name="cc-discover" size={22} color="#FF6000"/>
-                                <FontAwesome6 name="cc-jcb" size={22} color="#0B4EA2"/>
+                                <FontAwesome6 name="cc-mastercard" size={22} color="#EB001B" accessible={false}/>
+                                <FontAwesome6 name="cc-visa" size={22} color="#1A1F71" accessible={false}/>
+                                <FontAwesome6 name="cc-discover" size={22} color="#FF6000" accessible={false}/>
+                                <FontAwesome6 name="cc-jcb" size={22} color="#0B4EA2" accessible={false}/>
                             </View>
                         </View>
 
@@ -131,6 +135,8 @@ export default function PaymentScreen() {
                                         keyboardType="number-pad"
                                         style={[styles.input, {color: theme.text}]}
                                         maxLength={5}
+                                        accessibilityLabel="Expiry date"
+                                        accessibilityHint="Enter the card expiration date in month and year"
                                     />
                                 </View>
                             </View>
@@ -150,8 +156,10 @@ export default function PaymentScreen() {
                                         secureTextEntry
                                         style={[styles.input, {color: theme.text}]}
                                         maxLength={4}
+                                        accessibilityLabel="CVC"
+                                        accessibilityHint="Enter the security code from your card"
                                     />
-                                    <MaterialCommunityIcons name="credit-card-outline" size={20} color={theme.muted}/>
+                                    <MaterialCommunityIcons name="credit-card-outline" size={20} color={theme.muted} accessible={false}/>
                                 </View>
                             </View>
                         </View>
@@ -165,6 +173,13 @@ export default function PaymentScreen() {
                     },
                     ]}
                     onPress={handleConfirmPress}
+                    accessibilityRole="button"
+                    accessibilityLabel={method === "card"
+                        ? `Confirm and pay $${total.toFixed(2)}`
+                        : `Pay with Apple Pay $${total.toFixed(2)}`}
+                    accessibilityHint={method === "card"
+                        ? "Confirms your card payment details and completes the order"
+                        : "Completes the order with Apple Pay"}
                 >
                     <Text style={styles.confirmText}>
                         {method === "card"

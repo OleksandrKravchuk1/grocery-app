@@ -30,25 +30,39 @@ export default function SearchFiltersForm({
 
     return (
         <View style={styles.container}>
-            <Text style={[styles.sectionTitle, {color: theme.text}]}>Category</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
-                <Chip
-                    label='All'
-                    selected={selectedCategoryId === null}
-                    onPress={() => onSelectCategory(null)}
+            <Text style={[styles.sectionTitle, {color: theme.text}]} accessibilityRole='header'>
+                Category
+            </Text>
+            <ScrollView horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.row}
+                        accessibilityRole='list'
+                        accessibilityLabel='Category filters'
+                        accessibilityHint='Browse available category options'
+            >
+                <Chip label='All'
+                      selected={selectedCategoryId === null}
+                      onPress={() => onSelectCategory(null)}
                 />
                 {categories.map((category) => (
-                    <Chip
-                        key={category.id}
-                        label={category.name}
-                        selected={selectedCategoryId === category.id}
-                        onPress={() => onSelectCategory(category.id)}
+                    <Chip key={category.id}
+                          label={category.name}
+                          selected={selectedCategoryId === category.id}
+                          onPress={() => onSelectCategory(category.id)}
                     />
                 ))}
             </ScrollView>
 
-            <Text style={[styles.sectionTitle, {color: theme.text}]}>Price</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
+            <Text style={[styles.sectionTitle, {color: theme.text}]} accessibilityRole='header'>
+                Price
+            </Text>
+            <ScrollView horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.row}
+                        accessibilityRole='list'
+                        accessibilityLabel='Price filters'
+                        accessibilityHint='Browse available price options'
+            >
                 {PRICE_PRESETS.map((preset) => (
                     <Chip
                         key={preset.key}
@@ -59,8 +73,16 @@ export default function SearchFiltersForm({
                 ))}
             </ScrollView>
 
-            <Text style={[styles.sectionTitle, {color: theme.text}]}>Sort by</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
+            <Text style={[styles.sectionTitle, {color: theme.text}]} accessibilityRole='header'>
+                Sort by
+            </Text>
+            <ScrollView horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.row}
+                        accessibilityRole='list'
+                        accessibilityLabel='Sort options'
+                        accessibilityHint='Browse available sort options'
+            >
                 {SORT_OPTIONS.map((option) => (
                     <Chip
                         key={option.key}
@@ -80,7 +102,7 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: 14,
-        fontWeight: "700",
+        fontWeight: '700',
     },
     row: {
         gap: 8,

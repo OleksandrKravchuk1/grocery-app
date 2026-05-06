@@ -1,21 +1,28 @@
 import {useTheme} from "@/constants/theme";
 import {Pressable, StyleSheet, Text} from "react-native";
 
-const Chip = ({label, selected, onPress}: { label: string; selected: boolean; onPress: () => void; }) => {
+type Props = {
+    label: string;
+    selected: boolean;
+    onPress: () => void;
+};
+
+const Chip = ({label, selected, onPress}: Props) => {
     const theme = useTheme();
 
     return (
-        <Pressable
-            onPress={onPress}
-            style={[
-                styles.chip,
-                {
-                    backgroundColor: selected ? theme.accent : theme.inputBg,
-                    borderColor: selected ? theme.accent : theme.inputBorder,
-                },
-            ]}
+        <Pressable style={[styles.chip, {
+            backgroundColor: selected ? theme.accent : theme.inputBg,
+            borderColor: selected ? theme.accent : theme.inputBorder,
+        }]}
+                   onPress={onPress}
+                   accessibilityRole='button'
+                   accessibilityState={{selected}}
+                   accessibilityHint='Double tap to toggle selection'
         >
-            <Text style={[styles.chipText, {color: selected ? "#fff" : theme.text}]}>
+            <Text style={[styles.chipText, {
+                color: selected ? "#fff" : theme.text
+            }]}>
                 {label}
             </Text>
         </Pressable>
@@ -31,7 +38,7 @@ const styles = StyleSheet.create({
     },
     chipText: {
         fontSize: 13,
-        fontWeight: "600",
+        fontWeight: '600',
     },
 });
 

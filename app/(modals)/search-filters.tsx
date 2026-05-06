@@ -31,7 +31,7 @@ export default function SearchFiltersModal() {
     };
 
     return (
-        <View style={[styles.container, {paddingTop: topInset, backgroundColor: theme.screen}]}>
+        <View style={[styles.container, {paddingTop: topInset, backgroundColor: theme.screen}]} accessibilityViewIsModal>
             <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
                 <SearchFiltersForm
                     categories={categories}
@@ -43,7 +43,13 @@ export default function SearchFiltersModal() {
                     onSelectSortBy={setSelectedSortBy}
                 />
 
-                <Pressable style={[styles.applyButton, {backgroundColor: theme.accent}]} onPress={onApply}>
+                <Pressable
+                    style={[styles.applyButton, {backgroundColor: theme.accent}]}
+                    onPress={onApply}
+                    accessibilityRole="button"
+                    accessibilityLabel="Apply filters"
+                    accessibilityHint="Applies the selected category, price, and sort filters"
+                >
                     <Text style={[styles.applyButtonText]}>Apply</Text>
                 </Pressable>
             </ScrollView>
