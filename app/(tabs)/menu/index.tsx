@@ -19,6 +19,9 @@ export default function MenuScreen() {
             ]}
             accessibilityRole='button'
             accessibilityLabel={item.title}
+            accessibilityHint={item.route === 'menu/about'
+                ? 'Opens the project website in your browser'
+                : `Opens ${item.title.toLowerCase()} screen`}
             onPress={() => {
                 if (item.route !== 'menu/about') {
                     router.push(item.route as any);
@@ -28,10 +31,10 @@ export default function MenuScreen() {
             }}
         >
             <View style={styles.menuItemContent}>
-                <Ionicons name={item.icon as any} size={24} color={theme.text}/>
+                <Ionicons name={item.icon as any} size={24} color={theme.text} accessible={false}/>
                 <Text style={[styles.menuItemText, {color: theme.text}]}>{item.title}</Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={theme.muted}/>
+            <Ionicons name="chevron-forward" size={20} color={theme.muted} accessible={false}/>
         </Pressable>
     );
 
@@ -47,6 +50,9 @@ export default function MenuScreen() {
                 renderItem={renderItem}
                 scrollEnabled={false}
                 contentContainerStyle={styles.listContent}
+                accessibilityRole='list'
+                accessibilityLabel='Menu items'
+                accessibilityHint='Browse menu, settings, support, and other app options'
             />
         </ScrollView>
     );

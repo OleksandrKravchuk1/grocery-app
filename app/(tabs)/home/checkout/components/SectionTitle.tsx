@@ -6,7 +6,11 @@ type Props = {
 }
 
 export const SectionTitle = ({title, color}: Props) => {
-    return <Text style={[styles.sectionTitle, {color}]}>{title}</Text>;
+    return (
+        <Text style={[styles.sectionTitle, {color}]} accessibilityRole="header">
+            {title}
+        </Text>
+    );
 }
 
 const styles = StyleSheet.create({

@@ -24,7 +24,7 @@ export default function SearchBar({value, onChangeText, onClear, topInset = 0, p
                 style,
             ]}
         >
-            <Ionicons name="search" size={20} color={theme.muted}/>
+            <Ionicons name="search" size={20} color={theme.muted} accessible={false}/>
             <TextInput
                 value={value}
                 onChangeText={onChangeText}
@@ -35,6 +35,9 @@ export default function SearchBar({value, onChangeText, onClear, topInset = 0, p
                 autoCorrect={false}
                 returnKeyType="search"
                 clearButtonMode="while-editing"
+                accessibilityRole="search"
+                accessibilityLabel="Search products"
+                accessibilityHint="Search for products"
             />
             {!!value && (
                 <Pressable
@@ -42,8 +45,9 @@ export default function SearchBar({value, onChangeText, onClear, topInset = 0, p
                     hitSlop={8}
                     accessibilityRole="button"
                     accessibilityLabel="Clear search"
+                    accessibilityHint="Clears the current search query"
                 >
-                    <Ionicons name="close-circle" size={20} color={theme.muted}/>
+                    <Ionicons name="close-circle" size={20} color={theme.muted} accessible={false}/>
                 </Pressable>
             )}
         </View>

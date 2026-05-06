@@ -88,18 +88,26 @@ export default function LocationPickerModal() {
         router.back();
     };
 
-    if (loading) return <ActivityIndicator style={{flex: 1}}/>;
-    if (error) return <View style={styles.center}><Text>{error}</Text></View>;
+    if (loading) return <ActivityIndicator style={{flex: 1}} accessibilityLabel="Loading location picker"/>;
+    if (error) return <View style={styles.center} accessibilityRole="alert"><Text>{error}</Text></View>;
 
     return (
-        <View style={styles.container}>
-            <MapView style={styles.map} initialRegion={region} onPress={onMapPress}>
+        <View style={styles.container} accessibilityViewIsModal>
+            <MapView
+                style={styles.map}
+                initialRegion={region}
+                onPress={onMapPress}
+                accessibilityLabel="Map for selecting your delivery location"
+                accessibilityHint="Tap on the map to choose a location and then confirm the selected address below"
+            >
                 {picked && <Marker coordinate={picked} draggable onDragEnd={onMapPress as any}/>}
             </MapView>
 
             <View style={[styles.footer, {backgroundColor: colorScheme === 'dark' ? colors.darkGrey : colors.white}]}>
-                <Text style={{color: colorScheme === 'dark' ? colors.white : colors.black}} numberOfLines={2}>{addressLabel}</Text>
-                <Button title="Use this location" onPress={onConfirm}/>
+                <Text style={{color: colorScheme === 'dark' ? colors.white : colors.black}} numberOfLines={2} accessibilityRole="text">
+                    {addressLabel}
+                </Text>
+                <Button title="Use this location" onPress={onConfirm} accessibilityLabel="Use this location"/>
             </View>
         </View>
     );

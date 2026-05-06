@@ -1,58 +1,74 @@
-import {ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View} from "react-native";
+import {ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {Entypo, Ionicons, MaterialIcons} from "@expo/vector-icons";
 import BannerList from "@/app/(tabs)/home/components/BannerList";
-import {colors} from "@/constants/colors";
 import CategoriesList from "@/app/(tabs)/home/components/CategoriesList";
 import CategorySection from "@/app/(tabs)/home/components/CategorySection";
 import {useCategory} from "@/hooks/useCategory";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {useLocation} from "@/context/LocationContext";
 import {useRouter} from "expo-router";
+import {useTheme} from "@/constants/theme";
 
-export default function Home() {
+export default function HomeScreen() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
-    const colorScheme = useColorScheme();
+    const theme = useTheme();
     const androidHeaderOffset = Platform.OS === 'android' ? insets.top + 56 : 0;
 
     const {categories, loading, error} = useCategory();
     const {address} = useLocation();
 
-    if (loading) return <ActivityIndicator/>
-    if (error) return <Text>{error}</Text>
+    if (loading) return <ActivityIndicator accessibilityLabel="Loading home content"/>
+    if (error) return <Text accessibilityRole="alert">{error}</Text>
 
     return (
         <ScrollView
-            style={{backgroundColor: colorScheme === 'dark' ? colors.black : colors.white}}
+            style={{backgroundColor: theme.screen}}
             contentInsetAdjustmentBehavior='automatic'
             contentContainerStyle={[styles.scrollContent, Platform.OS === 'android' && {paddingTop: androidHeaderOffset}]}
             showsVerticalScrollIndicator={false}
+            accessibilityLabel='Home'
+            accessibilityHint='Browse through the available food categories and promotions'
         >
 
             {/* HEADER */}
             <View style={styles.header}>
                 <Pressable
                     style={styles.addressContainer}
+                    accessibilityRole='button'
+                    accessibilityLabel={`Current delivery address: ${address}`}
+                    accessibilityHint='Opens the location picker to select your delivery address'
                     onPress={() => router.push('/(modals)/location-picker')}
                 >
-                    <MaterialIcons name="delivery-dining" size={28}
-                                   color={colorScheme === 'dark' ? colors.white : colors.black}/>
-                    <Text
-                        style={[styles.address, {color: colorScheme === 'dark' ? colors.white : colors.black}]}
-                        numberOfLines={1}
-                        ellipsizeMode='tail'
+                    <MaterialIcons name="delivery-dining"
+                                   size={28}
+                                   color={theme.text}
+                                   accessible={false}
+                    />
+                    <Text style={[styles.address, {
+                        color: theme.text
+                    }]}
+                          numberOfLines={1}
+                          ellipsizeMode='tail'
                     >
                         {address}
                     </Text>
-                    <Entypo name='chevron-small-down' size={24}
-                            color={colorScheme === 'dark' ? colors.white : colors.black}/>
+                    <Entypo name='chevron-small-down'
+                            size={24}
+                            color={theme.text}
+                            accessible={false}
+                    />
                 </Pressable>
                 <Pressable
                     style={styles.bagIcon}
                     onPress={() => router.push('/home/cart')}
+                    accessibilityRole='button'
+                    accessibilityLabel='Shopping Cart'
+                    accessibilityHint='View items in your shopping cart'
                 >
                     <Ionicons name="bag-outline" size={24}
-                              color={colorScheme === 'dark' ? colors.white : colors.black}/>
+                              color={theme.text}
+                              accessible={false}/>
                 </Pressable>
             </View>
 
@@ -61,7 +77,12 @@ export default function Home() {
                 <View style={styles.banner}>
                     <BannerList/>
                 </View>
-                <View style={styles.categories}>
+                <View
+                    style={styles.categories}
+                    accessibilityRole='list'
+                    accessibilityLabel='Categories'
+                    accessibilityHint='Browse through the available food categories'
+                >
                     <CategoriesList/>
                 </View>
 

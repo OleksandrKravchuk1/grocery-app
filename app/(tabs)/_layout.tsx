@@ -21,6 +21,7 @@ export default function TabLayout() {
                 name="home"
                 options={{
                     title: "Home",
+                    tabBarAccessibilityLabel: "Home tab",
                     tabBarIcon: ({size, focused, color}) => (
                         <Ionicons name={focused ? 'home' : 'home-outline'} color={color}
                                   size={size}/>
@@ -31,6 +32,7 @@ export default function TabLayout() {
                 name="favourite"
                 options={{
                     title: "Favourite",
+                    tabBarAccessibilityLabel: "Favourite tab",
                     tabBarIcon: ({size, focused, color}) => (
                         <Ionicons name={focused ? 'heart' : 'heart-outline'}
                                   color={color} size={size}/>
@@ -41,6 +43,7 @@ export default function TabLayout() {
                 name="search"
                 options={{
                     title: "Search",
+                    tabBarAccessibilityLabel: "Search tab",
                     tabBarIcon: ({size, focused, color}) => (
                         <Ionicons name={focused ? 'search' : 'search-outline'}
                                   color={color} size={size}/>
@@ -51,6 +54,7 @@ export default function TabLayout() {
                 name="profile"
                 options={{
                     title: "Profile",
+                    tabBarAccessibilityLabel: "Profile tab",
                     tabBarIcon: ({size, focused, color}) => (
                         <Ionicons name={focused ? 'person' : 'person-outline'}
                                   color={color} size={size}/>
@@ -61,6 +65,7 @@ export default function TabLayout() {
                 name="menu"
                 options={{
                     title: "Menu",
+                    tabBarAccessibilityLabel: "Menu tab",
                     tabBarIcon: ({size, focused, color}) => (
                         <Ionicons name={focused ? 'menu' : 'menu-outline'} color={color}
                                   size={size}/>

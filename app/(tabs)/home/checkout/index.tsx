@@ -88,7 +88,7 @@ export default function CheckoutScreen() {
     if (loading) {
         return (
             <View style={[styles.container, {backgroundColor: theme.screen}]}>
-                <ActivityIndicator size="large" color={theme.accent}/>
+                <ActivityIndicator size="large" color={theme.accent} accessibilityLabel="Loading checkout details"/>
             </View>
         );
     }
@@ -103,6 +103,8 @@ export default function CheckoutScreen() {
                 {paddingTop: insets.top + 56, paddingBottom: insets.bottom + 20},
             ]}
             showsVerticalScrollIndicator={false}
+            accessibilityLabel="Checkout"
+            accessibilityHint="Review your details, choose delivery and payment, then continue"
         >
             <SectionTitle title="Details" color={theme.text}/>
             <View style={[styles.card, {backgroundColor: theme.card, borderColor: theme.border}]}>
@@ -184,18 +186,27 @@ export default function CheckoutScreen() {
                     onValueChange={setInvoiceRequested}
                     trackColor={{false: theme.border, true: theme.accent}}
                     thumbColor={invoiceRequested ? colors.white : colors.white}
+                    accessibilityRole="switch"
+                    accessibilityLabel="Request an invoice"
+                    accessibilityHint="Toggles whether you want an invoice for this order"
                 />
             </View>
 
             {/* PAYMENT METHOD */}
             <SectionTitle title="Payment method" color={theme.text}/>
             <View style={[styles.card, {backgroundColor: theme.card, borderColor: theme.border}]}>
-                <Pressable style={styles.paymentRow} onPress={() => router.push('/home/payment')}>
+                <Pressable
+                    style={styles.paymentRow}
+                    onPress={() => router.push('/home/payment')}
+                    accessibilityRole="button"
+                    accessibilityLabel="Payment method"
+                    accessibilityHint="Opens payment method selection"
+                >
                     <View style={styles.paymentIcon}>
-                        <FontAwesome6 name="apple-pay" size={24} color={theme.text}/>
+                        <FontAwesome6 name="apple-pay" size={24} color={theme.text} accessible={false}/>
                     </View>
                     <Text style={[styles.paymentLabel, {color: theme.text}]}>Apple pay</Text>
-                    <MaterialCommunityIcons name="chevron-right" size={24} color={theme.text}/>
+                    <MaterialCommunityIcons name="chevron-right" size={24} color={theme.text} accessible={false}/>
                 </Pressable>
             </View>
 
@@ -203,6 +214,9 @@ export default function CheckoutScreen() {
             <Pressable
                 style={[styles.placeOrderButton, {backgroundColor: theme.accent}]}
                 onPress={() => router.push('/home/payment')}
+                accessibilityRole="button"
+                accessibilityLabel="Continue to payment"
+                accessibilityHint="Opens the payment screen to complete your order"
             >
                 <Text style={styles.placeOrderText}>Continue to payment</Text>
             </Pressable>

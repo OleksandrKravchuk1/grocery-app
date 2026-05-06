@@ -22,9 +22,10 @@ const ModalLayout = () => {
                     headerLeft: (props) => (
                         <HeaderBackButton
                             {...props}
-                            label="Back"
+                            label="Go back"
                             onPress={() => router.back()}
                             style={{right: 10}}
+                            accessibilityLabel="Go back"
                         />
                     ),
                 }}
@@ -37,6 +38,15 @@ const ModalLayout = () => {
                     headerLargeTitle: false,
                     headerTransparent: true,
                     headerTitle: 'Filters',
+                    headerLeft: (props) => (
+                        <HeaderBackButton
+                            {...props}
+                            label="Go back"
+                            onPress={() => router.back()}
+                            style={{right: 10}}
+                            accessibilityLabel="Go back"
+                        />
+                    ),
                 }}
             />
         </Stack>

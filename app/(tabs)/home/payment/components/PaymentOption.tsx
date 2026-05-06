@@ -19,17 +19,21 @@ export function PaymentOption({icon, label, selected, onPress, theme}: Props) {
     return (
         <Pressable
             onPress={onPress}
+            accessibilityRole="radio"
+            accessibilityState={{selected}}
+            accessibilityLabel={label}
+            accessibilityHint="Selects this payment method"
             style={[
                 styles.option,
                 { backgroundColor: theme.card, borderColor: theme.border },
             ]}
         >
             <View style={styles.optionLeft}>
-                <View style={styles.optionIcon}>{icon}</View>
+                <View style={styles.optionIcon} accessible={false}>{icon}</View>
                 <Text style={[styles.optionLabel, { color: theme.text }]}>{label}</Text>
             </View>
 
-            <View style={[styles.radioOuter, { borderColor: selected ? theme.accent : theme.muted }]}>
+            <View style={[styles.radioOuter, { borderColor: selected ? theme.accent : theme.muted }]} accessible={false}>
                 {selected ? <View style={[styles.radioInner, { backgroundColor: theme.accent }]} /> : null}
             </View>
         </Pressable>

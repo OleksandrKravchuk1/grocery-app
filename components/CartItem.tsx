@@ -19,7 +19,7 @@ const CartItem = ({price, title, image, quantity, onIncrease, onDecrease, onRemo
     return (
         <View style={[styles.card, {backgroundColor: isDark ? colors.darkGrey : colors.lightGrey}]}>
             <View style={[styles.leftSection, {backgroundColor: isDark ? colors.inputBgDark : "#EAEAEA"}]}>
-                <Image source={{uri: image}} style={styles.image} resizeMode="contain"/>
+                <Image source={{uri: image}} style={styles.image} resizeMode="contain" accessible={false}/>
             </View>
 
             <View style={styles.contentContainer}>
@@ -33,17 +33,33 @@ const CartItem = ({price, title, image, quantity, onIncrease, onDecrease, onRemo
                 backgroundColor: isDark ? colors.black : colors.white,
                 borderColor: isDark ? colors.lightGrey : colors.darkGrey
             }]}>
-                <Pressable
-                    hitSlop={8}
-                    onPress={quantity === 1 ? onRemove : onDecrease}
-                    style={styles.iconButton}
+                <Pressable hitSlop={8}
+                           onPress={quantity === 1 ? onRemove : onDecrease}
+                           style={styles.iconButton}
+                           accessibilityRole="button"
+                            accessibilityLabel={quantity === 1 ? `Remove ${title} from cart` : `Decrease ${title} quantity`}
+                            accessibilityHint={quantity === 1 ? "Removes this item from your cart" : "Decreases quantity of this item in your cart"}
                 >
-                    <Feather name={quantity === 1 ? "trash-2" : "minus"} size={18}
-                             color={isDark ? colors.white : colors.black}/>
+                    <Feather name={quantity === 1 ? "trash-2" : "minus"}
+                             size={18}
+                             color={isDark ? colors.white : colors.black}
+                             accessible={false}
+                    />
                 </Pressable>
-                <Text style={[styles.quantityText, {color: isDark ? colors.white : colors.black}]}>{quantity}</Text>
-                <Pressable hitSlop={8} onPress={onIncrease} style={styles.iconButton}>
-                    <Feather name="plus" size={20} color={isDark ? colors.white : colors.black}/>
+                <Text style={[styles.quantityText, {color: isDark ? colors.white : colors.black}]}
+                      accessibilityRole="text"
+                      accessibilityLabel={`Quantity: ${quantity}`}
+                >
+                    {quantity}
+                </Text>
+                <Pressable hitSlop={8}
+                           onPress={onIncrease}
+                           style={styles.iconButton}
+                           accessibilityRole="button"
+                            accessibilityLabel={`Increase ${title} quantity`}
+                            accessibilityHint="Increases quantity of this item in your cart"
+                >
+                    <Feather name="plus" size={20} color={isDark ? colors.white : colors.black} accessible={false}/>
                 </Pressable>
             </View>
         </View>

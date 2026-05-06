@@ -18,10 +18,11 @@ export const DeliveryRow = ({icon, label, selected, onPress, color, borderColor,
             accessibilityRole="radio"
             accessibilityState={{selected}}
             accessibilityLabel={label}
+            accessibilityHint="Selects this delivery option"
             style={[styles.row, {borderBottomColor: borderColor, borderBottomWidth: 1}]}
         >
             <View style={styles.rowLeft}>
-                <Ionicons name={icon} size={20} color={color}/>
+                <Ionicons name={icon} size={20} color={color} accessible={false}/>
                 <Text style={[styles.rowLabel, {color}]}>{label}</Text>
             </View>
 

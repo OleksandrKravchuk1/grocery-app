@@ -1,8 +1,9 @@
-import {Image, Pressable, StyleProp, StyleSheet, Text, useColorScheme, View, ViewStyle} from "react-native";
+import {Image, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {FontAwesome} from "@expo/vector-icons";
 import {colors} from "@/constants/colors";
 import {Product} from "@/types/product";
 import {AddToCartButton} from "@/components/AddToCartButton";
+import {useTheme} from "@/constants/theme";
 
 type Props = {
     id: number;
@@ -16,33 +17,42 @@ type Props = {
 };
 
 const ProductCard = ({id, image, title, rating, price, cardStyle, onAddToFavouritesPress, isFavourite = false}: Props) => {
-    const colorScheme = useColorScheme();
-    const isDark = colorScheme === 'dark';
+    const theme = useTheme();
 
     const product: Product = {id, image, title, rating, price};
 
     return (
-        <View style={[styles.card, {backgroundColor: isDark ? colors.black : colors.white}, cardStyle]}>
+        <View style={[styles.card, {backgroundColor: theme.cardContainer}, cardStyle]}>
             <View style={styles.cardTop}>
-                <View style={[styles.imageContainer, {backgroundColor: isDark ? colors.darkGrey : colors.lightGrey}]}>
-                    <Image source={{uri: image}} style={styles.image} resizeMode="contain"/>
+                <View style={[styles.imageContainer, {backgroundColor: theme.imageContainer}]}>
+                    <Image source={{uri: image}} style={styles.image} resizeMode="contain" accessible={false}/>
                 </View>
-                <Pressable onPress={onAddToFavouritesPress}
-                           style={[styles.favouriteButton, {backgroundColor: isDark ? colors.black : colors.white}]}>
-                    <FontAwesome name={isFavourite ? "heart" : "heart-o"} size={20}
-                                 color={isFavourite ? colors.favouriteActive : (isDark ? colors.white : colors.black)}/>
+                <Pressable
+                    onPress={onAddToFavouritesPress}
+                    style={[styles.favouriteButton, {backgroundColor: theme.button}]}
+                    accessibilityRole="button"
+                    accessibilityLabel={isFavourite ? "Remove from favourites" : "Add to favourites"}
+                    accessibilityHint="Toggles this product in your favourites"
+                    accessibilityState={{selected: isFavourite}}
+                >
+                    <FontAwesome
+                        name={isFavourite ? "heart" : "heart-o"}
+                        size={20}
+                        color={isFavourite ? colors.favouriteActive : theme.text}
+                        accessible={false}
+                    />
                 </Pressable>
 
                 <AddToCartButton product={product}/>
             </View>
             <View style={styles.cardBottom}>
-                <Text style={[styles.title, {color: isDark ? colors.white : colors.black}]}>{title}</Text>
+                <Text style={[styles.title, {color: theme.text}]}>{title}</Text>
                 <View style={styles.ratingRow}>
-                    <FontAwesome name="star" size={20} color="#F5B300"/>
+                    <FontAwesome name="star" size={20} color="#F5B300" accessible={false}/>
                     <Text
-                        style={[styles.rating, {color: isDark ? colors.white : colors.black}]}>{rating.toFixed(1)}</Text>
+                        style={[styles.rating, {color: theme.text}]}>{rating.toFixed(1)}</Text>
                 </View>
-                <Text style={[styles.price, {color: isDark ? colors.white : colors.black}]}>${price.toFixed(2)}</Text>
+                <Text style={[styles.price, {color: theme.text}]}>${price.toFixed(2)}</Text>
             </View>
         </View>
     );
@@ -61,8 +71,16 @@ const styles = StyleSheet.create({
     cardBottom: {
         gap: 8
     },
-    imageContainer: {height: 130, alignItems: "center", justifyContent: "center", borderRadius: 14},
-    image: {width: "95%", height: "95%"},
+    imageContainer: {
+        height: 130,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 14
+    },
+    image: {
+        width: "95%",
+        height: "95%"
+    },
     favouriteButton: {
         position: "absolute",
         right: 0,
@@ -75,7 +93,10 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOpacity: 0.08,
         shadowRadius: 6,
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
         elevation: 2
     },
     title: {

@@ -83,7 +83,7 @@ export default function Index() {
     if (loading) {
         return (
             <View style={[styles.centered, {backgroundColor: theme.screen}]}>
-                <ActivityIndicator/>
+                <ActivityIndicator accessibilityLabel="Loading favourites"/>
             </View>
         );
     }
@@ -102,6 +102,9 @@ export default function Index() {
             keyExtractor={(item) => item.id.toString()}
             numColumns={2}
             contentContainerStyle={[styles.listContent, {backgroundColor: theme.screen}]}
+            accessibilityRole="list"
+            accessibilityLabel="Favourite products"
+            accessibilityHint="Browse the products you have saved as favourites"
             renderItem={({item}) => (
                 <View style={styles.itemWrapper}>
                     <ProductCard
@@ -118,7 +121,7 @@ export default function Index() {
             )}
             ListEmptyComponent={
                 <View style={styles.emptyWrap}>
-                    <Text style={[styles.emptyText, {color: theme.muted}]}>No favourite products yet.</Text>
+                    <Text style={[styles.emptyText, {color: theme.muted}]} accessibilityRole="text">No favourite products yet.</Text>
                 </View>
             }
         />

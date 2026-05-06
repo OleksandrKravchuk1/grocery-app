@@ -142,8 +142,11 @@ export default function SearchScreen() {
                 <Pressable
                     style={[styles.actionButton, {borderColor: theme.inputBorder, backgroundColor: theme.inputBg}]}
                     onPress={() => router.push("/(modals)/search-filters")}
+                    accessibilityRole="button"
+                    accessibilityLabel={activeFiltersCount > 0 ? `Open filters, ${activeFiltersCount} active` : "Open filters"}
+                    accessibilityHint="Opens the search filters modal"
                 >
-                    <Ionicons name="filter-circle-outline" size={24} color={theme.text} />
+                    <Ionicons name="filter-circle-outline" size={24} color={theme.text} accessible={false} />
                 </Pressable>
 
                 <Text style={[styles.filtersInfo, {color: theme.muted}]}>
@@ -158,7 +161,7 @@ export default function SearchScreen() {
             ) : null}
 
             {loading ? (
-                <ActivityIndicator color={theme.accent} style={styles.loader} />
+                <ActivityIndicator color={theme.accent} style={styles.loader} accessibilityLabel="Loading search results" />
             ) : (
                 <FlatList
                     data={results}
@@ -167,6 +170,9 @@ export default function SearchScreen() {
                     columnWrapperStyle={styles.row}
                     contentContainerStyle={styles.listContent}
                     keyboardShouldPersistTaps="handled"
+                    accessibilityRole="list"
+                    accessibilityLabel="Search results"
+                    accessibilityHint="Browse the products that match your search and filters"
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}

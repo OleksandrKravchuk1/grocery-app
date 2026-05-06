@@ -50,7 +50,7 @@ export default function CategoryProductsScreen() {
 
     if (loading) {
         return (
-            <View style={styles.centered}>
+            <View style={styles.centered} accessibilityLabel='Loading products' accessibilityRole='progressbar'>
                 <ActivityIndicator/>
             </View>
         );
@@ -58,7 +58,7 @@ export default function CategoryProductsScreen() {
 
     if (error) {
         return (
-            <View style={styles.centered}>
+            <View style={styles.centered} accessibilityRole='alert'>
                 <Text>{error}</Text>
             </View>
         );
@@ -70,8 +70,11 @@ export default function CategoryProductsScreen() {
             keyExtractor={(item, index) => `${item.id}-${item.title}-${index}`}
             numColumns={2}
             contentContainerStyle={styles.listContent}
+            accessibilityRole='list'
+            accessibilityLabel={`Products in category ${parsedCategoryId}`}
+            accessibilityHint='Browse the products in this category'
             renderItem={({item}) => (
-                <View style={[styles.itemWrapper, {}]}>
+                <View style={styles.itemWrapper}>
                     <ProductCard
                         id={item.id}
                         image={item.image}
@@ -82,7 +85,11 @@ export default function CategoryProductsScreen() {
                     />
                 </View>
             )}
-            ListEmptyComponent={<Text style={styles.emptyText}>No products in this category.</Text>}
+            ListEmptyComponent={
+                <Text style={styles.emptyText} accessibilityRole='text'>
+                    No products in this category
+                </Text>
+            }
         />
     );
 };
