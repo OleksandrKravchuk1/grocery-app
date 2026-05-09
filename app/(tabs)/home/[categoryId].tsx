@@ -1,8 +1,9 @@
-import {ActivityIndicator, FlatList, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, StyleSheet, Text, View} from "react-native";
 import {useLocalSearchParams} from "expo-router";
 import {useEffect, useMemo, useState} from "react";
 import {getProductsByCategoryId} from "@/db/products";
 import ProductCard from "@/components/ProductCard";
+import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
 
 type Product = {
     id: number;
@@ -24,6 +25,24 @@ export default function CategoryProductsScreen() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const opacity = useSharedValue(0);
+    const translateY = useSharedValue(40);
+
+    useEffect(() => {
+        if (loading || error) return;
+
+        opacity.value = 0;
+        translateY.value = 40;
+
+        opacity.value = withTiming(1, {duration: 350});
+        translateY.value = withTiming(0, {duration: 350});
+    }, [loading, error, opacity, translateY]);
+
+    const animatedStyle = useAnimatedStyle(() => ({
+        opacity: opacity.value,
+        transform: [{translateY: translateY.value}],
+    }));
 
     useEffect(() => {
         const loadProducts = async () => {
@@ -65,32 +84,34 @@ export default function CategoryProductsScreen() {
     }
 
     return (
-        <FlatList
-            data={products}
-            keyExtractor={(item, index) => `${item.id}-${item.title}-${index}`}
-            numColumns={2}
-            contentContainerStyle={styles.listContent}
-            accessibilityRole='list'
-            accessibilityLabel={`Products in category ${parsedCategoryId}`}
-            accessibilityHint='Browse the products in this category'
-            renderItem={({item}) => (
-                <View style={styles.itemWrapper}>
-                    <ProductCard
-                        id={item.id}
-                        image={item.image}
-                        title={item.title}
-                        rating={item.rating}
-                        price={item.price}
-                        cardStyle={styles.gridCard}
-                    />
-                </View>
-            )}
-            ListEmptyComponent={
-                <Text style={styles.emptyText} accessibilityRole='text'>
-                    No products in this category
-                </Text>
-            }
-        />
+        <Animated.View style={animatedStyle}>
+            <Animated.FlatList
+                data={products}
+                keyExtractor={(item, index) => `${item.id}-${item.title}-${index}`}
+                numColumns={2}
+                contentContainerStyle={styles.listContent}
+                accessibilityRole='list'
+                accessibilityLabel={`Products in category ${parsedCategoryId}`}
+                accessibilityHint='Browse the products in this category'
+                renderItem={({item}) => (
+                    <View style={styles.itemWrapper}>
+                        <ProductCard
+                            id={item.id}
+                            image={item.image}
+                            title={item.title}
+                            rating={item.rating}
+                            price={item.price}
+                            cardStyle={styles.gridCard}
+                        />
+                    </View>
+                )}
+                ListEmptyComponent={
+                    <Text style={styles.emptyText} accessibilityRole='text'>
+                        No products in this category
+                    </Text>
+                }
+            />
+        </Animated.View>
     );
 };
 

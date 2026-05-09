@@ -5,6 +5,7 @@ import {AuthProvider} from "@/context/AuthContext";
 import {CartProvider} from "@/context/CartContext";
 import {LocationProvider} from "@/context/LocationContext";
 import {SearchFiltersProvider} from "@/context/SearchFiltersContext";
+import {SplashScreenView} from "@/components/SplashScreenView";
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -16,10 +17,11 @@ export default function RootLayout() {
 
         const prepareApp = async () => {
             try {
+                await SplashScreen.hideAsync();
+                await new Promise(resolve => setTimeout(resolve, 3000));
             } finally {
                 if (isMounted) {
                     setIsReady(true);
-                    await SplashScreen.hideAsync();
                 }
             }
         };
@@ -32,7 +34,7 @@ export default function RootLayout() {
     }, []);
 
     if (!isReady) {
-        return null;
+        return <SplashScreenView/>;
     }
 
     return (
@@ -40,17 +42,24 @@ export default function RootLayout() {
             <LocationProvider>
                 <CartProvider>
                     <SearchFiltersProvider>
-                        <Stack>
+                        <Stack
+                            initialRouteName="(tabs)"
+                            screenOptions={{
+                                headerShown: false,
+                            }}
+                        >
                             <Stack.Screen
-                                name="(tabs)"
+                                name="index"
                                 options={{
                                     headerShown: false,
                                 }}
                             />
                             <Stack.Screen
+                                name="(tabs)"
+                            />
+                            <Stack.Screen
                                 name="(modals)"
                                 options={{
-                                    headerShown: false,
                                     headerTitle: "modals",
                                     headerLargeTitle: false,
                                     headerTransparent: true,

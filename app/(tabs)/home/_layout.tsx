@@ -28,6 +28,7 @@ export default function HomeLayout() {
                     return {
                         headerShown: true,
                         headerTitle: params?.title ?? 'All',
+                        animation: 'none',
                     };
                 }}
             />
