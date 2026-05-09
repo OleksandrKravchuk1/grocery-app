@@ -1,7 +1,8 @@
-import {Pressable, StyleSheet, Text, useColorScheme, View} from "react-native";
+import {Pressable, StyleSheet, Text, View} from "react-native";
 import {useRouter} from "expo-router";
 import {colors} from "@/constants/colors";
 import CardList from "@/components/CardList";
+import {useTheme} from "@/constants/theme";
 
 type Props = {
     title: string;
@@ -10,21 +11,21 @@ type Props = {
 
 const CategorySection = ({title, category_id}: Props) => {
     const router = useRouter();
-    const colorScheme = useColorScheme();
+    const theme = useTheme();
 
     return (
         <>
             <View style={styles.section}>
-                <Text
-                    style={[styles.sectionTitle, {color: colorScheme === 'dark' ? colors.white : colors.black}]}>{title}</Text>
-                <Pressable
-                    onPress={() => router.push({
-                        pathname: "/(tabs)/home/[categoryId]",
-                        params: {
-                            categoryId: category_id.toString(),
-                            title,
-                        },
-                    })}
+                <Text style={[styles.sectionTitle, {color: theme.text}]}>
+                    {title}
+                </Text>
+                <Pressable onPress={() => router.push({
+                    pathname: "/(tabs)/home/[categoryId]",
+                    params: {
+                        categoryId: category_id.toString(),
+                        title,
+                    },
+                })}
                 >
                     <Text style={styles.viewAll}>View all</Text>
                 </Pressable>
@@ -44,7 +45,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         paddingLeft: 16,
-        paddingTop: 12,
+        paddingTop: 20,
+        paddingBottom: 10
     },
     sectionTitle: {
         fontSize: 20,
