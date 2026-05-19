@@ -5,15 +5,19 @@ import CartItem from "@/components/CartItem";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {useRouter} from "expo-router";
 import {getCartSubtotal} from "@/utilities/cart";
+import Animated from "react-native-reanimated";
+import {usePressAnimation} from "@/hooks/usePressAnimation";
 
 export default function Index() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
     const isDark = useColorScheme() === 'dark';
+
     const {items, updateQuantity, removeFromCart} = useCart();
     const canCheckout = items.length > 0;
-
     const total = getCartSubtotal(items);
+
+    const {onPressIn, onPressOut, animatedStyle} = usePressAnimation({});
 
     return (
         <View style={[styles.container, {backgroundColor: isDark ? colors.black : colors.white}]}>
@@ -37,7 +41,8 @@ export default function Index() {
                     />
                 )}
                 ListEmptyComponent={
-                    <Text style={[styles.emptyText, {color: isDark ? colors.white : colors.black}]} accessibilityRole="text">
+                    <Text style={[styles.emptyText, {color: isDark ? colors.white : colors.black}]}
+                          accessibilityRole="text">
                         Your cart is empty.
                     </Text>
                 }
@@ -51,17 +56,21 @@ export default function Index() {
                 </Text>
             </View>
             <View style={styles.separator}></View>
-            <Pressable
-                style={[styles.button, !canCheckout && styles.buttonDisabled]}
-                onPress={() => router.push('/home/checkout')}
-                disabled={!canCheckout}
-                accessibilityRole="button"
-                accessibilityLabel="Go to checkout"
-                accessibilityHint="Opens the checkout screen to review your order"
-                accessibilityState={{disabled: !canCheckout}}
-            >
-                <Text style={styles.buttonText}>Go to checkout</Text>
-            </Pressable>
+            <Animated.View style={[animatedStyle]}>
+                <Pressable
+                    style={[styles.button, !canCheckout && styles.buttonDisabled]}
+                    onPress={() => router.push('/home/checkout')}
+                    onPressIn={onPressIn}
+                    onPressOut={onPressOut}
+                    disabled={!canCheckout}
+                    accessibilityRole="button"
+                    accessibilityLabel="Go to checkout"
+                    accessibilityHint="Opens the checkout screen to review your order"
+                    accessibilityState={{disabled: !canCheckout}}
+                >
+                    <Text style={styles.buttonText}>Go to checkout</Text>
+                </Pressable>
+            </Animated.View>
         </View>
     );
 };
@@ -91,7 +100,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     buttonDisabled: {
-      opacity: 0.5,
+        opacity: 0.5,
     },
     buttonText: {
         color: colors.white,

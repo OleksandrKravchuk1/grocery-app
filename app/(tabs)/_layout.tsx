@@ -22,6 +22,7 @@ export default function TabLayout() {
                 options={{
                     title: "Home",
                     tabBarAccessibilityLabel: "Home tab",
+                    animation: 'fade',
                     tabBarIcon: ({size, focused, color}) => (
                         <Ionicons name={focused ? 'home' : 'home-outline'} color={color}
                                   size={size}/>

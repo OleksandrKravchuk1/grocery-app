@@ -18,6 +18,8 @@ import {getProfiles, upsertProfile} from "@/db/profiles";
 import {supabase} from "@/lib/supabase";
 import {InputRow} from "@/components/InputRow";
 import {ProfileForm} from "@/types/profile";
+import Animated from "react-native-reanimated";
+import {usePressAnimation} from "@/hooks/usePressAnimation";
 
 type GenderOption = "Male" | "Female" | "Other";
 
@@ -39,6 +41,8 @@ export default function Index() {
     const [form, setForm] = useState<ProfileForm>(initialForm);
     const [loadingProfile, setLoadingProfile] = useState(true);
     const [savingProfile, setSavingProfile] = useState(false);
+
+    const {onPressIn, onPressOut, animatedStyle} = usePressAnimation({});
 
     const theme = useMemo(
         () => ({
@@ -204,7 +208,8 @@ export default function Index() {
             </View>
 
             <View style={[styles.card, {backgroundColor: theme.card}]}>
-                <Text style={[styles.sectionTitle, styles.mt18, {color: theme.text}]} accessibilityRole="header">Contact</Text>
+                <Text style={[styles.sectionTitle, styles.mt18, {color: theme.text}]}
+                      accessibilityRole="header">Contact</Text>
                 <Text style={[styles.sectionHint, {color: theme.muted}]}>Phone number</Text>
                 <InputRow
                     iconName="phone"
@@ -220,17 +225,21 @@ export default function Index() {
                     <Text style={[styles.emailText, {color: theme.muted}]}>{user?.email ?? "E-mail"}</Text>
                 </View>
 
-                <Pressable
-                    onPress={handleSaveProfile}
-                    disabled={savingProfile}
-                    style={[styles.saveButton, {backgroundColor: theme.accent}, savingProfile && styles.disabled]}
-                    accessibilityRole="button"
-                    accessibilityLabel="Save profile"
-                    accessibilityHint="Saves your profile changes"
-                    accessibilityState={{disabled: savingProfile}}
-                >
-                    <Text style={styles.saveButtonText}>{savingProfile ? "Saving..." : "Save"}</Text>
-                </Pressable>
+                <Animated.View style={[animatedStyle]}>
+                    <Pressable
+                        onPress={handleSaveProfile}
+                        onPressIn={onPressIn}
+                        onPressOut={onPressOut}
+                        disabled={savingProfile}
+                        style={[styles.saveButton, {backgroundColor: theme.accent}, savingProfile && styles.disabled]}
+                        accessibilityRole="button"
+                        accessibilityLabel="Save profile"
+                        accessibilityHint="Saves your profile changes"
+                        accessibilityState={{disabled: savingProfile}}
+                    >
+                        <Text style={styles.saveButtonText}>{savingProfile ? "Saving..." : "Save"}</Text>
+                    </Pressable>
+                </Animated.View>
 
                 <Pressable
                     onPress={handleSignOut}
