@@ -1,16 +1,19 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import {Stack} from "expo-router";
-import {AuthProvider} from "@/context/AuthContext";
-import {CartProvider} from "@/context/CartContext";
-import {LocationProvider} from "@/context/LocationContext";
-import {SearchFiltersProvider} from "@/context/SearchFiltersContext";
-import {SplashScreenView} from "@/components/SplashScreenView";
+import { Stack } from "expo-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/CartContext";
+import { LocationProvider } from "@/context/LocationContext";
+import { SearchFiltersProvider } from "@/context/SearchFiltersContext";
+import { SplashScreenView } from "@/components/SplashScreenView";
 
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
     const [isReady, setIsReady] = useState(false);
+
+    const queryClient = new QueryClient();
 
     useEffect(() => {
         let isMounted = true;
@@ -34,42 +37,44 @@ export default function RootLayout() {
     }, []);
 
     if (!isReady) {
-        return <SplashScreenView/>;
+        return <SplashScreenView />;
     }
 
     return (
-        <AuthProvider>
-            <LocationProvider>
-                <CartProvider>
-                    <SearchFiltersProvider>
-                        <Stack
-                            initialRouteName="(tabs)"
-                            screenOptions={{
-                                headerShown: false,
-                            }}
-                        >
-                            <Stack.Screen
-                                name="index"
-                                options={{
+        <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+                <LocationProvider>
+                    <CartProvider>
+                        <SearchFiltersProvider>
+                            <Stack
+                                initialRouteName="(tabs)"
+                                screenOptions={{
                                     headerShown: false,
                                 }}
-                            />
-                            <Stack.Screen
-                                name="(tabs)"
-                            />
-                            <Stack.Screen
-                                name="(modals)"
-                                options={{
-                                    headerTitle: "modals",
-                                    headerLargeTitle: false,
-                                    headerTransparent: true,
-                                    headerBlurEffect: "light",
-                                }}
-                            />
-                        </Stack>
-                    </SearchFiltersProvider>
-                </CartProvider>
-            </LocationProvider>
-        </AuthProvider>
+                            >
+                                <Stack.Screen
+                                    name="index"
+                                    options={{
+                                        headerShown: false,
+                                    }}
+                                />
+                                <Stack.Screen
+                                    name="(tabs)"
+                                />
+                                <Stack.Screen
+                                    name="(modals)"
+                                    options={{
+                                        headerTitle: "modals",
+                                        headerLargeTitle: false,
+                                        headerTransparent: true,
+                                        headerBlurEffect: "light",
+                                    }}
+                                />
+                            </Stack>
+                        </SearchFiltersProvider>
+                    </CartProvider>
+                </LocationProvider>
+            </AuthProvider>
+        </QueryClientProvider>
     );
 }
