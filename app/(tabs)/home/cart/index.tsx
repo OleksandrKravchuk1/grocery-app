@@ -1,23 +1,43 @@
-import {FlatList, Pressable, StyleSheet, Text, useColorScheme, View} from "react-native";
-import {colors} from "@/constants/colors";
-import {useCart} from "@/context/CartContext";
 import CartItem from "@/components/CartItem";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {useRouter} from "expo-router";
-import {getCartSubtotal} from "@/utilities/cart";
+import { colors } from "@/constants/colors";
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
+import { createOrder } from "@/db/orders";
+import { usePressAnimation } from "@/hooks/usePressAnimation";
+import { getCartSubtotal } from "@/utilities/cart";
+import { useRouter } from "expo-router";
+import { FlatList, Pressable, StyleSheet, Text, useColorScheme, View } from "react-native";
 import Animated from "react-native-reanimated";
-import {usePressAnimation} from "@/hooks/usePressAnimation";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Index() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
     const isDark = useColorScheme() === 'dark';
-
-    const {items, updateQuantity, removeFromCart} = useCart();
+    
+    const {user} = useAuth();
+    const {items, updateQuantity, removeFromCart, clearCart} = useCart();
     const canCheckout = items.length > 0;
     const total = getCartSubtotal(items);
 
     const {onPressIn, onPressOut, animatedStyle} = usePressAnimation({});
+
+    const handleCheckout = async () => {
+        if (!canCheckout || !user?.id) {
+            return;
+        };
+        try {
+            await createOrder({
+                userId: user.id,
+                items,
+                price: total,
+            });
+            clearCart();
+            router.push('/home/checkout');
+        } catch (error) {
+            console.error('Error creating order:', error);
+        };
+    };
 
     return (
         <View style={[styles.container, {backgroundColor: isDark ? colors.black : colors.white}]}>
@@ -59,7 +79,7 @@ export default function Index() {
             <Animated.View style={[animatedStyle]}>
                 <Pressable
                     style={[styles.button, !canCheckout && styles.buttonDisabled]}
-                    onPress={() => router.push('/home/checkout')}
+                    onPress={handleCheckout}
                     onPressIn={onPressIn}
                     onPressOut={onPressOut}
                     disabled={!canCheckout}
