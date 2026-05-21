@@ -1,5 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
-import { getOrdersByUserId } from "@/db/orders";
+import { fetchUserOrders } from "@/services/orders";
 import { useQuery } from "@tanstack/react-query";
 
 export function useOrders() {
@@ -7,7 +7,7 @@ export function useOrders() {
 
     return useQuery({
         queryKey: ['orders', user?.id],
-        queryFn: () => getOrdersByUserId(user!.id),
+        queryFn: () => fetchUserOrders(user!.id),
         enabled: !!user?.id,
     });
 }

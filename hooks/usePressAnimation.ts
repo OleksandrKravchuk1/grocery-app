@@ -1,5 +1,5 @@
-import {useCallback} from "react";
-import {useAnimatedStyle, useSharedValue, withSpring} from "react-native-reanimated";
+import { useCallback } from "react";
+import { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
 
 interface PressAnimationOptions {
@@ -10,10 +10,10 @@ interface PressAnimationOptions {
 
 export function usePressAnimation(options: PressAnimationOptions) {
     const scale = useSharedValue(1);
-    const {toValue = 0.95, haptics = true, hapticStyle = Haptics.ImpactFeedbackStyle.Light} = options;
+    const { toValue = 0.95, haptics = true, hapticStyle = Haptics.ImpactFeedbackStyle.Light } = options;
 
     const animatedStyle = useAnimatedStyle(() => ({
-        transform: [{scale: scale.value}]
+        transform: [{ scale: scale.value }]
     }));
 
     const onPressIn = useCallback(() => {
@@ -33,5 +33,5 @@ export function usePressAnimation(options: PressAnimationOptions) {
         });
     }, [scale]);
 
-    return {scale, animatedStyle, onPressIn, onPressOut};
+    return { scale, animatedStyle, onPressIn, onPressOut };
 }

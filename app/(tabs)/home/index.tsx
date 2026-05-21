@@ -15,10 +15,10 @@ export default function HomeScreen() {
     const theme = useTheme();
     const androidHeaderOffset = Platform.OS === 'android' ? insets.top + 56 : 0;
 
-    const {categories, loading, error} = useCategory();
+    const {categories, isLoading, error} = useCategory();
     const {address} = useLocation();
 
-    if (loading) return <ActivityIndicator accessibilityLabel="Loading home content"/>
+    if (isLoading) return <ActivityIndicator accessibilityLabel="Loading home content"/>
     if (error) return <Text accessibilityRole="alert">{error}</Text>
 
     return (
