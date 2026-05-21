@@ -1,13 +1,15 @@
-import {ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
-import {Entypo, Ionicons, MaterialIcons} from "@expo/vector-icons";
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import BannerList from "@/components/banners/BannerList";
 import CategoriesList from "@/components/category/CategoriesList";
 import CategorySection from "@/components/category/CategorySection";
-import {useCategory} from "@/hooks/useCategory";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {useLocation} from "@/context/LocationContext";
-import {useRouter} from "expo-router";
-import {useTheme} from "@/constants/theme";
+import { useCategory } from "@/hooks/useCategory";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useLocation } from "@/context/LocationContext";
+import { useRouter } from "expo-router";
+import { useTheme } from "@/constants/theme";
+import { LoadingView } from "@/components/ui/LoadingView";
+import { ErrorView } from "@/components/ui/ErrorView";
 
 export default function HomeScreen() {
     const router = useRouter();
@@ -15,17 +17,17 @@ export default function HomeScreen() {
     const theme = useTheme();
     const androidHeaderOffset = Platform.OS === 'android' ? insets.top + 56 : 0;
 
-    const {categories, isLoading, error} = useCategory();
-    const {address} = useLocation();
+    const { categories, isLoading, error } = useCategory();
+    const { address } = useLocation();
 
-    if (isLoading) return <ActivityIndicator accessibilityLabel="Loading home content"/>
-    if (error) return <Text accessibilityRole="alert">{error}</Text>
+    if (isLoading) return <LoadingView accessibilityLabel="Loading home content" />
+    if (error) return <ErrorView message="Failed to load home content" />
 
     return (
         <ScrollView
-            style={{backgroundColor: theme.screen}}
+            style={{ backgroundColor: theme.screen }}
             contentInsetAdjustmentBehavior='automatic'
-            contentContainerStyle={[styles.scrollContent, Platform.OS === 'android' && {paddingTop: androidHeaderOffset}]}
+            contentContainerStyle={[styles.scrollContent, Platform.OS === 'android' && { paddingTop: androidHeaderOffset }]}
             showsVerticalScrollIndicator={false}
             accessibilityLabel='Home'
             accessibilityHint='Browse through the available food categories and promotions'
@@ -41,22 +43,22 @@ export default function HomeScreen() {
                     onPress={() => router.push('/(modals)/location-picker')}
                 >
                     <MaterialIcons name="delivery-dining"
-                                   size={28}
-                                   color={theme.text}
-                                   accessible={false}
+                        size={28}
+                        color={theme.text}
+                        accessible={false}
                     />
                     <Text style={[styles.address, {
                         color: theme.text
                     }]}
-                          numberOfLines={1}
-                          ellipsizeMode='tail'
+                        numberOfLines={1}
+                        ellipsizeMode='tail'
                     >
                         {address}
                     </Text>
                     <Entypo name='chevron-small-down'
-                            size={24}
-                            color={theme.text}
-                            accessible={false}
+                        size={24}
+                        color={theme.text}
+                        accessible={false}
                     />
                 </Pressable>
                 <Pressable
@@ -67,15 +69,15 @@ export default function HomeScreen() {
                     accessibilityHint='View items in your shopping cart'
                 >
                     <Ionicons name="bag-outline" size={24}
-                              color={theme.text}
-                              accessible={false}/>
+                        color={theme.text}
+                        accessible={false} />
                 </Pressable>
             </View>
 
             {/* MAIN CONTENT*/}
             <View style={styles.content}>
                 <View style={styles.banner}>
-                    <BannerList/>
+                    <BannerList />
                 </View>
                 <View
                     style={styles.categories}
@@ -83,7 +85,7 @@ export default function HomeScreen() {
                     accessibilityLabel='Categories'
                     accessibilityHint='Browse through the available food categories'
                 >
-                    <CategoriesList/>
+                    <CategoriesList />
                 </View>
 
                 {categories.map((category) => (

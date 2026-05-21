@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { Alert, FlatList, StyleSheet, Text, useColorScheme, View } from "react-native";
 
 import Auth from "@/components/auth/Auth";
 import ProductCard from "@/components/product/ProductCard";
@@ -8,9 +8,11 @@ import { useAuth } from "@/context/AuthContext";
 import { getFavourites, removeFavourite } from "@/db/favourites";
 import { getProductsByIds } from "@/db/products";
 import { Product } from "@/types/product";
+import { LoadingView } from "@/components/ui/LoadingView";
+import { ErrorView } from "@/components/ui/ErrorView";
 
 export default function Index() {
-    const {user, session} = useAuth();
+    const { user, session } = useAuth();
     const colorScheme = useColorScheme();
     const isDark = colorScheme === "dark";
 
@@ -78,34 +80,22 @@ export default function Index() {
         }
     };
 
-    if (!session) return <Auth/>;
+    if (!session) return <Auth />;
 
-    if (loading) {
-        return (
-            <View style={[styles.centered, {backgroundColor: theme.screen}]}>
-                <ActivityIndicator accessibilityLabel="Loading favourites"/>
-            </View>
-        );
-    }
+    if (loading) return <LoadingView accessibilityLabel="Loading favourites" />;
 
-    if (error) {
-        return (
-            <View style={[styles.centered, {backgroundColor: theme.screen}]}>
-                <Text style={{color: theme.text}}>{error}</Text>
-            </View>
-        );
-    }
+    if (error) return <ErrorView message={error} onRetry={loadFavourites} />;
 
     return (
         <FlatList
             data={products}
             keyExtractor={(item) => item.id.toString()}
             numColumns={2}
-            contentContainerStyle={[styles.listContent, {backgroundColor: theme.screen}]}
+            contentContainerStyle={[styles.listContent, { backgroundColor: theme.screen }]}
             accessibilityRole="list"
             accessibilityLabel="Favourite products"
             accessibilityHint="Browse the products you have saved as favourites"
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
                 <View style={styles.itemWrapper}>
                     <ProductCard
                         id={item.id}
@@ -121,7 +111,7 @@ export default function Index() {
             )}
             ListEmptyComponent={
                 <View style={styles.emptyWrap}>
-                    <Text style={[styles.emptyText, {color: theme.muted}]} accessibilityRole="text">No favourite products yet.</Text>
+                    <Text style={[styles.emptyText, { color: theme.muted }]} accessibilityRole="text">No favourite products yet.</Text>
                 </View>
             }
         />

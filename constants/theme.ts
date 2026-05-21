@@ -14,6 +14,7 @@ export type Theme = {
     danger?: string;
     cardContainer?: string;
     imageContainer?: string;
+    activityIndicator?: string;
 };
 
 export const getTheme = (isDark: boolean): Theme => ({
@@ -29,6 +30,7 @@ export const getTheme = (isDark: boolean): Theme => ({
     inputBg:            isDark ? colors.inputBgDark : colors.inputBgLight,
     accent:             colors.accent,
     danger:             colors.danger,
+    activityIndicator:  colors.accent
 });
 
 export const useTheme = () => {
