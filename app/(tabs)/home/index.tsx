@@ -1,8 +1,8 @@
 import {ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {Entypo, Ionicons, MaterialIcons} from "@expo/vector-icons";
-import BannerList from "@/app/(tabs)/home/components/BannerList";
-import CategoriesList from "@/app/(tabs)/home/components/CategoriesList";
-import CategorySection from "@/app/(tabs)/home/components/CategorySection";
+import BannerList from "@/components/banners/BannerList";
+import CategoriesList from "@/components/category/CategoriesList";
+import CategorySection from "@/components/category/CategorySection";
 import {useCategory} from "@/hooks/useCategory";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {useLocation} from "@/context/LocationContext";

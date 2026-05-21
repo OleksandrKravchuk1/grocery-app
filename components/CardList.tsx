@@ -1,10 +1,10 @@
-import {ActivityIndicator, FlatList, Text, Alert} from "react-native";
-import {useEffect, useState} from "react";
-import {getProductsByCategoryId} from "@/db/products";
-import ProductCard from "@/components/ProductCard";
-import {CardListProps, Product} from "@/types/product";
-import {useAuth} from "@/context/AuthContext";
-import {addFavourite, getFavourites, removeFavourite} from "@/db/favourites";
+import ProductCard from "@/components/product/ProductCard";
+import { useAuth } from "@/context/AuthContext";
+import { addFavourite, getFavourites, removeFavourite } from "@/db/favourites";
+import { getProductsByCategoryId } from "@/db/products";
+import { CardListProps, Product } from "@/types/product";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Alert, FlatList, Text } from "react-native";
 
 const CardList = ({category_id}: CardListProps) => {
     const [products, setProducts] = useState<Product[]>([]);

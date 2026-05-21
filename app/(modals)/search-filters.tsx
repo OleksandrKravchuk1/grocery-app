@@ -3,7 +3,7 @@ import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {router} from "expo-router";
 import {useCategory} from "@/hooks/useCategory";
 import {colors} from "@/constants/colors";
-import SearchFiltersForm from "@/components/SearchFiltersForm";
+import SearchFiltersForm from "@/components/search/SearchFiltersForm";
 import {SearchSortBy} from "@/types/product";
 import {PricePreset} from "@/constants/search";
 import {useInsets} from "@/hooks/useInsets";

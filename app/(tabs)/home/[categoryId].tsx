@@ -1,9 +1,9 @@
-import {ActivityIndicator, StyleSheet, Text, View} from "react-native";
-import {useLocalSearchParams} from "expo-router";
-import {useEffect, useMemo, useState} from "react";
-import {getProductsByCategoryId} from "@/db/products";
-import ProductCard from "@/components/ProductCard";
-import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import ProductCard from "@/components/product/ProductCard";
+import { getProductsByCategoryId } from "@/db/products";
+import { useLocalSearchParams } from "expo-router";
+import { useEffect, useMemo, useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
 type Product = {
     id: number;

@@ -1,4 +1,4 @@
-import CartItem from "@/components/CartItem";
+import CartItem from "@/components/cart/CartItem";
 import { colors } from "@/constants/colors";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";

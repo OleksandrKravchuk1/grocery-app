@@ -3,7 +3,7 @@ import {SearchSortBy} from "@/types/product";
 import {PRICE_PRESETS, PricePreset, SORT_OPTIONS} from "@/constants/search";
 import {useTheme} from "@/constants/theme";
 import {ScrollView, StyleSheet, Text, View} from "react-native";
-import Chip from "@/components/Chip";
+import Chip from "@/components/ui/Chip";
 
 type Props = {
     categories: Category[];

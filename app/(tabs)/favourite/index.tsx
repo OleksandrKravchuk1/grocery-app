@@ -1,13 +1,13 @@
-import {ActivityIndicator, Alert, FlatList, StyleSheet, Text, useColorScheme, View} from "react-native";
-import {useCallback, useEffect, useMemo, useState} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, useColorScheme, View } from "react-native";
 
-import Auth from "@/components/Auth";
-import ProductCard from "@/components/ProductCard";
-import {colors} from "@/constants/colors";
-import {useAuth} from "@/context/AuthContext";
-import {getFavourites, removeFavourite} from "@/db/favourites";
-import {getProductsByIds} from "@/db/products";
-import {Product} from "@/types/product";
+import Auth from "@/components/auth/Auth";
+import ProductCard from "@/components/product/ProductCard";
+import { colors } from "@/constants/colors";
+import { useAuth } from "@/context/AuthContext";
+import { getFavourites, removeFavourite } from "@/db/favourites";
+import { getProductsByIds } from "@/db/products";
+import { Product } from "@/types/product";
 
 export default function Index() {
     const {user, session} = useAuth();

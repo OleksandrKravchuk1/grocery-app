@@ -1,4 +1,5 @@
-import {useEffect, useMemo, useState} from "react";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useEffect, useMemo, useState } from "react";
 import {
     ActivityIndicator,
     Alert,
@@ -9,17 +10,16 @@ import {
     useColorScheme,
     View,
 } from "react-native";
-import {Ionicons, MaterialIcons} from "@expo/vector-icons";
 
-import Auth from "@/components/Auth";
-import {colors} from "@/constants/colors";
-import {useAuth} from "@/context/AuthContext";
-import {getProfiles, upsertProfile} from "@/db/profiles";
-import {supabase} from "@/lib/supabase";
-import {InputRow} from "@/components/InputRow";
-import {ProfileForm} from "@/types/profile";
+import Auth from "@/components/auth/Auth";
+import { InputRow } from "@/components/ui/InputRow";
+import { colors } from "@/constants/colors";
+import { useAuth } from "@/context/AuthContext";
+import { getProfiles, upsertProfile } from "@/db/profiles";
+import { usePressAnimation } from "@/hooks/usePressAnimation";
+import { supabase } from "@/lib/supabase";
+import { ProfileForm } from "@/types/profile";
 import Animated from "react-native-reanimated";
-import {usePressAnimation} from "@/hooks/usePressAnimation";
 
 type GenderOption = "Male" | "Female" | "Other";
 
