@@ -1,171 +1,173 @@
-import React, { useState } from 'react'
-import { Alert, StyleSheet, View, Text, TextInput, TouchableOpacity, useColorScheme } from 'react-native'
-import { colors } from '@/constants/colors'
-import { supabase } from '@/lib/supabase'
+import { Ionicons } from "@expo/vector-icons";
+import { Pressable, ScrollView, Text, View, Platform, StyleSheet } from "react-native";
+
+import { InputRow } from "@/components/ui/InputRow";
+import { useTheme } from "@/constants/theme";
+import { useAuthForm } from "@/hooks/forms/useAuthForm";
+import { SubmitButton } from "@/components/ui/button/SubmitButton";
 
 export default function Auth() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false)
-    const colorScheme = useColorScheme()
-    const isDark = colorScheme === 'dark'
-
-    async function signInWithEmail() {
-        setLoading(true)
-        const { error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password,
-        })
-
-        if (error) Alert.alert(error.message)
-        setLoading(false)
-    }
-
-    async function signUpWithEmail() {
-        setLoading(true)
-        const {
-            data: { session },
-            error,
-        } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-        })
-
-        if (error) Alert.alert(error.message)
-        if (!session) Alert.alert('Please check your inbox for email verification!')
-        setLoading(false)
-    }
+    const { form, handleSignIn, handleSignUp, isSubmitting } = useAuthForm();
+    const theme = useTheme();
 
     return (
-        <View style={[styles.screen, { backgroundColor: isDark ? colors.black : colors.white }]}>
-            <View style={[styles.card, { backgroundColor: isDark ? colors.darkGrey : colors.lightGrey }]}>
-                <Text style={[styles.title, { color: isDark ? colors.white : colors.black }]}>Welcome back</Text>
-                <Text style={[styles.subtitle, { color: isDark ? '#CFCFCF' : '#666666' }]}>Sign in to continue shopping</Text>
-
-                <View style={styles.fieldGroup}>
-                    <Text style={[styles.label, { color: isDark ? colors.white : colors.black }]}>Email</Text>
-                    <TextInput
-                        onChangeText={(text) => setEmail(text)}
-                        value={email}
-                        placeholder="email@address.com"
-                        placeholderTextColor={isDark ? '#A8A8A8' : '#8A8A8A'}
-                        autoCapitalize="none"
-                        keyboardType="email-address"
-                        style={[
-                            styles.input,
-                            {
-                                color: isDark ? colors.white : colors.black,
-                                backgroundColor: isDark ? '#2A2A2A' : colors.white,
-                                borderColor: isDark ? '#3A3A3A' : '#E4E4E4',
-                            },
-                        ]}
-                    />
+        <ScrollView
+            style={{ backgroundColor: theme.screen }}
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+        >
+            <View style={styles.logoWrap}>
+                <View style={[styles.logoCircle, { borderColor: theme.inputBorder }]}>
+                    <Ionicons name="storefront" size={64} color={theme.muted} accessible={false} />
                 </View>
-
-                <View style={styles.fieldGroup}>
-                    <Text style={[styles.label, { color: isDark ? colors.white : colors.black }]}>Password</Text>
-                    <TextInput
-                        onChangeText={(text) => setPassword(text)}
-                        value={password}
-                        secureTextEntry={true}
-                        placeholder="Password"
-                        placeholderTextColor={isDark ? '#A8A8A8' : '#8A8A8A'}
-                        autoCapitalize="none"
-                        style={[
-                            styles.input,
-                            {
-                                color: isDark ? colors.white : colors.black,
-                                backgroundColor: isDark ? '#2A2A2A' : colors.white,
-                                borderColor: isDark ? '#3A3A3A' : '#E4E4E4',
-                            },
-                        ]}
-                    />
-                </View>
-
-                <TouchableOpacity
-                    style={[styles.primaryButton, loading && styles.buttonDisabled]}
-                    onPress={() => signInWithEmail()}
-                    disabled={loading}
-                >
-                    <Text style={styles.primaryButtonText}>{loading ? 'Please wait...' : 'Sign in'}</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={[
-                        styles.secondaryButton,
-                        { borderColor: isDark ? '#4A4A4A' : '#D8D8D8' },
-                        loading && styles.buttonDisabled,
-                    ]}
-                    onPress={() => signUpWithEmail()}
-                    disabled={loading}
-                >
-                    <Text style={[styles.secondaryButtonText, { color: isDark ? colors.white : colors.black }]}>Create account</Text>
-                </TouchableOpacity>
             </View>
-        </View>
-    )
+
+            <View style={[styles.card, { backgroundColor: theme.card }]}>
+                <Text style={[styles.sectionTitle, { color: theme.text }]} accessibilityRole="header">
+                    Welcome back
+                </Text>
+                <Text style={[styles.sectionHint, { color: theme.muted }]}>
+                    Sign in to continue shopping
+                </Text>
+
+                <form.Field
+                    name="email"
+                    children={(field) => (
+                        <View>
+                            <InputRow
+                                iconName="email"
+                                value={field.state.value}
+                                onChangeText={field.handleChange}
+                                onBlur={field.handleBlur}
+                                placeholder="email@address.com"
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                            />
+                            {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                                <Text style={[styles.errorText, { color: theme.danger }]}>
+                                    {String(field.state.meta.errors[0])}
+                                </Text>
+                            )}
+                        </View>
+                    )}
+                />
+
+                <form.Field
+                    name="password"
+                    children={(field) => (
+                        <View style={styles.mt8}>
+                            <InputRow
+                                iconName="lock"
+                                value={field.state.value}
+                                onChangeText={field.handleChange}
+                                onBlur={field.handleBlur}
+                                placeholder="Password"
+                                secureTextEntry
+                                autoCapitalize="none"
+                            />
+                            {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                                <Text style={[styles.errorText, { color: theme.danger }]}>
+                                    {String(field.state.meta.errors[0])}
+                                </Text>
+                            )}
+                        </View>
+                    )}
+                />
+            </View>
+
+            <View style={[styles.card, { backgroundColor: theme.card }]}>
+                <SubmitButton
+                    onPress={handleSignIn}
+                    isSaving={isSubmitting}
+                />
+
+                <Pressable
+                    onPress={handleSignUp}
+                    disabled={isSubmitting}
+                    style={[styles.secondaryButton, { borderColor: theme.inputBorder }, isSubmitting && styles.disabled]}
+                    accessibilityRole="button"
+                    accessibilityLabel="Create account"
+                >
+                    <Text style={[styles.secondaryButtonText, { color: theme.text }]}>
+                        Create account
+                    </Text>
+                </Pressable>
+            </View>
+        </ScrollView>
+    );
 }
 
+const cardShadow = Platform.select({
+    ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.06,
+        shadowRadius: 12,
+    },
+    android: {
+        elevation: 3,
+    },
+    default: {},
+});
+
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-        paddingVertical: 24,
+    content: {
+        paddingHorizontal: 16,
+        paddingTop: 20,
+        paddingBottom: 28,
+    },
+    logoWrap: {
+        alignItems: "center",
+        marginTop: 130,
+        marginBottom: 12,
+    },
+    logoCircle: {
+        width: 110,
+        height: 110,
+        borderRadius: 55,
+        borderWidth: 2,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "transparent",
     },
     card: {
-        borderRadius: 18,
-        padding: 20,
+        borderRadius: 16,
+        padding: 16,
+        marginVertical: 10,
+        ...cardShadow,
     },
-    title: {
-        fontSize: 28,
-        fontWeight: '700',
+    sectionTitle: {
+        fontSize: 22,
+        fontWeight: "600",
     },
-    subtitle: {
-        fontSize: 15,
-        marginTop: 6,
-        marginBottom: 18,
-    },
-    fieldGroup: {
-        marginBottom: 14,
-    },
-    label: {
-        fontSize: 14,
-        fontWeight: '600',
+    sectionHint: {
+        fontSize: 16,
+        fontWeight: "500",
         marginBottom: 6,
     },
-    input: {
-        borderWidth: 1,
-        borderRadius: 12,
-        padding: 12,
-        fontSize: 16,
-    },
-    primaryButton: {
-        backgroundColor: colors.green,
-        borderRadius: 12,
-        minHeight: 48,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 8,
-    },
-    buttonDisabled: {
-        opacity: 0.5,
-    },
-    primaryButtonText: {
-        color: colors.white,
-        fontSize: 16,
-        fontWeight: '600',
+    errorText: {
+        fontSize: 12,
+        fontWeight: "500",
+        marginTop: 4,
+        marginLeft: 4,
     },
     secondaryButton: {
-        marginTop: 10,
+        minHeight: 48,
         borderWidth: 1,
         borderRadius: 12,
-        minHeight: 48,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 10,
     },
     secondaryButtonText: {
         fontSize: 16,
-        fontWeight: '600',
+        fontWeight: "600",
     },
-})
+    disabled: {
+        opacity: 0.5,
+    },
+    mt8: {
+        marginTop: 8,
+    },
+});

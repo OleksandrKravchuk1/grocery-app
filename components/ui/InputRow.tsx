@@ -1,46 +1,52 @@
-import {StyleProp, StyleSheet, TextInput, View, ViewStyle} from "react-native";
-import {MaterialIcons} from "@expo/vector-icons";
-import {useTheme} from "@/constants/theme";
+import { StyleProp, StyleSheet, TextInput, View, ViewStyle } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useTheme } from "@/constants/theme";
 
 type Props = {
-    iconName: "person" | "calendar-month" | "phone";
+    iconName: "person" | "calendar-month" | "phone" | "email" | "lock";
     value: string;
     onChangeText: (value: string) => void;
+    onBlur?: () => void;
     placeholder: string;
-    keyboardType?: "default" | "phone-pad";
+    keyboardType?: "default" | "phone-pad" | "email-address";
+    autoCapitalize?: "none" | "sentences" | "words" | "characters";
+    secureTextEntry?: boolean;
     style?: StyleProp<ViewStyle>;
     accessibilityLabel?: string;
     accessibilityHint?: string;
 };
 
 export function InputRow({
-                             iconName,
-                             value,
-                             onChangeText,
-                             placeholder,
-                             keyboardType,
-                             style,
-                             accessibilityLabel,
-                             accessibilityHint,
-                         }: Props) {
+    iconName,
+    value,
+    onChangeText,
+    onBlur,
+    placeholder,
+    keyboardType,
+    autoCapitalize,
+    secureTextEntry,
+    style,
+    accessibilityLabel,
+    accessibilityHint,
+}: Props) {
     const theme = useTheme();
-    const inputAccessibilityLabel = accessibilityLabel ?? placeholder;
 
     return (
-        <View style={[styles.inputRow, {
-            backgroundColor: theme.inputBg, borderColor: theme.inputBorder
-        }, style
-        ]}>
-            <MaterialIcons name={iconName} size={18} color={theme.accent} accessible={false}/>
-            <TextInput style={[styles.inputText, {color: theme.text}]}
-                       value={value}
-                       onChangeText={onChangeText}
-                       placeholder={placeholder}
-                       placeholderTextColor={theme.muted}
-                       keyboardType={keyboardType ?? "default"}
-                       accessibilityRole="text"
-                       accessibilityLabel={inputAccessibilityLabel}
-                       accessibilityHint={accessibilityHint}
+        <View style={[styles.inputRow, { backgroundColor: theme.inputBg, borderColor: theme.inputBorder }, style]}>
+            <MaterialIcons name={iconName} size={18} color={theme.accent} accessible={false} />
+            <TextInput
+                style={[styles.inputText, { color: theme.text }]}
+                value={value}
+                onChangeText={onChangeText}
+                onBlur={onBlur}
+                placeholder={placeholder}
+                placeholderTextColor={theme.muted}
+                keyboardType={keyboardType ?? "default"}
+                autoCapitalize={autoCapitalize ?? "sentences"}
+                secureTextEntry={secureTextEntry ?? false}
+                accessibilityRole="text"
+                accessibilityLabel={accessibilityLabel ?? placeholder}
+                accessibilityHint={accessibilityHint}
             />
         </View>
     );

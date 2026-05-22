@@ -16,7 +16,7 @@ export default function OrdersScreen() {
 
     const renderEmpty = () => {
         return (
-            <View style={[styles.centerContainer, { backgroundColor: theme.screen }]}>
+            <View style={[styles.centerContainer, { backgroundColor: theme.screen, marginTop: insets.top + 56 }]}>
                 <MaterialIcons name="shopping-bag" size={64} color={theme.muted} />
                 <Text style={[styles.emptyTitle, { color: theme.text }]}>No Orders Yet</Text>
                 <Text style={[styles.emptyMessage, { color: theme.muted }]}>
@@ -26,13 +26,9 @@ export default function OrdersScreen() {
         );
     }
 
-    if (error) {
-        return <ErrorView message="Failed to load orders. Please try again." onRetry={refetch} />;
-    }
+    if (error) return <ErrorView message="Failed to load orders. Please try again." onRetry={refetch} />;
 
-    if (isLoading) {
-        return <LoadingView />;
-    }
+    if (isLoading) return <LoadingView />;
 
     return (
         <Animated.View style={[styles.container, { backgroundColor: theme.screen }]}>

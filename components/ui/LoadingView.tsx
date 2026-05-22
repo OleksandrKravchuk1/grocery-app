@@ -8,7 +8,7 @@ export const LoadingView = ({ accessibilityLabel = "Loading" }: { accessibilityL
         <View style={[styles.container, { backgroundColor: theme.screen }]}>
             <ActivityIndicator size="large" color={theme.activityIndicator} accessibilityLabel={accessibilityLabel} />
             <Text style={[styles.loadingText, { color: theme.muted }]}>
-                Loading orders...
+                Loading...
             </Text>
         </View>
     );
