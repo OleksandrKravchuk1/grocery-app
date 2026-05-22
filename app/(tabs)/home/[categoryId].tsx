@@ -1,6 +1,7 @@
 import ProductCard from "@/components/product/ProductCard";
 import { ErrorView } from "@/components/ui/view/ErrorView";
 import { LoadingView } from "@/components/ui/view/LoadingView";
+import { useTheme } from "@/constants/theme";
 import { useFadeInSlideUp } from "@/hooks/animations/useFadeInSlideUp";
 import { useCategoryProducts } from "@/hooks/useCategoryProduct";
 import { useFavouriteProducts } from "@/hooks/useFavouriteProducts";
@@ -9,6 +10,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Animated from "react-native-reanimated";
 
 export default function CategoryProductsScreen() {
+    const theme = useTheme();
     const { favouriteIds, toggleFavourite } = useFavouriteProducts();
 
     const parsedCategoryId = useNumericRouteParam("categoryId");
@@ -21,7 +23,7 @@ export default function CategoryProductsScreen() {
     if (isError) return <ErrorView message={error} />;
 
     return (
-        <Animated.View style={animatedStyle}>
+        <Animated.View style={[animatedStyle, {backgroundColor: theme.screen}]}>
             <Animated.FlatList
                 data={products}
                 keyExtractor={(item, index) => `${item.id}-${item.title}-${index}`}
