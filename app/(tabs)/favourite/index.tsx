@@ -3,13 +3,13 @@ import { Alert, FlatList, StyleSheet, Text, useColorScheme, View } from "react-n
 
 import Auth from "@/components/auth/Auth";
 import ProductCard from "@/components/product/ProductCard";
+import { ErrorView } from "@/components/ui/view/ErrorView";
+import { LoadingView } from "@/components/ui/view/LoadingView";
 import { colors } from "@/constants/colors";
 import { useAuth } from "@/context/AuthContext";
 import { getFavourites, removeFavourite } from "@/db/favourites";
 import { getProductsByIds } from "@/db/products";
 import { Product } from "@/types/product";
-import { LoadingView } from "@/components/ui/LoadingView";
-import { ErrorView } from "@/components/ui/ErrorView";
 
 export default function Index() {
     const { user, session } = useAuth();

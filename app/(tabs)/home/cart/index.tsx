@@ -3,7 +3,7 @@ import { colors } from "@/constants/colors";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { createOrder } from "@/db/orders";
-import { usePressAnimation } from "@/hooks/usePressAnimation";
+import { usePressAnimation } from "@/hooks/animations/usePressAnimation";
 import { getCartSubtotal } from "@/utilities/cart";
 import { useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, useColorScheme, View } from "react-native";

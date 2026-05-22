@@ -1,87 +1,24 @@
 import ProductCard from "@/components/product/ProductCard";
-import { getProductsByCategoryId } from "@/db/products";
-import { useLocalSearchParams } from "expo-router";
-import { useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-
-type Product = {
-    id: number;
-    title: string;
-    price: number;
-    rating: number;
-    image: string;
-    category_id: number;
-};
+import { ErrorView } from "@/components/ui/view/ErrorView";
+import { LoadingView } from "@/components/ui/view/LoadingView";
+import { useFadeInSlideUp } from "@/hooks/animations/useFadeInSlideUp";
+import { useCategoryProducts } from "@/hooks/useCategoryProduct";
+import { useFavouriteProducts } from "@/hooks/useFavouriteProducts";
+import { useNumericRouteParam } from "@/hooks/useNumaricRouteParam";
+import { StyleSheet, Text, View } from "react-native";
+import Animated from "react-native-reanimated";
 
 export default function CategoryProductsScreen() {
-    const {categoryId} = useLocalSearchParams<{ categoryId?: string | string[] }>();
+    const { favouriteIds, toggleFavourite } = useFavouriteProducts();
 
-    const parsedCategoryId = useMemo(() => {
-        const raw = Array.isArray(categoryId) ? categoryId[0] : categoryId;
-        return Number(raw);
-    }, [categoryId]);
+    const parsedCategoryId = useNumericRouteParam("categoryId");
+    const { error, isError, isLoading, products } = useCategoryProducts(parsedCategoryId);
 
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const animatedStyle = useFadeInSlideUp(isLoading || isError);
 
-    const opacity = useSharedValue(0);
-    const translateY = useSharedValue(40);
+    if (isLoading) return <LoadingView accessibilityLabel="Loading products" />;
 
-    useEffect(() => {
-        if (loading || error) return;
-
-        opacity.value = 0;
-        translateY.value = 40;
-
-        opacity.value = withTiming(1, {duration: 350});
-        translateY.value = withTiming(0, {duration: 350});
-    }, [loading, error, opacity, translateY]);
-
-    const animatedStyle = useAnimatedStyle(() => ({
-        opacity: opacity.value,
-        transform: [{translateY: translateY.value}],
-    }));
-
-    useEffect(() => {
-        const loadProducts = async () => {
-            if (!Number.isFinite(parsedCategoryId)) {
-                setError("Invalid category id");
-                setLoading(false);
-                return;
-            }
-
-            try {
-                setLoading(true);
-                setError(null);
-                const data = await getProductsByCategoryId(parsedCategoryId);
-                setProducts((data ?? []) as Product[]);
-            } catch (e) {
-                setError(e instanceof Error ? e.message : "Failed to load products");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadProducts();
-    }, [parsedCategoryId]);
-
-    if (loading) {
-        return (
-            <View style={styles.centered} accessibilityLabel='Loading products' accessibilityRole='progressbar'>
-                <ActivityIndicator/>
-            </View>
-        );
-    }
-
-    if (error) {
-        return (
-            <View style={styles.centered} accessibilityRole='alert'>
-                <Text>{error}</Text>
-            </View>
-        );
-    }
+    if (isError) return <ErrorView message={error} />;
 
     return (
         <Animated.View style={animatedStyle}>
@@ -93,7 +30,7 @@ export default function CategoryProductsScreen() {
                 accessibilityRole='list'
                 accessibilityLabel={`Products in category ${parsedCategoryId}`}
                 accessibilityHint='Browse the products in this category'
-                renderItem={({item}) => (
+                renderItem={({ item }) => (
                     <View style={styles.itemWrapper}>
                         <ProductCard
                             id={item.id}
@@ -102,6 +39,8 @@ export default function CategoryProductsScreen() {
                             rating={item.rating}
                             price={item.price}
                             cardStyle={styles.gridCard}
+                            isFavourite={favouriteIds.includes(item.id)}
+                            onAddToFavouritesPress={() => toggleFavourite(item.id)}
                         />
                     </View>
                 )}

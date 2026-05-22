@@ -1,12 +1,12 @@
-import Animated from 'react-native-reanimated';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { OrderCard } from '@/components/OrderCard';
-import { ErrorView } from '@/components/ui/ErrorView';
-import { LoadingView } from '@/components/ui/LoadingView';
+import { ErrorView } from '@/components/ui/view/ErrorView';
+import { LoadingView } from '@/components/ui/view/LoadingView';
 import { useTheme } from "@/constants/theme";
 import { useOrders } from "@/hooks/useOrders";
 import { MaterialIcons } from "@expo/vector-icons";
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function OrdersScreen() {
     const theme = useTheme();

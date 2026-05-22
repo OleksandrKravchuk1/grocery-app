@@ -1,14 +1,14 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Pressable, ScrollView, Text, useColorScheme, View, Platform, StyleSheet } from "react-native";
+import { Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 
-import { InputRow } from "@/components/ui/InputRow";
+import { SubmitButton } from "@/components/ui/button/SubmitButton";
+import { InputRow } from "@/components/ui/row/InputRow";
 import { colors } from "@/constants/colors";
 import { useTheme } from "@/constants/theme";
+import { useAuth } from "@/context/AuthContext";
 import { useProfileForm } from "@/hooks/forms/useProfileForm";
 import { useSignOut } from "@/hooks/useSignOut";
-import { useAuth } from "@/context/AuthContext";
 import { GenderOption } from "@/types/profile";
-import { SubmitButton } from "@/components/ui/button/SubmitButton";
 import { SignOutButton } from "../ui/button/DangerButton";
 
 const genderOptions: GenderOption[] = ["Male", "Female", "Other"];

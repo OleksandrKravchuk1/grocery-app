@@ -1,7 +1,7 @@
 import { useTheme } from "@/constants/theme";
-import { usePressAnimation } from "@/hooks/usePressAnimation";
-import { Pressable, Text, StyleSheet } from "react-native"
-import Animated from "react-native-reanimated"
+import { usePressAnimation } from "@/hooks/animations/usePressAnimation";
+import { Pressable, StyleSheet, Text } from "react-native";
+import Animated from "react-native-reanimated";
 
 type Props = {
     onPress: () => void;

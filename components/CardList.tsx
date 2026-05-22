@@ -4,15 +4,17 @@ import { addFavourite, getFavourites, removeFavourite } from "@/db/favourites";
 import { getProductsByCategoryId } from "@/db/products";
 import { CardListProps, Product } from "@/types/product";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, FlatList, Text } from "react-native";
+import { Alert, FlatList } from "react-native";
+import { LoadingView } from "./ui/view/LoadingView";
+import { ErrorView } from "./ui/view/ErrorView";
 
-const CardList = ({category_id}: CardListProps) => {
+const CardList = ({ category_id }: CardListProps) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [favouriteIds, setFavouriteIds] = useState<number[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const {user} = useAuth();
+    const { user } = useAuth();
 
     useEffect(() => {
         const loadProducts = async () => {
@@ -64,14 +66,13 @@ const CardList = ({category_id}: CardListProps) => {
                 await addFavourite(user.id, productId);
             }
         } catch (e) {
-            // Roll back optimistic UI update if request fails.
             setFavouriteIds((prev) => wasFavourite ? [...prev, productId] : prev.filter((id) => id !== productId));
             Alert.alert("Favourite error", e instanceof Error ? e.message : "Failed to update favourites");
         }
     };
 
-    if (loading) return <ActivityIndicator/>
-    if (error) return <Text>{error}</Text>
+    if (loading) return <LoadingView accessibilityLabel="Loading products" />
+    if (error) return <ErrorView message={error} />
 
     return (
         <FlatList
@@ -79,8 +80,8 @@ const CardList = ({category_id}: CardListProps) => {
             keyExtractor={(item, index) => `${item.id}-${item.title}-${index}`}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{paddingHorizontal: 16}}
-            renderItem={({item}) => (
+            contentContainerStyle={{ paddingHorizontal: 16 }}
+            renderItem={({ item }) => (
                 <ProductCard
                     id={item.id}
                     image={item.image}

@@ -1,7 +1,7 @@
 import { useTheme } from "@/constants/theme";
-import { usePressAnimation } from "@/hooks/usePressAnimation";
+import { usePressAnimation } from "@/hooks/animations/usePressAnimation";
 import { MaterialIcons } from "@expo/vector-icons";
-import { View, Text, Pressable, StyleSheet, Animated } from "react-native";
+import { Animated, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type ErrorViewProps = {

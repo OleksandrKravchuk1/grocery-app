@@ -1,10 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable, ScrollView, Text, View, Platform, StyleSheet } from "react-native";
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { InputRow } from "@/components/ui/InputRow";
+import { SubmitButton } from "@/components/ui/button/SubmitButton";
+import { InputRow } from "@/components/ui/row/InputRow";
 import { useTheme } from "@/constants/theme";
 import { useAuthForm } from "@/hooks/forms/useAuthForm";
-import { SubmitButton } from "@/components/ui/button/SubmitButton";
 
 export default function Auth() {
     const { form, handleSignIn, handleSignUp, isSubmitting } = useAuthForm();

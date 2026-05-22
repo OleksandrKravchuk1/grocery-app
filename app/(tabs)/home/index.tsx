@@ -1,15 +1,15 @@
-import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import BannerList from "@/components/banners/BannerList";
 import CategoriesList from "@/components/category/CategoriesList";
 import CategorySection from "@/components/category/CategorySection";
-import { useCategory } from "@/hooks/useCategory";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useLocation } from "@/context/LocationContext";
-import { useRouter } from "expo-router";
+import { ErrorView } from "@/components/ui/view/ErrorView";
+import { LoadingView } from "@/components/ui/view/LoadingView";
 import { useTheme } from "@/constants/theme";
-import { LoadingView } from "@/components/ui/LoadingView";
-import { ErrorView } from "@/components/ui/ErrorView";
+import { useLocation } from "@/context/LocationContext";
+import { useCategory } from "@/hooks/useCategory";
+import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
     const router = useRouter();
