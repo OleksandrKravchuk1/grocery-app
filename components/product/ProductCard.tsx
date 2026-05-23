@@ -2,7 +2,7 @@ import {Image, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from "re
 import {FontAwesome} from "@expo/vector-icons";
 import {colors} from "@/constants/colors";
 import {Product} from "@/types/product";
-import {AddToCartButton} from "@/components/AddToCartButton";
+import {AddToCartButton} from "@/components/product/AddToCartButton";
 import {useTheme} from "@/constants/theme";
 
 type Props = {

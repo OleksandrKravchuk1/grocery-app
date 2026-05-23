@@ -1,6 +1,6 @@
 import {FlatList} from "react-native";
 import {BANNERS} from "@/constants/banners";
-import BannerCard from "@/app/(tabs)/home/components/BannerCard";
+import BannerCard from "@/components/banners/BannerCard";
 
 const BannerList = () => {
     return (

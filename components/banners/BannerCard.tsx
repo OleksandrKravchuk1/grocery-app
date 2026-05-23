@@ -1,5 +1,6 @@
 import {Dimensions, Image, ImageSourcePropType, Pressable, StyleSheet, Text, View} from "react-native";
 import {isWhite} from "@/utilities/isWhite";
+import { useTheme } from "@/constants/theme";
 
 type Props = {
     title: string;
@@ -13,7 +14,7 @@ type Props = {
 
 const BannerCard = ({title, subtitle, color, titleColor, subtitleColor, buttonColor, image}: Props) => {
     const {width} = Dimensions.get('window');
-    const buttonTextColor = isWhite(buttonColor) ? "#111111" : "#FFFFFF";
+    const theme = useTheme();
 
     return (
         <View style={styles.container}>
@@ -24,7 +25,7 @@ const BannerCard = ({title, subtitle, color, titleColor, subtitleColor, buttonCo
                         <Text style={[styles.subtitle, {color: subtitleColor}]}>{subtitle}</Text>
 
                         <Pressable style={[styles.button, {backgroundColor: buttonColor}]}>
-                            <Text style={[styles.buttonText, {color: buttonTextColor}]}>Shop Now</Text>
+                            <Text style={[styles.buttonText, {color: theme.text}]}>Shop Now</Text>
                         </Pressable>
                     </View>
 

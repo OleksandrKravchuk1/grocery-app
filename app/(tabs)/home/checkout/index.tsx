@@ -10,9 +10,9 @@ import {
     View
 } from "react-native";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {SectionTitle} from "@/app/(tabs)/home/checkout/components/SectionTitle";
-import {DeliveryRow} from "@/app/(tabs)/home/checkout/components/DeliveryRow";
-import {Row} from "@/app/(tabs)/home/checkout/components/Row";
+import {SectionTitle} from "@/components/ui/SectionTitle";
+import {DeliveryRow} from "@/components/ui/row/DeliveryRow";
+import {Row} from "@/components/ui/row/Row";
 import {useLocation} from "@/context/LocationContext";
 import {useAuth} from "@/context/AuthContext";
 import {useCart} from "@/context/CartContext";

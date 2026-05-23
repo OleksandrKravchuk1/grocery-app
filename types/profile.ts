@@ -7,11 +7,11 @@ export type Profile = {
     birthday: Date;
 }
 
-type GenderOption = "Male" | "Female" | "Other";
+export type GenderOption = "Male" | "Female" | "Other";
 
-export type ProfileForm = {
-    first_name: string;
-    last_name: string;
+export type ProfileFormValues = {
+    firstName: string;
+    lastName: string;
     phone: string;
     gender: GenderOption;
     birthday: string;

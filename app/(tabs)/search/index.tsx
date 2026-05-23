@@ -1,16 +1,16 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
-import {ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Text, View} from "react-native";
-import {router} from "expo-router";
-import SearchBar from "@/components/SearchBar";
-import ProductCard from "@/components/ProductCard";
-import {useTheme} from "@/constants/theme";
-import {searchProduct} from "@/db/products";
-import {SearchProductItem} from "@/types/product";
-import {useInsets} from "@/hooks/useInsets";
-import {useFavouriteProducts} from "@/hooks/useFavouriteProducts";
-import {getPriceRange} from "@/utilities/searchFilters";
-import {useSearchFilters} from "@/context/SearchFiltersContext";
-import {Ionicons} from "@expo/vector-icons";
+import ProductCard from "@/components/product/ProductCard";
+import SearchBar from "@/components/ui/SearchBar";
+import { useTheme } from "@/constants/theme";
+import { useSearchFilters } from "@/context/SearchFiltersContext";
+import { searchProduct } from "@/db/products";
+import { useFavouriteProducts } from "@/hooks/useFavouriteProducts";
+import { useInsets } from "@/hooks/useInsets";
+import { SearchProductItem } from "@/types/product";
+import { getPriceRange } from "@/utilities/searchFilters";
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
 
 export default function SearchScreen() {
     const theme = useTheme();
