@@ -1,14 +1,14 @@
 import {useState} from "react";
 import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {router} from "expo-router";
-import {useCategory} from "@/hooks/useCategory";
-import {colors} from "@/constants/colors";
-import SearchFiltersForm from "@/components/search/SearchFiltersForm";
-import {SearchSortBy} from "@/types/product";
-import {PricePreset} from "@/constants/search";
-import {useInsets} from "@/hooks/useInsets";
-import {useSearchFilters} from "@/context/SearchFiltersContext";
-import {useTheme} from "@/constants/theme";
+import {useCategory} from "@/src/features/category/hooks/useCategory";
+import {colors} from "@/src/constants/colors";
+import SearchFiltersForm from "@/src/features/search/components/SearchFiltersForm";
+import {SearchSortBy} from "@/src/types/product";
+import {PricePreset} from "@/src/constants/search";
+import {useInsets} from "@/src/hooks/useInsets";
+import {useSearchFilters} from "@/src/context/SearchFiltersContext";
+import {useTheme} from "@/src/constants/theme";
 
 export default function SearchFiltersModal() {
     const theme = useTheme();

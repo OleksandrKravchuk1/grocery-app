@@ -1,17 +1,17 @@
-import ProductCard from "@/components/product/ProductCard";
-import { ErrorView } from "@/components/ui/view/ErrorView";
-import { LoadingView } from "@/components/ui/view/LoadingView";
-import { useTheme } from "@/constants/theme";
-import { useFadeInSlideUp } from "@/hooks/animations/useFadeInSlideUp";
-import { useCategoryProducts } from "@/hooks/useCategoryProduct";
-import { useFavouriteProducts } from "@/hooks/useFavouriteProducts";
-import { useNumericRouteParam } from "@/hooks/useNumaricRouteParam";
+import ProductCard from "@/src/features/product/components/ProductCard";
+import { ErrorView } from "@/src/components/ui/view/ErrorView";
+import { LoadingView } from "@/src/components/ui/view/LoadingView";
+import { useTheme } from "@/src/constants/theme";
+import { useFadeInSlideUp } from "@/src/hooks/animations/useFadeInSlideUp";
+import { useCategoryProducts } from "@/src/features/product/hooks/useCategoryProducts";
+import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
+import { useNumericRouteParam } from "@/src/hooks/useNumaricRouteParam";
 import { StyleSheet, Text, View } from "react-native";
 import Animated from "react-native-reanimated";
 
 export default function CategoryProductsScreen() {
     const theme = useTheme();
-    const { favouriteIds, toggleFavourite } = useFavouriteProducts();
+    const { favoriteIds, toggleFavorite } = useFavoriteProducts();
 
     const parsedCategoryId = useNumericRouteParam("categoryId");
     const { error, isError, isLoading, products } = useCategoryProducts(parsedCategoryId);
@@ -41,8 +41,8 @@ export default function CategoryProductsScreen() {
                             rating={item.rating}
                             price={item.price}
                             cardStyle={styles.gridCard}
-                            isFavourite={favouriteIds.includes(item.id)}
-                            onAddToFavouritesPress={() => toggleFavourite(item.id)}
+                            isFavorite={favoriteIds.includes(item.id)}
+                            onAddToFavoritesPress={() => toggleFavorite(item.id)}
                         />
                     </View>
                 )}

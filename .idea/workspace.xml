@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="da71c440-c1ef-4492-a30a-248e3bdaefb3" name="Changes" comment="feat: add animated splash screen and enhance product listing with animations">
+      <change afterPath="$PROJECT_DIR$/hooks/usePressAnimation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/home/cart/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/home/cart/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/profile/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/profile/index.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_D:/mobile/grabber" value="3BtVkKHrYyamBZWiXJS6Wb3dIy0" />
+    </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Agent" />
+  </component>
+  <component name="CopilotUserSelectedModel">
+    <selectedModels>
+      <entry key="agent-panel" value="GPT-5.4 mini" />
+      <entry key="chat-panel" value="GPT-5.4 mini" />
+    </selectedModels>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feat/splash-screen" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mobileapp-developer&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/mobileapp-developer/grocery-app.git&quot;,
+    &quot;accountId&quot;: &quot;396e4d0b-4ba1-43a3-86e4-e9dd4da02660&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6,
+  &quot;fromUser&quot;: true
+}</component>
+  <component name="ProjectId" id="3BtVkKHrYyamBZWiXJS6Wb3dIy0" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/mobile/grabber/app/(tabs)/menu/orders&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\mobile\\grabber\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\mobile\grabber\app\(tabs)\menu\orders" />
+      <recent name="D:\mobile\grabber\assets\images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\mobile\grabber\app\(tabs)\home\cart" />
+      <recent name="D:\mobile\grabber\hooks" />
+      <recent name="D:\mobile\grabber\assets\images\fruits" />
+      <recent name="D:\mobile\grabber\app" />
+      <recent name="D:\mobile\grabber\app\(tabs)" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-3bd3a6803838-JavaScript-WS-261.22158.274" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="da71c440-c1ef-4492-a30a-248e3bdaefb3" name="Changes" comment="" />
+      <created>1775308496037</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1775308496037</updated>
+      <workItem from="1775308497009" duration="664000" />
+      <workItem from="1775327709871" duration="13499000" />
+      <workItem from="1775469484616" duration="42401000" />
+      <workItem from="1775735959948" duration="5203000" />
+      <workItem from="1775748414265" duration="1759000" />
+      <workItem from="1775753987204" duration="155000" />
+      <workItem from="1775754735138" duration="5330000" />
+      <workItem from="1775834942846" duration="2585000" />
+      <workItem from="1775851533317" duration="605000" />
+      <workItem from="1775899348137" duration="50000" />
+      <workItem from="1776006572983" duration="10154000" />
+      <workItem from="1776017879785" duration="616000" />
+      <workItem from="1776024824213" duration="558000" />
+      <workItem from="1776073077421" duration="12888000" />
+      <workItem from="1776199948422" duration="11000" />
+      <workItem from="1776330313051" duration="4259000" />
+      <workItem from="1776459647693" duration="48000" />
+      <workItem from="1776687882020" duration="12461000" />
+      <workItem from="1776788571400" duration="5312000" />
+      <workItem from="1776840382604" duration="1720000" />
+      <workItem from="1776844241937" duration="1028000" />
+      <workItem from="1776850863876" duration="7000" />
+      <workItem from="1776876486313" duration="29000" />
+      <workItem from="1777042930178" duration="187000" />
+      <workItem from="1777146258949" duration="5811000" />
+      <workItem from="1777303611780" duration="91000" />
+      <workItem from="1777304994717" duration="507000" />
+      <workItem from="1777308139987" duration="4842000" />
+      <workItem from="1777358079176" duration="10548000" />
+      <workItem from="1777379025238" duration="2352000" />
+      <workItem from="1777387211712" duration="871000" />
+      <workItem from="1777395485207" duration="5320000" />
+      <workItem from="1777456948914" duration="19000" />
+      <workItem from="1777579700805" duration="157000" />
+      <workItem from="1777644914505" duration="7163000" />
+      <workItem from="1777718158181" duration="396000" />
+      <workItem from="1777741658197" duration="1613000" />
+      <workItem from="1777798865758" duration="4982000" />
+      <workItem from="1777837408422" duration="2000" />
+      <workItem from="1777838085868" duration="1347000" />
+      <workItem from="1777889527273" duration="11620000" />
+      <workItem from="1777979291124" duration="15689000" />
+      <workItem from="1778070442300" duration="5927000" />
+      <workItem from="1778095099327" duration="3496000" />
+      <workItem from="1778324948050" duration="815000" />
+      <workItem from="1778331733171" duration="7469000" />
+      <workItem from="1778597554271" duration="338000" />
+    </task>
+    <task id="LOCAL-00001" summary="initialize project structure with basic components and configurations">
+      <option name="closed" value="true" />
+      <created>1775478624512</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1775478624512</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: add supabase integration and enhance home screen layout with categories">
+      <option name="closed" value="true" />
+      <created>1775499771011</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1775499771011</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: enhance CategoriesList component with color scheme support and layout adjustments">
+      <option name="closed" value="true" />
+      <created>1775502413098</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1775502413098</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: implement CategoryProductsScreen and enhance navigation with product listing">
+      <option name="closed" value="true" />
+      <created>1775659025155</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1775659025155</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat: add onAddPress handler to ProductCard for improved interactivity">
+      <option name="closed" value="true" />
+      <created>1775666556665</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1775666556665</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: update CardList component to accept category_id prop and enhance Home layout with dynamic category rendering">
+      <option name="closed" value="true" />
+      <created>1775740932370</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1775740932370</updated>
+    </task>
+    <task id="LOCAL-00007" summary="feat: add Category and useCategory hooks for dynamic category management in Home screen">
+      <option name="closed" value="true" />
+      <created>1775756987108</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1775756987108</updated>
+    </task>
+    <task id="LOCAL-00008" summary="feat: enhance CategorySection with dynamic routing and add seed script for product insertion">
+      <option name="closed" value="true" />
+      <created>1775851351491</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1775851351492</updated>
+    </task>
+    <task id="LOCAL-00009" summary="feat: integrate expo-secure-store for enhanced secure data management and improve Home screen layout">
+      <option name="closed" value="true" />
+      <created>1776008930525</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1776008930526</updated>
+    </task>
+    <task id="LOCAL-00010" summary="feat: implement authentication flow with AuthProvider and Auth component">
+      <option name="closed" value="true" />
+      <created>1776077265044</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1776077265044</updated>
+    </task>
+    <task id="LOCAL-00011" summary="feat: implement favourites functionality with add/remove capabilities and update UI components">
+      <option name="closed" value="true" />
+      <created>1776098162351</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1776098162351</updated>
+    </task>
+    <task id="LOCAL-00012" summary="feat: add CartProvider and AddToCartButton for cart management functionality">
+      <option name="closed" value="true" />
+      <created>1776699933224</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1776699933224</updated>
+    </task>
+    <task id="LOCAL-00013" summary="feat: add LocationProvider and location picker modal for address selection">
+      <option name="closed" value="true" />
+      <created>1776800956566</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1776800956566</updated>
+    </task>
+    <task id="LOCAL-00014" summary="feat: enhance location picker and context management with improved error handling and state management">
+      <option name="closed" value="true" />
+      <created>1776801890026</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1776801890026</updated>
+    </task>
+    <task id="LOCAL-00015" summary="feat: implement cart functionality with CartProvider, Cart component, and CartItem for managing items">
+      <option name="closed" value="true" />
+      <created>1777152064896</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1777152064897</updated>
+    </task>
+    <task id="LOCAL-00016" summary="feat: refactor cart management with new utility functions and improve key extraction for FlatList">
+      <option name="closed" value="true" />
+      <created>1777312791519</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1777312791520</updated>
+    </task>
+    <task id="LOCAL-00017" summary="feat: implement checkout and payment screens with delivery options and payment methods">
+      <option name="closed" value="true" />
+      <created>1777365747485</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1777365747485</updated>
+    </task>
+    <task id="LOCAL-00018" summary="feat: add utility functions for cart management and enhance card formatting">
+      <option name="closed" value="true" />
+      <created>1777368092934</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1777368092934</updated>
+    </task>
+    <task id="LOCAL-00019" summary="feat: implement payment screen with card validation and theme support">
+      <option name="closed" value="true" />
+      <created>1777399536741</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1777399536741</updated>
+    </task>
+    <task id="LOCAL-00020" summary="feat: implement search screen with product search functionality and favourites management">
+      <option name="closed" value="true" />
+      <created>1777801140368</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1777801140368</updated>
+    </task>
+    <task id="LOCAL-00021" summary="fix: enhance search functionality with sorting and limit results">
+      <option name="closed" value="true" />
+      <created>1777802063996</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1777802063996</updated>
+    </task>
+    <task id="LOCAL-00022" summary="feat: refactor search screen and implement custom hook for favourites management">
+      <option name="closed" value="true" />
+      <created>1777802903061</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1777802903061</updated>
+    </task>
+    <task id="LOCAL-00023" summary="fix: add product ID to ProductCard component in search screen">
+      <option name="closed" value="true" />
+      <created>1777803009648</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1777803009648</updated>
+    </task>
+    <task id="LOCAL-00024" summary="feat: implement menu screen with navigation and layout for orders, payment, and settings">
+      <option name="closed" value="true" />
+      <created>1777895124133</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1777895124133</updated>
+    </task>
+    <task id="LOCAL-00025" summary="feat: add support screen and update navigation layout">
+      <option name="closed" value="true" />
+      <created>1777904821271</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1777904821271</updated>
+    </task>
+    <task id="LOCAL-00026" summary="feat: enhance search screen with improved error handling and custom SearchBar component">
+      <option name="closed" value="true" />
+      <created>1777909351838</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1777909351838</updated>
+    </task>
+    <task id="LOCAL-00027" summary="feat: implement search filters modal and enhance search functionality with filter options">
+      <option name="closed" value="true" />
+      <created>1777992519968</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1777992519968</updated>
+    </task>
+    <task id="LOCAL-00028" summary="fix: add project configuration files and enhance search functionality with improved input handling">
+      <option name="closed" value="true" />
+      <created>1778005121147</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1778005121147</updated>
+    </task>
+    <task id="LOCAL-00029" summary="feat: enhance accessibility features across various components and screens">
+      <option name="closed" value="true" />
+      <created>1778072716263</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1778072716263</updated>
+    </task>
+    <task id="LOCAL-00030" summary="feat: add animated splash screen and enhance product listing with animations">
+      <option name="closed" value="true" />
+      <created>1778335490592</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1778335490592</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: update CardList component to accept category_id prop and enhance Home layout with dynamic category rendering" />
+    <MESSAGE value="feat: add Category and useCategory hooks for dynamic category management in Home screen" />
+    <MESSAGE value="feat: enhance CategorySection with dynamic routing and add seed script for product insertion" />
+    <MESSAGE value="feat: integrate expo-secure-store for enhanced secure data management and improve Home screen layout" />
+    <MESSAGE value="feat: implement authentication flow with AuthProvider and Auth component" />
+    <MESSAGE value="feat: implement favourites functionality with add/remove capabilities and update UI components" />
+    <MESSAGE value="feat: add CartProvider and AddToCartButton for cart management functionality" />
+    <MESSAGE value="feat: add LocationProvider and location picker modal for address selection" />
+    <MESSAGE value="feat: enhance location picker and context management with improved error handling and state management" />
+    <MESSAGE value="feat: implement cart functionality with CartProvider, Cart component, and CartItem for managing items" />
+    <MESSAGE value="feat: refactor cart management with new utility functions and improve key extraction for FlatList" />
+    <MESSAGE value="feat: implement checkout and payment screens with delivery options and payment methods" />
+    <MESSAGE value="feat: add utility functions for cart management and enhance card formatting" />
+    <MESSAGE value="feat: implement payment screen with card validation and theme support" />
+    <MESSAGE value="feat: implement search screen with product search functionality and favourites management" />
+    <MESSAGE value="fix: enhance search functionality with sorting and limit results" />
+    <MESSAGE value="feat: refactor search screen and implement custom hook for favourites management" />
+    <MESSAGE value="fix: add product ID to ProductCard component in search screen" />
+    <MESSAGE value="feat: implement menu screen with navigation and layout for orders, payment, and settings" />
+    <MESSAGE value="feat: add support screen and update navigation layout" />
+    <MESSAGE value="feat: enhance search screen with improved error handling and custom SearchBar component" />
+    <MESSAGE value="feat: implement search filters modal and enhance search functionality with filter options" />
+    <MESSAGE value="fix: add project configuration files and enhance search functionality with improved input handling" />
+    <MESSAGE value="feat: enhance accessibility features across various components and screens" />
+    <MESSAGE value="feat: add animated splash screen and enhance product listing with animations" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add animated splash screen and enhance product listing with animations" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>

@@ -1,8 +1,8 @@
-import Auth from "@/components/auth/Auth";
-import { SignInForm } from "@/components/form/SignInForm";
+import Auth from "@/src/features/auth/components/Auth";
+import { SignInForm } from "@/src/features/auth/components/SignInForm";
 import { LoadingView } from "@/components/ui/view/LoadingView";
-import { useAuth } from "@/context/AuthContext";
-import { useProfile } from "@/hooks/forms/useProfile";
+import { useAuth } from "@/src/features/auth/context/AuthContext";
+import { useProfile } from "@/src/features/profile/hooks/useProfile";
 
 export default function ProfileScreen() {
     const { session } = useAuth();

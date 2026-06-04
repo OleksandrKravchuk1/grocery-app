@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {useTheme} from "@/constants/theme";
+import {useTheme} from "@/src/constants/theme";
 
 export default function SettingsScreen() {
     const theme = useTheme();

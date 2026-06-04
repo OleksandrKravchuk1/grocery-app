@@ -1,19 +1,20 @@
-import CartItem from "@/components/cart/CartItem";
+import CartItem from "@/src/features/cart/components/CartItem";
 import { colors } from "@/constants/colors";
-import { useAuth } from "@/context/AuthContext";
-import { useCart } from "@/context/CartContext";
-import { createOrder } from "@/db/orders";
+import { useAuth } from "@/src/features/auth/context/AuthContext";
+import { useCart } from "@/src/features/cart/context/CartContext";
+import { createOrder } from "@/src/features/order/api/orders";
 import { usePressAnimation } from "@/hooks/animations/usePressAnimation";
-import { getCartSubtotal } from "@/utilities/cart";
+import { getCartSubtotal } from "@/src/features/cart/utilities/cart";
 import { useRouter } from "expo-router";
-import { FlatList, Pressable, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme } from "@/src/constants/theme";
 
 export default function Index() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
-    const isDark = useColorScheme() === 'dark';
+    const theme = useTheme();
     
     const {user} = useAuth();
     const {items, updateQuantity, removeFromCart, clearCart} = useCart();
@@ -40,7 +41,7 @@ export default function Index() {
     };
 
     return (
-        <View style={[styles.container, {backgroundColor: isDark ? colors.black : colors.white}]}>
+        <View style={[styles.container, {backgroundColor: theme.screen}]}>
             <FlatList
                 data={items}
                 keyExtractor={(item) => item.key}
@@ -61,24 +62,24 @@ export default function Index() {
                     />
                 )}
                 ListEmptyComponent={
-                    <Text style={[styles.emptyText, {color: isDark ? colors.white : colors.black}]}
+                    <Text style={[styles.emptyText, {color: theme.muted}]}
                           accessibilityRole="text">
                         Your cart is empty.
                     </Text>
                 }
             />
             <View style={styles.summaryRow}>
-                <Text style={[styles.summaryLabel, {color: isDark ? colors.white : colors.black}]}>
+                <Text style={[styles.summaryLabel, {color: theme.text}]}>
                     Total
                 </Text>
-                <Text style={[styles.summaryValue, {color: isDark ? colors.white : colors.black}]}>
+                <Text style={[styles.summaryValue, {color: theme.text}]}>
                     ${total.toFixed(2)}
                 </Text>
             </View>
-            <View style={styles.separator}></View>
+            <View style={[styles.separator, {borderColor: theme.border}]}></View>
             <Animated.View style={[animatedStyle]}>
                 <Pressable
-                    style={[styles.button, !canCheckout && styles.buttonDisabled]}
+                    style={[styles.button, !canCheckout && styles.buttonDisabled, {backgroundColor: theme.accent}]}
                     onPress={handleCheckout}
                     onPressIn={onPressIn}
                     onPressOut={onPressOut}

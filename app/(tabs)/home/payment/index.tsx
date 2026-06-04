@@ -6,7 +6,6 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    useColorScheme,
     View,
 } from "react-native";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
@@ -19,16 +18,17 @@ import {
     formatExpiry,
     validateCardPaymentDetails,
 } from "@/utilities/formatCard";
-import {useCart} from "@/context/CartContext";
-import {getCartSubtotal} from "@/utilities/cart";
+import {useCart} from "@/src/features/cart/context/CartContext";
+import {getCartSubtotal} from "@/src/features/cart/utilities/cart";
 import {useRouter} from "expo-router";
+import {useTheme} from "@/src/constants/theme";
 
 type PaymentMethod = "apple" | "card";
 
 export default function PaymentScreen() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
-    const isDark = useColorScheme() === "dark";
+    const theme = useTheme();
 
     const {items, clearCart} = useCart();
     const total = getCartSubtotal(items);
@@ -37,16 +37,6 @@ export default function PaymentScreen() {
     const [cardNumber, setCardNumber] = useState("");
     const [expiry, setExpiry] = useState("");
     const [cvc, setCvc] = useState("");
-
-    const theme = {
-        screen: isDark ? colors.black : colors.screenLight,
-        card: isDark ? colors.darkGrey : colors.white,
-        text: isDark ? colors.white : colors.textLight,
-        muted: isDark ? colors.mutedDark : colors.mutedLight,
-        border: isDark ? colors.inputBorderDark : colors.inputBorderLight,
-        inputBg: isDark ? colors.inputBgDark : colors.white,
-        accent: colors.accent,
-    };
 
     const cardValidationError = validateCardPaymentDetails({cardNumber, expiry, cvc, now: new Date()});
     const canPayCard = cardValidationError === null;

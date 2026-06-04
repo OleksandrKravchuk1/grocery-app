@@ -1,10 +1,10 @@
 import {Button, StyleSheet, Text, View} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
-import { LoadingView } from "@/components/ui/view/LoadingView";
-import { ErrorView } from "@/components/ui/view/ErrorView";
-import { useCurrentLocation } from "@/hooks/useCurrentLocation";
-import { useTheme } from "@/constants/theme";
+import { LoadingView } from "@/src/components/ui/view/LoadingView";
+import { ErrorView } from "@/src/components/ui/view/ErrorView";
+import { useCurrentLocation } from "@/src/hooks/useCurrentLocation";
+import { useTheme } from "@/src/constants/theme";
 
 export default function LocationPickerModal() {
     const theme = useTheme();
