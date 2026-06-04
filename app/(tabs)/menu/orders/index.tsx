@@ -1,8 +1,8 @@
-import { OrderCard } from '@/components/OrderCard';
-import { ErrorView } from '@/components/ui/view/ErrorView';
-import { LoadingView } from '@/components/ui/view/LoadingView';
-import { useTheme } from "@/constants/theme";
-import { useOrders } from "@/hooks/useOrders";
+import { OrderCard } from '@/src/features/order/components/OrderCard';
+import { ErrorView } from '@/src/components/ui/view/ErrorView';
+import { LoadingView } from '@/src/components/ui/view/LoadingView';
+import { useTheme } from "@/src/constants/theme";
+import { useOrders } from "@/src/features/order/hooks/useOrders";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';

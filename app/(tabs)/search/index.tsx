@@ -1,12 +1,12 @@
-import ProductCard from "@/components/product/ProductCard";
 import SearchBar from "@/components/ui/SearchBar";
 import { useTheme } from "@/constants/theme";
 import { useSearchFilters } from "@/context/SearchFiltersContext";
-import { searchProduct } from "@/db/products";
-import { useFavouriteProducts } from "@/hooks/useFavouriteProducts";
 import { useInsets } from "@/hooks/useInsets";
+import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
+import { searchProduct } from "@/src/features/product/api/products";
+import ProductCard from "@/src/features/product/components/ProductCard";
+import { getPriceRange } from "@/src/features/search/utilities/searchFilters";
 import { SearchProductItem } from "@/types/product";
-import { getPriceRange } from "@/utilities/searchFilters";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -14,9 +14,9 @@ import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Tex
 
 export default function SearchScreen() {
     const theme = useTheme();
-    const {topInset} = useInsets();
-    const {favouriteIds, toggleFavourite} = useFavouriteProducts();
-    const {filters} = useSearchFilters();
+    const { topInset } = useInsets();
+    const { favoriteIds, toggleFavorite } = useFavoriteProducts();
+    const { filters } = useSearchFilters();
 
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<SearchProductItem[]>([]);
@@ -24,7 +24,7 @@ export default function SearchScreen() {
     const [error, setError] = useState<string | null>(null);
     const [refreshing, setRefreshing] = useState(false);
 
-    const {categoryId, pricePreset, sortBy} = filters;
+    const { categoryId, pricePreset, sortBy } = filters;
 
     const trimmedQuery = useMemo(() => query.trim(), [query]);
 
@@ -42,7 +42,7 @@ export default function SearchScreen() {
             setError(null);
             setLoading(true);
 
-            const {minPrice, maxPrice} = getPriceRange(pricePreset);
+            const { minPrice, maxPrice } = getPriceRange(pricePreset);
             const data = await searchProduct(q, {
                 categoryId,
                 minPrice,
@@ -91,10 +91,10 @@ export default function SearchScreen() {
         if (error) {
             return (
                 <View style={styles.emptyState}>
-                    <Text style={[styles.emptyTitle, {color: theme.text}]}>
+                    <Text style={[styles.emptyTitle, { color: theme.text }]}>
                         Search failed
                     </Text>
-                    <Text style={[styles.emptySubtitle, {color: theme.muted}]}>
+                    <Text style={[styles.emptySubtitle, { color: theme.muted }]}>
                         {error}
                     </Text>
                 </View>
@@ -104,10 +104,10 @@ export default function SearchScreen() {
         if (trimmedQuery) {
             return (
                 <View style={styles.emptyState}>
-                    <Text style={[styles.emptyTitle, {color: theme.text}]}>
+                    <Text style={[styles.emptyTitle, { color: theme.text }]}>
                         Nothing found
                     </Text>
-                    <Text style={[styles.emptySubtitle, {color: theme.muted}]}>
+                    <Text style={[styles.emptySubtitle, { color: theme.muted }]}>
                         Try a different keyword or adjust filters
                     </Text>
                 </View>
@@ -116,10 +116,10 @@ export default function SearchScreen() {
 
         return (
             <View style={styles.emptyState}>
-                <Text style={[styles.emptyTitle, {color: theme.text}]}>
+                <Text style={[styles.emptyTitle, { color: theme.text }]}>
                     Search products
                 </Text>
-                <Text style={[styles.emptySubtitle, {color: theme.muted}]}>
+                <Text style={[styles.emptySubtitle, { color: theme.muted }]}>
                     Start typing to find items quickly
                 </Text>
             </View>
@@ -130,7 +130,7 @@ export default function SearchScreen() {
         .filter(Boolean).length;
 
     return (
-        <View style={[styles.container, {backgroundColor: theme.screen}]}>
+        <View style={[styles.container, { backgroundColor: theme.screen }]}>
             <SearchBar
                 value={query}
                 onChangeText={setQuery}
@@ -140,7 +140,7 @@ export default function SearchScreen() {
 
             <View style={styles.actionsRow}>
                 <Pressable
-                    style={[styles.actionButton, {borderColor: theme.inputBorder, backgroundColor: theme.inputBg}]}
+                    style={[styles.actionButton, { borderColor: theme.inputBorder, backgroundColor: theme.inputBg }]}
                     onPress={() => router.push("/(modals)/search-filters")}
                     accessibilityRole="button"
                     accessibilityLabel={activeFiltersCount > 0 ? `Open filters, ${activeFiltersCount} active` : "Open filters"}
@@ -149,13 +149,13 @@ export default function SearchScreen() {
                     <Ionicons name="filter-circle-outline" size={24} color={theme.text} accessible={false} />
                 </Pressable>
 
-                <Text style={[styles.filtersInfo, {color: theme.muted}]}>
+                <Text style={[styles.filtersInfo, { color: theme.muted }]}>
                     {activeFiltersCount > 0 ? `${activeFiltersCount} active filter(s)` : "No active filters"}
                 </Text>
             </View>
 
             {trimmedQuery ? (
-                <Text style={[styles.meta, {color: theme.muted}]}>
+                <Text style={[styles.meta, { color: theme.muted }]}>
                     {loading ? "Searching..." : `${results.length} result(s) for "${trimmedQuery}"`}
                 </Text>
             ) : null}
@@ -182,7 +182,7 @@ export default function SearchScreen() {
                         />
                     }
                     ListEmptyComponent={renderEmpty}
-                    renderItem={({item}) => (
+                    renderItem={({ item }) => (
                         <ProductCard
                             id={item.id}
                             image={item.image}
@@ -190,8 +190,8 @@ export default function SearchScreen() {
                             rating={item.rating}
                             price={item.price}
                             cardStyle={styles.card}
-                            isFavourite={favouriteIds.includes(item.id)}
-                            onAddToFavouritesPress={() => toggleFavourite(item.id)}
+                            isFavorite={favoriteIds.includes(item.id)}
+                            onAddToFavoritesPress={() => toggleFavorite(item.id)}
                         />
                     )}
                 />

@@ -1,0 +1,221 @@
+Index: app/(tabs)/_layout.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import {Tabs} from \"expo-router\";\r\nimport {Ionicons} from \"@expo/vector-icons\";\r\nimport {colors} from \"@/constants/colors\";\r\nimport {useColorScheme} from \"react-native\";\r\n\r\nexport default function TabLayout() {\r\n    const isDark = useColorScheme() === 'dark'\r\n\r\n    return (\r\n        <Tabs screenOptions={{\r\n            headerShown: false,\r\n            animation: \"shift\",\r\n            tabBarActiveTintColor: colors.green,\r\n            tabBarInactiveTintColor: isDark ? colors.mutedDark : colors.black,\r\n            tabBarStyle: {\r\n                backgroundColor: isDark ? colors.black : colors.white,\r\n                borderTopColor: isDark ? colors.black : colors.white,\r\n            }\r\n        }}>\r\n            <Tabs.Screen\r\n                name=\"home\"\r\n                options={{\r\n                    title: \"Home\",\r\n                    tabBarAccessibilityLabel: \"Home tab\",\r\n                    tabBarIcon: ({size, focused, color}) => (\r\n                        <Ionicons name={focused ? 'home' : 'home-outline'} color={color}\r\n                                  size={size}/>\r\n                    ),\r\n                }}\r\n            />\r\n            <Tabs.Screen\r\n                name=\"favourite\"\r\n                options={{\r\n                    title: \"Favourite\",\r\n                    tabBarAccessibilityLabel: \"Favourite tab\",\r\n                    tabBarIcon: ({size, focused, color}) => (\r\n                        <Ionicons name={focused ? 'heart' : 'heart-outline'}\r\n                                  color={color} size={size}/>\r\n                    ),\r\n                }}\r\n            />\r\n            <Tabs.Screen\r\n                name=\"search\"\r\n                options={{\r\n                    title: \"Search\",\r\n                    tabBarAccessibilityLabel: \"Search tab\",\r\n                    tabBarIcon: ({size, focused, color}) => (\r\n                        <Ionicons name={focused ? 'search' : 'search-outline'}\r\n                                  color={color} size={size}/>\r\n                    ),\r\n                }}\r\n            />\r\n            <Tabs.Screen\r\n                name=\"profile\"\r\n                options={{\r\n                    title: \"Profile\",\r\n                    tabBarAccessibilityLabel: \"Profile tab\",\r\n                    tabBarIcon: ({size, focused, color}) => (\r\n                        <Ionicons name={focused ? 'person' : 'person-outline'}\r\n                                  color={color} size={size}/>\r\n                    ),\r\n                }}\r\n            />\r\n            <Tabs.Screen\r\n                name=\"menu\"\r\n                options={{\r\n                    title: \"Menu\",\r\n                    tabBarAccessibilityLabel: \"Menu tab\",\r\n                    tabBarIcon: ({size, focused, color}) => (\r\n                        <Ionicons name={focused ? 'menu' : 'menu-outline'} color={color}\r\n                                  size={size}/>\r\n                    ),\r\n                }}\r\n            />\r\n\r\n        </Tabs>\r\n    )\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/(tabs)/_layout.tsx b/app/(tabs)/_layout.tsx
+--- a/app/(tabs)/_layout.tsx	(revision 524a41c180e30e8c7e7266d707a51121a7ff740d)
++++ b/app/(tabs)/_layout.tsx	(date 1778335656643)
+@@ -22,6 +22,7 @@
+                 options={{
+                     title: "Home",
+                     tabBarAccessibilityLabel: "Home tab",
++                    animation: 'fade',
+                     tabBarIcon: ({size, focused, color}) => (
+                         <Ionicons name={focused ? 'home' : 'home-outline'} color={color}
+                                   size={size}/>
+Index: app/(tabs)/home/cart/index.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import {FlatList, Pressable, StyleSheet, Text, useColorScheme, View} from \"react-native\";\r\nimport {colors} from \"@/constants/colors\";\r\nimport {useCart} from \"@/context/CartContext\";\r\nimport CartItem from \"@/components/CartItem\";\r\nimport {useSafeAreaInsets} from \"react-native-safe-area-context\";\r\nimport {useRouter} from \"expo-router\";\r\nimport {getCartSubtotal} from \"@/utilities/cart\";\r\n\r\nexport default function Index() {\r\n    const router = useRouter();\r\n    const insets = useSafeAreaInsets();\r\n    const isDark = useColorScheme() === 'dark';\r\n    const {items, updateQuantity, removeFromCart} = useCart();\r\n    const canCheckout = items.length > 0;\r\n\r\n    const total = getCartSubtotal(items);\r\n\r\n    return (\r\n        <View style={[styles.container, {backgroundColor: isDark ? colors.black : colors.white}]}>\r\n            <FlatList\r\n                data={items}\r\n                keyExtractor={(item) => item.key}\r\n                contentContainerStyle={[styles.listContent, {paddingTop: insets.top + 56}]}\r\n                style={styles.list}\r\n                accessibilityRole=\"list\"\r\n                accessibilityLabel=\"Cart items\"\r\n                accessibilityHint=\"Browse the products in your cart\"\r\n                renderItem={({item}) => (\r\n                    <CartItem\r\n                        title={item.product.title}\r\n                        price={parseFloat((item.product.price * item.quantity).toFixed(2))}\r\n                        quantity={item.quantity}\r\n                        image={item.product.image}\r\n                        onIncrease={() => updateQuantity(item.product, item.quantity + 1)}\r\n                        onDecrease={() => updateQuantity(item.product, item.quantity - 1)}\r\n                        onRemove={() => removeFromCart(item.product)}\r\n                    />\r\n                )}\r\n                ListEmptyComponent={\r\n                    <Text style={[styles.emptyText, {color: isDark ? colors.white : colors.black}]} accessibilityRole=\"text\">\r\n                        Your cart is empty.\r\n                    </Text>\r\n                }\r\n            />\r\n            <View style={styles.summaryRow}>\r\n                <Text style={[styles.summaryLabel, {color: isDark ? colors.white : colors.black}]}>\r\n                    Total\r\n                </Text>\r\n                <Text style={[styles.summaryValue, {color: isDark ? colors.white : colors.black}]}>\r\n                    ${total.toFixed(2)}\r\n                </Text>\r\n            </View>\r\n            <View style={styles.separator}></View>\r\n            <Pressable\r\n                style={[styles.button, !canCheckout && styles.buttonDisabled]}\r\n                onPress={() => router.push('/home/checkout')}\r\n                disabled={!canCheckout}\r\n                accessibilityRole=\"button\"\r\n                accessibilityLabel=\"Go to checkout\"\r\n                accessibilityHint=\"Opens the checkout screen to review your order\"\r\n                accessibilityState={{disabled: !canCheckout}}\r\n            >\r\n                <Text style={styles.buttonText}>Go to checkout</Text>\r\n            </Pressable>\r\n        </View>\r\n    );\r\n};\r\n\r\nconst styles = StyleSheet.create({\r\n    container: {\r\n        flex: 1,\r\n    },\r\n    list: {\r\n        width: '100%',\r\n    },\r\n    listContent: {\r\n        paddingHorizontal: 16,\r\n        paddingVertical: 12,\r\n        gap: 12,\r\n    },\r\n    emptyText: {\r\n        textAlign: 'center',\r\n        marginTop: 24,\r\n        fontSize: 16,\r\n    },\r\n    button: {\r\n        margin: 16,\r\n        paddingVertical: 14,\r\n        borderRadius: 12,\r\n        backgroundColor: colors.green,\r\n        alignItems: \"center\",\r\n    },\r\n    buttonDisabled: {\r\n      opacity: 0.5,\r\n    },\r\n    buttonText: {\r\n        color: colors.white,\r\n        fontSize: 16,\r\n        fontWeight: \"700\",\r\n    },\r\n    summaryRow: {\r\n        marginHorizontal: 16,\r\n        marginTop: 8,\r\n        marginBottom: 8,\r\n        flexDirection: \"row\",\r\n        justifyContent: \"space-between\",\r\n        alignItems: \"center\",\r\n    },\r\n    summaryLabel: {\r\n        fontSize: 16,\r\n        fontWeight: \"600\",\r\n    },\r\n    summaryValue: {\r\n        fontSize: 18,\r\n        fontWeight: \"700\",\r\n    },\r\n    separator: {\r\n        borderColor: colors.lightGrey,\r\n        borderWidth: 1\r\n    },\r\n});\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/(tabs)/home/cart/index.tsx b/app/(tabs)/home/cart/index.tsx
+--- a/app/(tabs)/home/cart/index.tsx	(revision 524a41c180e30e8c7e7266d707a51121a7ff740d)
++++ b/app/(tabs)/home/cart/index.tsx	(date 1778337395346)
+@@ -5,16 +5,20 @@
+ import {useSafeAreaInsets} from "react-native-safe-area-context";
+ import {useRouter} from "expo-router";
+ import {getCartSubtotal} from "@/utilities/cart";
++import Animated from "react-native-reanimated";
++import {usePressAnimation} from "@/hooks/usePressAnimation";
+ 
+ export default function Index() {
+     const router = useRouter();
+     const insets = useSafeAreaInsets();
+     const isDark = useColorScheme() === 'dark';
++
+     const {items, updateQuantity, removeFromCart} = useCart();
+     const canCheckout = items.length > 0;
+-
+     const total = getCartSubtotal(items);
+ 
++    const {onPressIn, onPressOut, animatedStyle} = usePressAnimation({});
++
+     return (
+         <View style={[styles.container, {backgroundColor: isDark ? colors.black : colors.white}]}>
+             <FlatList
+@@ -37,7 +41,8 @@
+                     />
+                 )}
+                 ListEmptyComponent={
+-                    <Text style={[styles.emptyText, {color: isDark ? colors.white : colors.black}]} accessibilityRole="text">
++                    <Text style={[styles.emptyText, {color: isDark ? colors.white : colors.black}]}
++                          accessibilityRole="text">
+                         Your cart is empty.
+                     </Text>
+                 }
+@@ -51,17 +56,21 @@
+                 </Text>
+             </View>
+             <View style={styles.separator}></View>
+-            <Pressable
+-                style={[styles.button, !canCheckout && styles.buttonDisabled]}
+-                onPress={() => router.push('/home/checkout')}
+-                disabled={!canCheckout}
+-                accessibilityRole="button"
+-                accessibilityLabel="Go to checkout"
+-                accessibilityHint="Opens the checkout screen to review your order"
+-                accessibilityState={{disabled: !canCheckout}}
+-            >
+-                <Text style={styles.buttonText}>Go to checkout</Text>
+-            </Pressable>
++            <Animated.View style={[animatedStyle]}>
++                <Pressable
++                    style={[styles.button, !canCheckout && styles.buttonDisabled]}
++                    onPress={() => router.push('/home/checkout')}
++                    onPressIn={onPressIn}
++                    onPressOut={onPressOut}
++                    disabled={!canCheckout}
++                    accessibilityRole="button"
++                    accessibilityLabel="Go to checkout"
++                    accessibilityHint="Opens the checkout screen to review your order"
++                    accessibilityState={{disabled: !canCheckout}}
++                >
++                    <Text style={styles.buttonText}>Go to checkout</Text>
++                </Pressable>
++            </Animated.View>
+         </View>
+     );
+ };
+@@ -91,7 +100,7 @@
+         alignItems: "center",
+     },
+     buttonDisabled: {
+-      opacity: 0.5,
++        opacity: 0.5,
+     },
+     buttonText: {
+         color: colors.white,
+Index: hooks/usePressAnimation.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/hooks/usePressAnimation.tsx b/hooks/usePressAnimation.tsx
+new file mode 100644
+--- /dev/null	(date 1778337875199)
++++ b/hooks/usePressAnimation.tsx	(date 1778337875199)
+@@ -0,0 +1,37 @@
++import {useCallback} from "react";
++import {useAnimatedStyle, useSharedValue, withSpring} from "react-native-reanimated";
++import * as Haptics from "expo-haptics";
++
++interface PressAnimationOptions {
++    toValue?: number;
++    haptics?: boolean;
++    hapticStyle?: Haptics.ImpactFeedbackStyle;
++}
++
++export function usePressAnimation(options: PressAnimationOptions) {
++    const scale = useSharedValue(1);
++    const {toValue = 0.95, haptics = true, hapticStyle = Haptics.ImpactFeedbackStyle.Light} = options;
++
++    const animatedStyle = useAnimatedStyle(() => ({
++        transform: [{scale: scale.value}]
++    }));
++
++    const onPressIn = useCallback(() => {
++        scale.value = withSpring(toValue, {
++            damping: 10,
++            stiffness: 1000,
++        });
++        if (haptics) {
++            Haptics.impactAsync(hapticStyle);
++        }
++    }, [scale, toValue, haptics, hapticStyle]);
++
++    const onPressOut = useCallback(() => {
++        scale.value = withSpring(1, {
++            damping: 120,
++            stiffness: 400,
++        });
++    }, [scale]);
++
++    return {scale, animatedStyle, onPressIn, onPressOut};
++}
+\ No newline at end of file
+Index: app/(tabs)/profile/index.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import {useEffect, useMemo, useState} from \"react\";\r\nimport {\r\n    ActivityIndicator,\r\n    Alert,\r\n    Pressable,\r\n    ScrollView,\r\n    StyleSheet,\r\n    Text,\r\n    useColorScheme,\r\n    View,\r\n} from \"react-native\";\r\nimport {Ionicons, MaterialIcons} from \"@expo/vector-icons\";\r\n\r\nimport Auth from \"@/components/Auth\";\r\nimport {colors} from \"@/constants/colors\";\r\nimport {useAuth} from \"@/context/AuthContext\";\r\nimport {getProfiles, upsertProfile} from \"@/db/profiles\";\r\nimport {supabase} from \"@/lib/supabase\";\r\nimport {InputRow} from \"@/components/InputRow\";\r\nimport {ProfileForm} from \"@/types/profile\";\r\n\r\ntype GenderOption = \"Male\" | \"Female\" | \"Other\";\r\n\r\nconst initialForm: ProfileForm = {\r\n    first_name: \"\",\r\n    last_name: \"\",\r\n    phone: \"\",\r\n    gender: \"Other\",\r\n    birthday: \"\",\r\n};\r\n\r\nconst genderOptions: GenderOption[] = [\"Male\", \"Female\", \"Other\"];\r\n\r\nexport default function Index() {\r\n    const {user, session} = useAuth();\r\n    const colorScheme = useColorScheme();\r\n    const isDark = colorScheme === \"dark\";\r\n\r\n    const [form, setForm] = useState<ProfileForm>(initialForm);\r\n    const [loadingProfile, setLoadingProfile] = useState(true);\r\n    const [savingProfile, setSavingProfile] = useState(false);\r\n\r\n    const theme = useMemo(\r\n        () => ({\r\n            screen: isDark ? colors.black : colors.screenLight,\r\n            card: isDark ? colors.darkGrey : colors.white,\r\n            text: isDark ? colors.white : colors.textLight,\r\n            muted: isDark ? colors.mutedDark : colors.mutedLight,\r\n            inputBg: isDark ? colors.inputBgDark : colors.inputBgLight,\r\n            inputBorder: isDark ? colors.inputBorderDark : colors.inputBorderLight,\r\n            accent: colors.accent,\r\n            danger: colors.danger,\r\n        }),\r\n        [isDark]\r\n    );\r\n\r\n    useEffect(() => {\r\n        const loadProfile = async () => {\r\n            if (!user?.id) {\r\n                setLoadingProfile(false);\r\n                return;\r\n            }\r\n\r\n            try {\r\n                setLoadingProfile(true);\r\n                const profile = await getProfiles(user.id);\r\n\r\n                setForm({\r\n                    first_name: profile?.first_name ?? \"\",\r\n                    last_name: profile?.last_name ?? \"\",\r\n                    phone: profile?.phone ?? \"\",\r\n                    gender: toGender(profile?.gender),\r\n                    birthday: profile?.birthday ? new Date(profile.birthday).toISOString().slice(0, 10) : \"\",\r\n                });\r\n            } catch (error) {\r\n                const message = error instanceof Error ? error.message : \"Не вдалося завантажити профіль\";\r\n                const isMissingRow = message.includes(\"0 rows\") || message.toLowerCase().includes(\"no rows\");\r\n\r\n                if (!isMissingRow) {\r\n                    Alert.alert(\"Помилка\", message);\r\n                }\r\n            } finally {\r\n                setLoadingProfile(false);\r\n            }\r\n        };\r\n\r\n        void loadProfile();\r\n    }, [user?.id]);\r\n\r\n    const handleSaveProfile = async () => {\r\n        if (!user?.id) return;\r\n\r\n        if (form.birthday && Number.isNaN(new Date(form.birthday).getTime())) {\r\n            Alert.alert(\"Invalid date\", \"Please enter a valid date in YYYY-MM-DD format\");\r\n            return;\r\n        }\r\n\r\n        try {\r\n            setSavingProfile(true);\r\n            await upsertProfile(user.id, {\r\n                id: user.id,\r\n                first_name: form.first_name.trim(),\r\n                last_name: form.last_name.trim(),\r\n                phone: form.phone.trim(),\r\n                gender: form.gender,\r\n                birthday: form.birthday ? new Date(form.birthday) : new Date(),\r\n            });\r\n            Alert.alert(\"Done\", \"Profile saved successfully\");\r\n        } catch (error) {\r\n            const message = error instanceof Error ? error.message : \"Failed to save profile\";\r\n            Alert.alert(\"Error\", message);\r\n        } finally {\r\n            setSavingProfile(false);\r\n        }\r\n    };\r\n\r\n    const handleSignOut = async () => {\r\n        const {error} = await supabase.auth.signOut();\r\n        if (error) {\r\n            Alert.alert(\"Sign out error\", error.message);\r\n        }\r\n    };\r\n\r\n    if (!session) return <Auth/>;\r\n\r\n    if (loadingProfile) {\r\n        return (\r\n            <View style={[styles.loader, {backgroundColor: theme.screen}]}>\r\n                <ActivityIndicator accessibilityLabel=\"Loading profile\"/>\r\n            </View>\r\n        );\r\n    }\r\n\r\n    return (\r\n        <ScrollView\r\n            style={{backgroundColor: theme.screen}}\r\n            contentContainerStyle={styles.content}\r\n            showsVerticalScrollIndicator={false}\r\n            keyboardShouldPersistTaps=\"handled\"\r\n        >\r\n            <View style={styles.avatarWrap}>\r\n                <View style={[styles.avatarCircle, {borderColor: theme.inputBorder}]}>\r\n                    <Ionicons name=\"person\" size={64} color={theme.muted} accessible={false}/>\r\n                </View>\r\n            </View>\r\n\r\n            <View style={[styles.card, {backgroundColor: theme.card}]}>\r\n                <Text style={[styles.sectionTitle, {color: theme.text}]} accessibilityRole=\"header\">Personal data</Text>\r\n                <Text style={[styles.sectionHint, {color: theme.muted}]}>Name and surname</Text>\r\n\r\n                <InputRow\r\n                    iconName=\"person\"\r\n                    value={form.first_name}\r\n                    onChangeText={(value) => setForm((prev) => ({...prev, first_name: value}))}\r\n                    placeholder=\"Name\"\r\n                />\r\n                <InputRow\r\n                    iconName=\"person\"\r\n                    value={form.last_name}\r\n                    onChangeText={(value) => setForm((prev) => ({...prev, last_name: value}))}\r\n                    placeholder=\"Surname\"\r\n                    style={styles.mt8}\r\n                />\r\n\r\n                <Text style={[styles.sectionHint, styles.mt14, {color: theme.muted}]}>Birthday date</Text>\r\n                <InputRow\r\n                    iconName=\"calendar-month\"\r\n                    value={form.birthday}\r\n                    onChangeText={(value) => setForm((prev) => ({...prev, birthday: value}))}\r\n                    placeholder=\"Birthday\"\r\n                />\r\n            </View>\r\n\r\n\r\n            <View style={[styles.card, {backgroundColor: theme.card}]}>\r\n                <Text style={[styles.sectionHint, styles.mt14, {color: theme.muted}]}>Gender</Text>\r\n                <View style={styles.genderRow}>\r\n                    {genderOptions.map((item) => {\r\n                        const selected = form.gender === item;\r\n                        return (\r\n                            <Pressable\r\n                                key={item}\r\n                                style={[\r\n                                    styles.genderButton,\r\n                                    {\r\n                                        backgroundColor: selected\r\n                                            ? (isDark ? colors.selectedGenderDark : colors.selectedGenderLight)\r\n                                            : theme.card,\r\n                                        borderColor: selected ? theme.accent : theme.inputBorder,\r\n                                    },\r\n                                ]}\r\n                                onPress={() => setForm((prev) => ({...prev, gender: item}))}\r\n                                accessibilityRole=\"radio\"\r\n                                accessibilityState={{selected}}\r\n                                accessibilityLabel={item}\r\n                                accessibilityHint=\"Selects this gender option\"\r\n                            >\r\n                                <Text\r\n                                    style={[styles.genderText, {color: selected ? theme.accent : theme.text}]}>{item}</Text>\r\n                            </Pressable>\r\n                        );\r\n                    })}\r\n                </View>\r\n            </View>\r\n\r\n            <View style={[styles.card, {backgroundColor: theme.card}]}>\r\n                <Text style={[styles.sectionTitle, styles.mt18, {color: theme.text}]} accessibilityRole=\"header\">Contact</Text>\r\n                <Text style={[styles.sectionHint, {color: theme.muted}]}>Phone number</Text>\r\n                <InputRow\r\n                    iconName=\"phone\"\r\n                    value={form.phone}\r\n                    onChangeText={(value) => setForm((prev) => ({...prev, phone: value}))}\r\n                    placeholder=\"+380 XX XXX XX XX\"\r\n                    keyboardType=\"phone-pad\"\r\n                />\r\n\r\n                <Text style={[styles.sectionHint, styles.mt14, {color: theme.muted}]}>Email</Text>\r\n                <View style={[styles.inputRow, {backgroundColor: theme.inputBg, borderColor: theme.inputBorder}]}>\r\n                    <MaterialIcons name=\"email\" size={18} color={theme.accent} accessible={false}/>\r\n                    <Text style={[styles.emailText, {color: theme.muted}]}>{user?.email ?? \"E-mail\"}</Text>\r\n                </View>\r\n\r\n                <Pressable\r\n                    onPress={handleSaveProfile}\r\n                    disabled={savingProfile}\r\n                    style={[styles.saveButton, {backgroundColor: theme.accent}, savingProfile && styles.disabled]}\r\n                    accessibilityRole=\"button\"\r\n                    accessibilityLabel=\"Save profile\"\r\n                    accessibilityHint=\"Saves your profile changes\"\r\n                    accessibilityState={{disabled: savingProfile}}\r\n                >\r\n                    <Text style={styles.saveButtonText}>{savingProfile ? \"Saving...\" : \"Save\"}</Text>\r\n                </Pressable>\r\n\r\n                <Pressable\r\n                    onPress={handleSignOut}\r\n                    style={[styles.dangerButton, {borderColor: theme.danger}]}\r\n                    accessibilityRole=\"button\"\r\n                    accessibilityLabel=\"Sign out\"\r\n                    accessibilityHint=\"Signs you out of the app\"\r\n                >\r\n                    <Text style={[styles.dangerButtonText, {color: theme.danger}]}>Sign out</Text>\r\n                </Pressable>\r\n            </View>\r\n        </ScrollView>\r\n    );\r\n}\r\n\r\nfunction toGender(value?: string): GenderOption {\r\n    if (value === \"Male\" || value === \"Female\" || value === \"Other\") {\r\n        return value;\r\n    }\r\n    return \"Other\";\r\n}\r\n\r\nconst styles = StyleSheet.create({\r\n    loader: {\r\n        flex: 1,\r\n        alignItems: \"center\",\r\n        justifyContent: \"center\",\r\n    },\r\n    content: {\r\n        paddingHorizontal: 16,\r\n        paddingTop: 20,\r\n        paddingBottom: 28,\r\n    },\r\n    avatarWrap: {\r\n        alignItems: \"center\",\r\n        marginTop: 130,\r\n        marginBottom: 12,\r\n    },\r\n    avatarCircle: {\r\n        width: 110,\r\n        height: 110,\r\n        borderRadius: 55,\r\n        borderWidth: 2,\r\n        alignItems: \"center\",\r\n        justifyContent: \"center\",\r\n    },\r\n    card: {\r\n        borderRadius: 16,\r\n        padding: 14,\r\n        marginVertical: 8,\r\n    },\r\n    sectionTitle: {\r\n        fontSize: 24,\r\n        fontWeight: \"600\",\r\n    },\r\n    sectionHint: {\r\n        fontSize: 18,\r\n        fontWeight: \"500\",\r\n        marginBottom: 6,\r\n    },\r\n    emailText: {\r\n        fontSize: 16,\r\n        fontWeight: \"500\",\r\n    },\r\n    inputRow: {\r\n        minHeight: 48,\r\n        borderWidth: 1,\r\n        borderRadius: 12,\r\n        paddingHorizontal: 12,\r\n        flexDirection: \"row\",\r\n        alignItems: \"center\",\r\n        gap: 8,\r\n    },\r\n    genderRow: {\r\n        flexDirection: \"row\",\r\n        gap: 8,\r\n    },\r\n    genderButton: {\r\n        flex: 1,\r\n        minHeight: 42,\r\n        borderWidth: 1,\r\n        borderRadius: 12,\r\n        alignItems: \"center\",\r\n        justifyContent: \"center\",\r\n    },\r\n    genderText: {\r\n        fontSize: 14,\r\n        fontWeight: \"600\",\r\n    },\r\n    saveButton: {\r\n        marginTop: 14,\r\n        minHeight: 48,\r\n        borderRadius: 12,\r\n        alignItems: \"center\",\r\n        justifyContent: \"center\",\r\n    },\r\n    saveButtonText: {\r\n        color: colors.white,\r\n        fontSize: 16,\r\n        fontWeight: \"700\",\r\n    },\r\n    dangerButton: {\r\n        marginTop: 10,\r\n        minHeight: 48,\r\n        borderRadius: 12,\r\n        borderWidth: 1,\r\n        alignItems: \"center\",\r\n        justifyContent: \"center\",\r\n    },\r\n    dangerButtonText: {\r\n        fontSize: 16,\r\n        fontWeight: \"700\",\r\n    },\r\n    disabled: {\r\n        opacity: 0.6,\r\n    },\r\n    mt8: {\r\n        marginTop: 8,\r\n    },\r\n    mt14: {\r\n        marginTop: 14,\r\n    },\r\n    mt18: {\r\n        marginTop: 18,\r\n    },\r\n});\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/(tabs)/profile/index.tsx b/app/(tabs)/profile/index.tsx
+--- a/app/(tabs)/profile/index.tsx	(revision 524a41c180e30e8c7e7266d707a51121a7ff740d)
++++ b/app/(tabs)/profile/index.tsx	(date 1778337995314)
+@@ -18,6 +18,8 @@
+ import {supabase} from "@/lib/supabase";
+ import {InputRow} from "@/components/InputRow";
+ import {ProfileForm} from "@/types/profile";
++import Animated from "react-native-reanimated";
++import {usePressAnimation} from "@/hooks/usePressAnimation";
+ 
+ type GenderOption = "Male" | "Female" | "Other";
+ 
+@@ -40,6 +42,8 @@
+     const [loadingProfile, setLoadingProfile] = useState(true);
+     const [savingProfile, setSavingProfile] = useState(false);
+ 
++    const {onPressIn, onPressOut, animatedStyle} = usePressAnimation({});
++
+     const theme = useMemo(
+         () => ({
+             screen: isDark ? colors.black : colors.screenLight,
+@@ -204,7 +208,8 @@
+             </View>
+ 
+             <View style={[styles.card, {backgroundColor: theme.card}]}>
+-                <Text style={[styles.sectionTitle, styles.mt18, {color: theme.text}]} accessibilityRole="header">Contact</Text>
++                <Text style={[styles.sectionTitle, styles.mt18, {color: theme.text}]}
++                      accessibilityRole="header">Contact</Text>
+                 <Text style={[styles.sectionHint, {color: theme.muted}]}>Phone number</Text>
+                 <InputRow
+                     iconName="phone"
+@@ -220,17 +225,21 @@
+                     <Text style={[styles.emailText, {color: theme.muted}]}>{user?.email ?? "E-mail"}</Text>
+                 </View>
+ 
+-                <Pressable
+-                    onPress={handleSaveProfile}
+-                    disabled={savingProfile}
+-                    style={[styles.saveButton, {backgroundColor: theme.accent}, savingProfile && styles.disabled]}
+-                    accessibilityRole="button"
+-                    accessibilityLabel="Save profile"
+-                    accessibilityHint="Saves your profile changes"
+-                    accessibilityState={{disabled: savingProfile}}
+-                >
+-                    <Text style={styles.saveButtonText}>{savingProfile ? "Saving..." : "Save"}</Text>
+-                </Pressable>
++                <Animated.View style={[animatedStyle]}>
++                    <Pressable
++                        onPress={handleSaveProfile}
++                        onPressIn={onPressIn}
++                        onPressOut={onPressOut}
++                        disabled={savingProfile}
++                        style={[styles.saveButton, {backgroundColor: theme.accent}, savingProfile && styles.disabled]}
++                        accessibilityRole="button"
++                        accessibilityLabel="Save profile"
++                        accessibilityHint="Saves your profile changes"
++                        accessibilityState={{disabled: savingProfile}}
++                    >
++                        <Text style={styles.saveButtonText}>{savingProfile ? "Saving..." : "Save"}</Text>
++                    </Pressable>
++                </Animated.View>
+ 
+                 <Pressable
+                     onPress={handleSignOut}

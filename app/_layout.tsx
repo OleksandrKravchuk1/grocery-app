@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import * as SplashScreen from "expo-splash-screen";
-import { Stack } from "expo-router";
+import { SplashScreenView } from "@/src/components/SplashScreenView";
+import { AuthProvider } from "@/src/features/auth/context/AuthContext";
+import { CartProvider } from "@/src/features/cart/context/CartContext";
+import { LocationProvider } from "@/src/context/LocationContext";
+import { SearchFiltersProvider } from "@/src/context/SearchFiltersContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "@/context/AuthContext";
-import { CartProvider } from "@/context/CartContext";
-import { LocationProvider } from "@/context/LocationContext";
-import { SearchFiltersProvider } from "@/context/SearchFiltersContext";
-import { SplashScreenView } from "@/components/SplashScreenView";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect, useState } from "react";
 
 void SplashScreen.preventAutoHideAsync();
 

@@ -1,4 +1,16 @@
-import {useEffect, useState} from "react";
+import { SectionTitle } from "@/components/ui/SectionTitle";
+import { DeliveryRow } from "@/components/ui/row/DeliveryRow";
+import { Row } from "@/components/ui/row/Row";
+import { colors } from "@/constants/colors";
+import { useLocation } from "@/context/LocationContext";
+import { useAuth } from "@/src/features/auth/context/AuthContext";
+import { useCart } from "@/src/features/cart/context/CartContext";
+import { getCartItemCount, getCartSubtotal } from "@/src/features/cart/utilities/cart";
+import { getProfiles } from "@/src/features/profile/api/profiles";
+import { Profile } from "@/types/profile";
+import { FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
     ActivityIndicator,
     Pressable,
@@ -6,22 +18,10 @@ import {
     StyleSheet,
     Switch,
     Text,
-    useColorScheme,
     View
 } from "react-native";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {SectionTitle} from "@/components/ui/SectionTitle";
-import {DeliveryRow} from "@/components/ui/row/DeliveryRow";
-import {Row} from "@/components/ui/row/Row";
-import {useLocation} from "@/context/LocationContext";
-import {useAuth} from "@/context/AuthContext";
-import {useCart} from "@/context/CartContext";
-import {colors} from "@/constants/colors";
-import {Profile} from "@/types/profile";
-import {getProfiles} from "@/db/profiles";
-import {FontAwesome6, MaterialCommunityIcons} from "@expo/vector-icons";
-import {useRouter} from "expo-router";
-import {getCartItemCount, getCartSubtotal} from "@/utilities/cart";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme } from "@/src/constants/theme";
 
 type DeliveryType = 'priority' | 'standard';
 
@@ -35,25 +35,15 @@ const DELIVERY_FEES = {
 export default function CheckoutScreen() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
-    const colorScheme = useColorScheme();
-    const isDark = colorScheme === 'dark';
-    const {address} = useLocation();
-    const {user} = useAuth();
-    const {items} = useCart();
+    const theme = useTheme();
+    const { address } = useLocation();
+    const { user } = useAuth();
+    const { items } = useCart();
 
     const [deliveryType, setDeliveryType] = useState<DeliveryType>('priority');
     const [profile, setProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
     const [invoiceRequested, setInvoiceRequested] = useState(false);
-
-    const theme = {
-        screen: isDark ? colors.black : colors.screenLight,
-        card: isDark ? colors.darkGrey : colors.white,
-        text: isDark ? colors.white : colors.textLight,
-        muted: isDark ? colors.mutedDark : colors.mutedLight,
-        border: isDark ? colors.inputBorderDark : colors.inputBorderLight,
-        accent: colors.accent,
-    };
 
     useEffect(() => {
         const loadProfile = async () => {
@@ -87,33 +77,31 @@ export default function CheckoutScreen() {
 
     if (loading) {
         return (
-            <View style={[styles.container, {backgroundColor: theme.screen}]}>
-                <ActivityIndicator size="large" color={theme.accent} accessibilityLabel="Loading checkout details"/>
+            <View style={[styles.container, { backgroundColor: theme.screen }]}>
+                <ActivityIndicator size="large" color={theme.accent} accessibilityLabel="Loading checkout details" />
             </View>
         );
     }
 
-
-    //TODO add text input for product amount
     return (
         <ScrollView
-            style={[styles.container, {backgroundColor: theme.screen}]}
+            style={[styles.container, { backgroundColor: theme.screen }]}
             contentContainerStyle={[
                 styles.content,
-                {paddingTop: insets.top + 56, paddingBottom: insets.bottom + 20},
+                { paddingTop: insets.top + 56, paddingBottom: insets.bottom + 20 },
             ]}
             showsVerticalScrollIndicator={false}
             accessibilityLabel="Checkout"
             accessibilityHint="Review your details, choose delivery and payment, then continue"
         >
-            <SectionTitle title="Details" color={theme.text}/>
-            <View style={[styles.card, {backgroundColor: theme.card, borderColor: theme.border}]}>
-                <Row icon="person-outline" label={fullName} color={theme.text} borderColor={theme.border}/>
-                <Row icon="call-outline" label={phone} color={theme.text}/>
+            <SectionTitle title="Details" color={theme.text} />
+            <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                <Row icon="person-outline" label={fullName} color={theme.text} borderColor={theme.border} />
+                <Row icon="call-outline" label={phone} color={theme.text} />
             </View>
 
-            <SectionTitle title="Address" color={theme.text}/>
-            <View style={[styles.card, {backgroundColor: theme.card, borderColor: theme.border}]}>
+            <SectionTitle title="Address" color={theme.text} />
+            <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
                 <Row
                     icon="location-outline"
                     label="Apartment 609"
@@ -122,13 +110,13 @@ export default function CheckoutScreen() {
                 />
             </View>
 
-            <SectionTitle title="Have coupon?" color={theme.text}/>
-            <View style={[styles.card, {backgroundColor: theme.card, borderColor: theme.border}]}>
-                <Row icon="pricetag-outline" label="Apply Coupon" color={theme.text}/>
+            <SectionTitle title="Have coupon?" color={theme.text} />
+            <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                <Row icon="pricetag-outline" label="Apply Coupon" color={theme.text} />
             </View>
 
-            <SectionTitle title="Delivery" color={theme.text}/>
-            <View style={[styles.card, {backgroundColor: theme.card, borderColor: theme.border}]}>
+            <SectionTitle title="Delivery" color={theme.text} />
+            <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
                 <DeliveryRow
                     icon="receipt-outline"
                     label="Priority (10 - 20 mins)"
@@ -147,44 +135,44 @@ export default function CheckoutScreen() {
                     borderColor={theme.border}
                     accent={theme.accent}
                 />
-                <Row icon="time-outline" label="Schedule" color={theme.text}/>
+                <Row icon="time-outline" label="Schedule" color={theme.text} />
             </View>
 
-            <SectionTitle title={`Order Summary (${totalItems} items)`} color={theme.text}/>
-            <View style={[styles.card, {backgroundColor: theme.card, borderColor: theme.border}]}>
+            <SectionTitle title={`Order Summary (${totalItems} items)`} color={theme.text} />
+            <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
                 <View style={styles.summaryRow}>
-                    <Text style={[styles.summaryLabel, {color: theme.muted}]}>Subtotal</Text>
-                    <Text style={[styles.summaryValue, {color: theme.text}]}>${subtotal.toFixed(2)}</Text>
+                    <Text style={[styles.summaryLabel, { color: theme.muted }]}>Subtotal</Text>
+                    <Text style={[styles.summaryValue, { color: theme.text }]}>${subtotal.toFixed(2)}</Text>
                 </View>
 
-                <View style={[styles.summaryRow, {borderTopColor: theme.border, borderTopWidth: 1}]}>
-                    <Text style={[styles.summaryLabel, {color: theme.muted}]}>Bag fee</Text>
-                    <Text style={[styles.summaryValue, {color: theme.text}]}>${BAG_FEE.toFixed(2)}</Text>
-                </View>
-
-                <View style={styles.summaryRow}>
-                    <Text style={[styles.summaryLabel, {color: theme.muted}]}>Service fee</Text>
-                    <Text style={[styles.summaryValue, {color: theme.text}]}>${serviceFee.toFixed(2)}</Text>
+                <View style={[styles.summaryRow, { borderTopColor: theme.border, borderTopWidth: 1 }]}>
+                    <Text style={[styles.summaryLabel, { color: theme.muted }]}>Bag fee</Text>
+                    <Text style={[styles.summaryValue, { color: theme.text }]}>${BAG_FEE.toFixed(2)}</Text>
                 </View>
 
                 <View style={styles.summaryRow}>
-                    <Text style={[styles.summaryLabel, {color: theme.muted}]}>Delivery</Text>
-                    <Text style={[styles.summaryValue, {color: theme.text}]}>${deliveryFee.toFixed(2)}</Text>
+                    <Text style={[styles.summaryLabel, { color: theme.muted }]}>Service fee</Text>
+                    <Text style={[styles.summaryValue, { color: theme.text }]}>${serviceFee.toFixed(2)}</Text>
                 </View>
 
-                <View style={[styles.summaryRow, {borderTopColor: theme.border, borderTopWidth: 1}]}>
-                    <Text style={[styles.summaryLabel, {color: theme.text, fontWeight: '600'}]}>Total</Text>
-                    <Text style={[styles.summaryTotal, {color: theme.accent}]}>${total.toFixed(2)}</Text>
+                <View style={styles.summaryRow}>
+                    <Text style={[styles.summaryLabel, { color: theme.muted }]}>Delivery</Text>
+                    <Text style={[styles.summaryValue, { color: theme.text }]}>${deliveryFee.toFixed(2)}</Text>
+                </View>
+
+                <View style={[styles.summaryRow, { borderTopColor: theme.border, borderTopWidth: 1 }]}>
+                    <Text style={[styles.summaryLabel, { color: theme.text, fontWeight: '600' }]}>Total</Text>
+                    <Text style={[styles.summaryTotal, { color: theme.accent }]}>${total.toFixed(2)}</Text>
                 </View>
             </View>
 
             {/* REQUEST INVOICE */}
-            <View style={[styles.invoiceRow, {backgroundColor: theme.card, borderColor: theme.border}]}>
-                <Text style={[styles.invoiceLabel, {color: theme.text}]}>Request an invoice</Text>
+            <View style={[styles.invoiceRow, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                <Text style={[styles.invoiceLabel, { color: theme.text }]}>Request an invoice</Text>
                 <Switch
                     value={invoiceRequested}
                     onValueChange={setInvoiceRequested}
-                    trackColor={{false: theme.border, true: theme.accent}}
+                    trackColor={{ false: theme.border, true: theme.accent }}
                     thumbColor={invoiceRequested ? colors.white : colors.white}
                     accessibilityRole="switch"
                     accessibilityLabel="Request an invoice"
@@ -193,8 +181,8 @@ export default function CheckoutScreen() {
             </View>
 
             {/* PAYMENT METHOD */}
-            <SectionTitle title="Payment method" color={theme.text}/>
-            <View style={[styles.card, {backgroundColor: theme.card, borderColor: theme.border}]}>
+            <SectionTitle title="Payment method" color={theme.text} />
+            <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
                 <Pressable
                     style={styles.paymentRow}
                     onPress={() => router.push('/home/payment')}
@@ -203,16 +191,16 @@ export default function CheckoutScreen() {
                     accessibilityHint="Opens payment method selection"
                 >
                     <View style={styles.paymentIcon}>
-                        <FontAwesome6 name="apple-pay" size={24} color={theme.text} accessible={false}/>
+                        <FontAwesome6 name="apple-pay" size={24} color={theme.text} accessible={false} />
                     </View>
-                    <Text style={[styles.paymentLabel, {color: theme.text}]}>Apple pay</Text>
-                    <MaterialCommunityIcons name="chevron-right" size={24} color={theme.text} accessible={false}/>
+                    <Text style={[styles.paymentLabel, { color: theme.text }]}>Apple pay</Text>
+                    <MaterialCommunityIcons name="chevron-right" size={24} color={theme.text} accessible={false} />
                 </Pressable>
             </View>
 
 
             <Pressable
-                style={[styles.placeOrderButton, {backgroundColor: theme.accent}]}
+                style={[styles.placeOrderButton, { backgroundColor: theme.accent }]}
                 onPress={() => router.push('/home/payment')}
                 accessibilityRole="button"
                 accessibilityLabel="Continue to payment"
