@@ -3,6 +3,7 @@ import { DeliveryRow } from "@/components/ui/row/DeliveryRow";
 import { Row } from "@/components/ui/row/Row";
 import { colors } from "@/constants/colors";
 import { useLocation } from "@/context/LocationContext";
+import { useTheme } from "@/src/constants/theme";
 import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { useCart } from "@/src/features/cart/context/CartContext";
 import { getCartItemCount, getCartSubtotal } from "@/src/features/cart/utilities/cart";
@@ -21,7 +22,6 @@ import {
     View
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTheme } from "@/src/constants/theme";
 
 type DeliveryType = 'priority' | 'standard';
 
