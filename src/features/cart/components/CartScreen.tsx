@@ -5,7 +5,6 @@ import { useAuth } from "@/src/features/auth/context/AuthContext";
 import CartItem from "@/src/features/cart/components/CartItem";
 import { useCart } from "@/src/features/cart/context/CartContext";
 import { getCartSubtotal } from "@/src/features/cart/utilities/cart";
-import { createOrder } from "@/src/features/order/api/orders";
 import { useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import Animated from "react-native-reanimated";
@@ -17,27 +16,17 @@ export function CartScreen() {
   const theme = useTheme();
 
   const { user } = useAuth();
-  const { items, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { items, updateQuantity, removeFromCart } = useCart();
   const canCheckout = items.length > 0;
   const total = getCartSubtotal(items);
 
   const { onPressIn, onPressOut, animatedStyle } = usePressAnimation({});
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (!canCheckout || !user?.id) {
       return;
-    };
-    try {
-      await createOrder({
-        userId: user.id,
-        items,
-        price: total,
-      });
-      clearCart();
-      router.push('/home/checkout');
-    } catch (error) {
-      console.error('Error creating order:', error);
-    };
+    }
+    router.push('/home/checkout');
   };
 
   return (

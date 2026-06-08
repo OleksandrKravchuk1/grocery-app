@@ -22,7 +22,6 @@ export const cardFormSchema = z.object({
     .refine((val) => isValidExpiry(val), 'Card expiry date is invalid or already expired.'),
   cvv: z
     .string()
-    .min(3, 'CVV must contain at least 3 digits.')
-    .max(4, 'CVV must contain at most 4 digits.'),
+    .regex(/^\d{3,4}$/, 'CVV must contain 3 or 4 digits.'),
   isDefault: z.boolean(),
 });

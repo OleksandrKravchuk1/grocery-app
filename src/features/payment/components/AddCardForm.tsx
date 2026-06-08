@@ -1,26 +1,13 @@
-import React, { useState } from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-
 import { useTheme } from '@/src/constants/theme';
-import {
-  formatCardNumber,
-  formatCvc,
-  formatExpiry,
-} from '@/src/utilities/formatCard';
+import { formatCardNumber, formatCvc, formatExpiry } from '@/src/utilities/formatCard';
 import { useForm, useStore } from '@tanstack/react-form';
+import React, { useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { cardFormSchema, CardFormValues } from '../schemas/payment';
 import { detectCardBrand } from '../services/paymentService';
 import { AddCardFormProps } from '../types/payment';
 import { CreditCardView } from './CreditCardView';
+import { FormInput } from './FormInput';
 
 export function AddCardForm({ onSave, onCancel }: AddCardFormProps) {
   const theme = useTheme();
@@ -94,58 +81,33 @@ export function AddCardForm({ onSave, onCancel }: AddCardFormProps) {
         {/* CARDHOLDER NAME FIELD */}
         <form.Field name="cardholderName">
           {(field) => (
-            <View style={styles.inputGroup}>
-              <Text style={[styles.label, { color: theme.text }]}>Cardholder Name</Text>
-              <View style={[styles.inputContainer, { backgroundColor: theme.inputBg, borderColor: theme.border }]}>
-                <TextInput
-                  style={[styles.input, { color: theme.text }]}
-                  placeholder="John Doe"
-                  placeholderTextColor={theme.muted}
-                  value={field.state.value}
-                  onChangeText={field.handleChange}
-                  onFocus={() => setFocusedField('name')}
-                  onBlur={field.handleBlur}
-                  autoCapitalize="characters"
-                  autoCorrect={false}
-                  accessibilityLabel="Cardholder Name"
-                  accessibilityHint="Enter name printed on card"
-                />
-              </View>
-              {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                <Text style={[styles.fieldErrorText, { color: theme.danger }]}>
-                  {String(field.state.meta.errors[0])}
-                </Text>
-              )}
-            </View>
+            <FormInput
+              label="Cardholder Name"
+              field={field}
+              placeholder="John Doe"
+              onFocus={() => setFocusedField('name')}
+              autoCapitalize="characters"
+              autoCorrect={false}
+              accessibilityLabel="Cardholder Name"
+              accessibilityHint="Enter name printed on card"
+            />
           )}
         </form.Field>
 
         {/* CARD NUMBER FIELD */}
         <form.Field name="cardNumber">
           {(field) => (
-            <View style={styles.inputGroup}>
-              <Text style={[styles.label, { color: theme.text }]}>Card Number</Text>
-              <View style={[styles.inputContainer, { backgroundColor: theme.inputBg, borderColor: theme.border }]}>
-                <TextInput
-                  style={[styles.input, { color: theme.text }]}
-                  placeholder="4111 2222 3333 4444"
-                  placeholderTextColor={theme.muted}
-                  keyboardType="number-pad"
-                  value={field.state.value}
-                  onChangeText={(val) => field.handleChange(formatCardNumber(val))}
-                  onFocus={() => setFocusedField('number')}
-                  onBlur={field.handleBlur}
-                  maxLength={19}
-                  accessibilityLabel="Card Number"
-                  accessibilityHint="Enter 16 digit card number"
-                />
-              </View>
-              {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                <Text style={[styles.fieldErrorText, { color: theme.danger }]}>
-                  {String(field.state.meta.errors[0])}
-                </Text>
-              )}
-            </View>
+            <FormInput
+              label="Card Number"
+              field={field}
+              placeholder="4111 2222 3333 4444"
+              keyboardType="number-pad"
+              onChangeTextFormatter={formatCardNumber}
+              onFocus={() => setFocusedField('number')}
+              maxLength={19}
+              accessibilityLabel="Card Number"
+              accessibilityHint="Enter 16 digit card number"
+            />
           )}
         </form.Field>
 
@@ -153,59 +115,37 @@ export function AddCardForm({ onSave, onCancel }: AddCardFormProps) {
           {/* EXPIRY DATE FIELD */}
           <form.Field name="expiryDate">
             {(field) => (
-              <View style={[styles.inputGroup, styles.flex1]}>
-                <Text style={[styles.label, { color: theme.text }]}>Expiry Date</Text>
-                <View style={[styles.inputContainer, { backgroundColor: theme.inputBg, borderColor: theme.border }]}>
-                  <TextInput
-                    style={[styles.input, { color: theme.text }]}
-                    placeholder="MM/YY"
-                    placeholderTextColor={theme.muted}
-                    keyboardType="number-pad"
-                    value={field.state.value}
-                    onChangeText={(val) => field.handleChange(formatExpiry(val))}
-                    onFocus={() => setFocusedField('expiry')}
-                    onBlur={field.handleBlur}
-                    maxLength={5}
-                    accessibilityLabel="Expiry Date"
-                    accessibilityHint="Enter expiration month and year"
-                  />
-                </View>
-                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                  <Text style={[styles.fieldErrorText, { color: theme.danger }]}>
-                    {String(field.state.meta.errors[0])}
-                  </Text>
-                )}
-              </View>
+              <FormInput
+                label="Expiry Date"
+                field={field}
+                placeholder="MM/YY"
+                keyboardType="number-pad"
+                onChangeTextFormatter={formatExpiry}
+                onFocus={() => setFocusedField('expiry')}
+                maxLength={5}
+                containerStyle={styles.flex1}
+                accessibilityLabel="Expiry Date"
+                accessibilityHint="Enter expiration month and year"
+              />
             )}
           </form.Field>
 
           {/* CVV SECURITY CODE FIELD */}
           <form.Field name="cvv">
             {(field) => (
-              <View style={[styles.inputGroup, styles.flex1, { marginLeft: 16 }]}>
-                <Text style={[styles.label, { color: theme.text }]}>CVV</Text>
-                <View style={[styles.inputContainer, { backgroundColor: theme.inputBg, borderColor: theme.border }]}>
-                  <TextInput
-                    style={[styles.input, { color: theme.text }]}
-                    placeholder="123"
-                    placeholderTextColor={theme.muted}
-                    keyboardType="number-pad"
-                    secureTextEntry
-                    value={field.state.value}
-                    onChangeText={(val) => field.handleChange(formatCvc(val))}
-                    onFocus={() => setFocusedField('cvv')}
-                    onBlur={field.handleBlur}
-                    maxLength={4}
-                    accessibilityLabel="CVV"
-                    accessibilityHint="Enter 3 or 4 digit security code on back of card"
-                  />
-                </View>
-                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                  <Text style={[styles.fieldErrorText, { color: theme.danger }]}>
-                    {String(field.state.meta.errors[0])}
-                  </Text>
-                )}
-              </View>
+              <FormInput
+                label="CVV"
+                field={field}
+                placeholder="123"
+                keyboardType="number-pad"
+                secureTextEntry
+                onChangeTextFormatter={formatCvc}
+                onFocus={() => setFocusedField('cvv')}
+                maxLength={4}
+                containerStyle={[styles.flex1, { marginLeft: 16 }]}
+                accessibilityLabel="CVV"
+                accessibilityHint="Enter 3 or 4 digit security code on back of card"
+              />
             )}
           </form.Field>
         </View>
@@ -278,25 +218,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     gap: 16,
   },
-  inputGroup: {
-    width: '100%',
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 6,
-  },
-  inputContainer: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    minHeight: 52,
-    justifyContent: 'center',
-  },
-  input: {
-    fontSize: 16,
-    paddingVertical: 10,
-  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -333,12 +254,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     textAlign: 'center',
-  },
-  fieldErrorText: {
-    fontSize: 12,
-    fontWeight: '600',
-    marginTop: 4,
-    marginLeft: 4,
   },
   buttonRow: {
     flexDirection: 'row',

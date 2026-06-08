@@ -1,14 +1,17 @@
 import { PaymentOption } from "@/app/(tabs)/home/payment/components/PaymentOption";
 import { colors } from "@/constants/colors";
 import { useTheme } from "@/src/constants/theme";
+import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { useCart } from "@/src/features/cart/context/CartContext";
 import { getCartSubtotal } from "@/src/features/cart/utilities/cart";
+import { createOrder } from "@/src/features/order/api/orders";
+import { FormInput } from "@/src/features/payment/components/FormInput";
 import { usePaymentMethods } from "@/src/features/payment/hooks/usePaymentMethods";
 import { formatCardNumber, formatCvc, formatExpiry, validateCardPaymentDetails } from "@/src/utilities/formatCard";
 import { FontAwesome6, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type PaymentMethod = "apple" | "card";
@@ -17,6 +20,7 @@ export default function PaymentScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
+  const { user } = useAuth();
 
   const { items, clearCart } = useCart();
   const total = getCartSubtotal(items);
@@ -25,6 +29,7 @@ export default function PaymentScreen() {
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvc, setCvc] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { cards } = usePaymentMethods();
   const [selectedCardId, setSelectedCardId] = useState<string | "new">("new");
@@ -43,22 +48,41 @@ export default function PaymentScreen() {
   const cardValidationError = validateCardPaymentDetails({ cardNumber, expiry, cvc, now: new Date() });
   const canPayCard = isSavedCardSelected || cardValidationError === null;
 
-  const handleConfirmPress = () => {
-    if (method === "apple") {
-      Alert.alert("Success", "Payment successful!", [{ text: "OK" }]);
-      clearCart();
-      router.dismissAll();
-      return;
-    }
+  const handleConfirmPress = async () => {
+    if (isSubmitting) return;
 
     if (method === "card" && !isSavedCardSelected && cardValidationError) {
       Alert.alert(cardValidationError.title, cardValidationError.message, [{ text: "OK" }]);
       return;
     }
 
-    Alert.alert("Success", "Payment successful!", [{ text: "OK" }]);
-    clearCart();
-    router.dismissAll();
+    try {
+      setIsSubmitting(true);
+
+      if (user?.id) {
+        await createOrder({
+          userId: user.id,
+          items,
+          price: total,
+        });
+      }
+
+      clearCart();
+
+      Alert.alert("Success", "Payment successful!", [
+        {
+          text: "OK",
+          onPress: () => {
+            router.dismissAll();
+          },
+        },
+      ]);
+    } catch (error) {
+      console.error("Payment confirmation error:", error);
+      Alert.alert("Error", "Could not complete order. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -160,69 +184,59 @@ export default function PaymentScreen() {
             {/* Card input form fields (rendered only if using a new card or if no saved cards exist) */}
             {(selectedCardId === "new" || cards.length === 0) && (
               <View style={{ gap: 10 }}>
-                <Text style={[styles.label, { color: theme.text }]}>Card number</Text>
-                <View style={[styles.inputWrap, { backgroundColor: theme.inputBg, borderColor: theme.border }]}>
-                  <TextInput
-                    value={cardNumber}
-                    onChangeText={(text) => setCardNumber(formatCardNumber(text))}
-                    placeholder="1234 5678 9012 3456"
-                    placeholderTextColor={theme.muted}
-                    keyboardType="number-pad"
-                    style={[styles.input, { color: theme.text }]}
-                    maxLength={19}
-                    accessibilityLabel="Card number"
-                    accessibilityHint="Enter your 16 digit card number"
-                  />
-                  <View style={styles.brandRow}>
-                    <FontAwesome6 name="cc-mastercard" size={22} color="#EB001B" accessible={false} />
-                    <FontAwesome6 name="cc-visa" size={22} color="#1A1F71" accessible={false} />
-                    <FontAwesome6 name="cc-discover" size={22} color="#FF6000" accessible={false} />
-                    <FontAwesome6 name="cc-jcb" size={22} color="#0B4EA2" accessible={false} />
-                  </View>
-                </View>
+                <FormInput
+                  label="Card number"
+                  value={cardNumber}
+                  onChangeText={setCardNumber}
+                  onChangeTextFormatter={formatCardNumber}
+                  placeholder="1234 5678 9012 3456"
+                  placeholderTextColor={theme.muted}
+                  keyboardType="number-pad"
+                  maxLength={19}
+                  accessibilityLabel="Card number"
+                  accessibilityHint="Enter your 16 digit card number"
+                  rightElement={
+                    <View style={styles.brandRow}>
+                      <FontAwesome6 name="cc-mastercard" size={22} color="#EB001B" accessible={false} />
+                      <FontAwesome6 name="cc-visa" size={22} color="#1A1F71" accessible={false} />
+                      <FontAwesome6 name="cc-discover" size={22} color="#FF6000" accessible={false} />
+                      <FontAwesome6 name="cc-jcb" size={22} color="#0B4EA2" accessible={false} />
+                    </View>
+                  }
+                />
 
                 <View style={styles.row}>
-                  <View style={styles.flex1}>
-                    <Text style={[styles.label, { color: theme.text }]}>Expiry</Text>
-                    <View style={[styles.inputWrap, {
-                      backgroundColor: theme.inputBg,
-                      borderColor: theme.border
-                    }]}>
-                      <TextInput
-                        value={expiry}
-                        onChangeText={(text) => setExpiry(formatExpiry(text))}
-                        placeholder="mm/yy"
-                        placeholderTextColor={theme.muted}
-                        keyboardType="number-pad"
-                        style={[styles.input, { color: theme.text }]}
-                        maxLength={5}
-                        accessibilityLabel="Expiry date"
-                        accessibilityHint="Enter the card expiration date in month and year"
-                      />
-                    </View>
-                  </View>
+                  <FormInput
+                    label="Expiry"
+                    value={expiry}
+                    onChangeText={setExpiry}
+                    onChangeTextFormatter={formatExpiry}
+                    placeholder="mm/yy"
+                    placeholderTextColor={theme.muted}
+                    keyboardType="number-pad"
+                    maxLength={5}
+                    containerStyle={styles.flex1}
+                    accessibilityLabel="Expiry date"
+                    accessibilityHint="Enter the card expiration date in month and year"
+                  />
 
-                  <View style={styles.flex1}>
-                    <Text style={[styles.label, { color: theme.text }]}>CVC</Text>
-                    <View style={[styles.inputWrap, {
-                      backgroundColor: theme.inputBg,
-                      borderColor: theme.border
-                    }]}>
-                      <TextInput
-                        value={cvc}
-                        onChangeText={(text) => setCvc(formatCvc(text))}
-                        placeholder="***"
-                        placeholderTextColor={theme.muted}
-                        keyboardType="number-pad"
-                        secureTextEntry
-                        style={[styles.input, { color: theme.text }]}
-                        maxLength={4}
-                        accessibilityLabel="CVC"
-                        accessibilityHint="Enter the security code from your card"
-                      />
+                  <FormInput
+                    label="CVC"
+                    value={cvc}
+                    onChangeText={setCvc}
+                    onChangeTextFormatter={formatCvc}
+                    placeholder="***"
+                    placeholderTextColor={theme.muted}
+                    keyboardType="number-pad"
+                    secureTextEntry
+                    maxLength={4}
+                    containerStyle={styles.flex1}
+                    accessibilityLabel="CVC"
+                    accessibilityHint="Enter the security code from your card"
+                    rightElement={
                       <MaterialCommunityIcons name="credit-card-outline" size={20} color={theme.muted} accessible={false} />
-                    </View>
-                  </View>
+                    }
+                  />
                 </View>
               </View>
             )}
@@ -234,8 +248,10 @@ export default function PaymentScreen() {
             backgroundColor:
               method === "card" && !canPayCard ? "#C9C9C9" : theme.accent,
           },
+          (isSubmitting || (method === "card" && !canPayCard)) && { opacity: 0.7 }
           ]}
           onPress={handleConfirmPress}
+          disabled={isSubmitting || (method === "card" && !canPayCard)}
           accessibilityRole="button"
           accessibilityLabel={method === "card"
             ? `Confirm and pay $${total.toFixed(2)}`
@@ -244,11 +260,15 @@ export default function PaymentScreen() {
             ? "Confirms your card payment details and completes the order"
             : "Completes the order with Apple Pay"}
         >
-          <Text style={styles.confirmText}>
-            {method === "card"
-              ? `Confirm and Pay ($${total.toFixed(2)})`
-              : `Pay with Apple Pay ($${total.toFixed(2)})`}
-          </Text>
+          {isSubmitting ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.confirmText}>
+              {method === "card"
+                ? `Confirm and Pay ($${total.toFixed(2)})`
+                : `Pay with Apple Pay ($${total.toFixed(2)})`}
+            </Text>
+          )}
         </Pressable>
       </ScrollView>
     </View>
@@ -271,21 +291,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     marginBottom: 8,
-  },
-  inputWrap: {
-    minHeight: 50,
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
-    paddingVertical: 12,
   },
   brandRow: {
     flexDirection: "row",

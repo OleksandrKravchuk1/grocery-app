@@ -97,7 +97,7 @@ export function SavedCardsCarousel({
               cardholderName={item.cardholderName}
               cardNumber={item.cardNumber}
               expiryDate={item.expiryDate}
-              cvv={item.cvv}
+              cvv=''
               brand={item.brand}
               flipped={false}
             />

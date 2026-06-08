@@ -36,9 +36,8 @@ export function SignInForm() {
         </Text>
         <Text style={[styles.sectionHint, { color: theme.muted }]}>Name and surname</Text>
 
-        <form.Field
-          name="firstName"
-          children={(field: any) => (
+        <form.Field name="firstName">
+          {(field: any) => (
             <InputRow
               iconName="person"
               value={field.state.value}
@@ -46,11 +45,10 @@ export function SignInForm() {
               placeholder="Name"
             />
           )}
-        />
+        </form.Field>
 
-        <form.Field
-          name="lastName"
-          children={(field: any) => (
+        <form.Field name="lastName">
+          {(field: any) => (
             <InputRow
               iconName="person"
               value={field.state.value}
@@ -59,15 +57,14 @@ export function SignInForm() {
               style={styles.mt8}
             />
           )}
-        />
+        </form.Field>
 
         <Text style={[styles.sectionHint, styles.mt14, { color: theme.muted }]}>
           Birthday date
         </Text>
 
-        <form.Field
-          name="birthday"
-          children={(field: any) => (
+        <form.Field name="birthday">
+          {(field: any) => (
             <InputRow
               iconName="calendar-month"
               value={field.state.value}
@@ -75,15 +72,14 @@ export function SignInForm() {
               placeholder="Birthday"
             />
           )}
-        />
+        </form.Field>
       </View>
 
       <View style={[styles.card, { backgroundColor: theme.card }]}>
         <Text style={[styles.sectionHint, styles.mt14, { color: theme.muted }]}>Gender</Text>
         <View style={styles.genderRow}>
-          <form.Field
-            name="gender"
-            children={(field: any) =>
+          <form.Field name="gender">
+            {(field: any) =>
               genderOptions.map((item) => {
                 const selected = field.state.value === item;
                 return (
@@ -113,7 +109,7 @@ export function SignInForm() {
                 );
               })
             }
-          />
+          </form.Field>
         </View>
       </View>
 
@@ -123,9 +119,8 @@ export function SignInForm() {
         </Text>
         <Text style={[styles.sectionHint, { color: theme.muted }]}>Phone number</Text>
 
-        <form.Field
-          name="phone"
-          children={(field: any) => (
+        <form.Field name="phone">
+          {(field: any) => (
             <InputRow
               iconName="phone"
               value={field.state.value}
@@ -134,7 +129,7 @@ export function SignInForm() {
               keyboardType="phone-pad"
             />
           )}
-        />
+        </form.Field>
 
         <Text style={[styles.sectionHint, styles.mt14, { color: theme.muted }]}>Email</Text>
         <View style={[styles.inputRow, { backgroundColor: theme.inputBg, borderColor: theme.inputBorder }]}>

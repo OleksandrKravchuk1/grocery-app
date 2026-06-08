@@ -1,13 +1,13 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import Animated from 'react-native-reanimated';
 import MaskedView from '@react-native-masked-view/masked-view';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 export const SplashScreenView = () => {
     return (
         <View style={styles.container}>
             <MaskedView
-                style={{flex: 1, flexDirection: 'row', height: '100%'}}
+                style={{ flex: 1, flexDirection: 'row', height: '100%' }}
                 maskElement={
                     <View style={styles.maskedContainer}>
                         <Text style={styles.maskedText}>grabber</Text>
@@ -18,7 +18,7 @@ export const SplashScreenView = () => {
                     style={[styles.gradient, {
                         animationName: {
                             to: {
-                                transform: [{rotate: '360deg'}],
+                                transform: [{ rotate: '360deg' }],
                             },
                         },
                         animationDuration: '3s',
