@@ -10,10 +10,10 @@ import { useEffect, useState } from "react";
 
 void SplashScreen.preventAutoHideAsync();
 
+const queryClient = new QueryClient();
+
 export default function RootLayout() {
     const [isReady, setIsReady] = useState(false);
-
-    const queryClient = new QueryClient();
 
     useEffect(() => {
         let isMounted = true;
