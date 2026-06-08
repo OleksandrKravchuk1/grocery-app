@@ -1,14 +1,15 @@
-import BannerList from "@/src/features/banners/components/BannerList";
-import CategoriesList from "@/src/features/category/components/CategoriesList";
-import CategorySection from "@/src/features/category/components/CategorySection";
+import { AddressView } from "@/features/location/components/AddressView";
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
 import { useTheme } from "@/src/constants/theme";
 import { useLocation } from "@/src/context/LocationContext";
+import BannerList from "@/src/features/banners/components/BannerList";
+import CategoriesList from "@/src/features/category/components/CategoriesList";
+import CategorySection from "@/src/features/category/components/CategorySection";
 import { useCategory } from "@/src/features/category/hooks/useCategory";
-import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -35,32 +36,7 @@ export default function HomeScreen() {
 
             {/* HEADER */}
             <View style={styles.header}>
-                <Pressable
-                    style={styles.addressContainer}
-                    accessibilityRole='button'
-                    accessibilityLabel={`Current delivery address: ${address}`}
-                    accessibilityHint='Opens the location picker to select your delivery address'
-                    onPress={() => router.push('/(modals)/location-picker')}
-                >
-                    <MaterialIcons name="delivery-dining"
-                        size={28}
-                        color={theme.text}
-                        accessible={false}
-                    />
-                    <Text style={[styles.address, {
-                        color: theme.text
-                    }]}
-                        numberOfLines={1}
-                        ellipsizeMode='tail'
-                    >
-                        {address}
-                    </Text>
-                    <Entypo name='chevron-small-down'
-                        size={24}
-                        color={theme.text}
-                        accessible={false}
-                    />
-                </Pressable>
+                <AddressView address={address} />
                 <Pressable
                     style={styles.bagIcon}
                     onPress={() => router.push('/home/cart')}
@@ -112,17 +88,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingTop: 12,
     },
-    addressContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        flex: 1,
-        marginRight: 12,
-    },
-    address: {
-        fontSize: 18,
-        paddingHorizontal: 8,
-        flexShrink: 1,
-    },
+
     content: {
         justifyContent: 'center',
         alignItems: 'stretch',
