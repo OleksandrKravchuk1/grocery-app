@@ -1,12 +1,13 @@
-import ProductCard from "@/src/features/product/components/ProductCard";
+import { CategoryEmptyComponent } from "@/features/category/components/CategoryEmptyComponent";
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
 import { useTheme } from "@/src/constants/theme";
-import { useFadeInSlideUp } from "@/src/hooks/animations/useFadeInSlideUp";
-import { useCategoryProducts } from "@/src/features/product/hooks/useCategoryProducts";
 import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
+import ProductCard from "@/src/features/product/components/ProductCard";
+import { useCategoryProducts } from "@/src/features/product/hooks/useCategoryProducts";
+import { useFadeInSlideUp } from "@/src/hooks/animations/useFadeInSlideUp";
 import { useNumericRouteParam } from "@/src/hooks/useNumaricRouteParam";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 
 export default function CategoryProductsScreen() {
@@ -23,12 +24,15 @@ export default function CategoryProductsScreen() {
     if (isError) return <ErrorView message={error} />;
 
     return (
-        <Animated.View style={[animatedStyle, {backgroundColor: theme.screen}]}>
+        <Animated.View style={[animatedStyle, { backgroundColor: theme.screen, flex: 1 }]}>
             <Animated.FlatList
                 data={products}
                 keyExtractor={(item, index) => `${item.id}-${item.title}-${index}`}
                 numColumns={2}
-                contentContainerStyle={styles.listContent}
+                contentContainerStyle={[
+                    styles.listContent,
+                    products.length === 0 && { flexGrow: 1, justifyContent: "center", paddingTop: 0 }
+                ]}
                 accessibilityRole='list'
                 accessibilityLabel={`Products in category ${parsedCategoryId}`}
                 accessibilityHint='Browse the products in this category'
@@ -46,11 +50,7 @@ export default function CategoryProductsScreen() {
                         />
                     </View>
                 )}
-                ListEmptyComponent={
-                    <Text style={styles.emptyText} accessibilityRole='text'>
-                        No products in this category
-                    </Text>
-                }
+                ListEmptyComponent={<CategoryEmptyComponent />}
             />
         </Animated.View>
     );
@@ -75,8 +75,5 @@ const styles = StyleSheet.create({
     gridCard: {
         width: "100%",
         marginRight: 0,
-    },
-    emptyText: {
-        fontSize: 16,
     },
 });
