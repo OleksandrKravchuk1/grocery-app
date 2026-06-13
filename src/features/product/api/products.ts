@@ -8,17 +8,27 @@ type SearchProductOptions = {
     sortBy?: SearchSortBy;
 }
 
+const mapProduct = (item: any) => ({
+    id: item.id,
+    title: item.title,
+    price: item.price,
+    rating: item.rating,
+    image: item.media?.filename
+        ? `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/products/${item.media.filename}`
+        : '',
+});
+
 export async function getProductsByCategoryId(category_id: number) {
     const {data, error} = await supabase
         .from('products')
-        .select()
+        .select('*, media:image_id(filename)')
         .eq('category_id', category_id);
 
     if (error) {
         throw new Error(error.message);
     }
 
-    return data;
+    return (data || []).map(mapProduct);
 }
 
 export async function getProductsByIds(productIds: number[]) {
@@ -26,14 +36,14 @@ export async function getProductsByIds(productIds: number[]) {
 
     const {data, error} = await supabase
         .from('products')
-        .select()
+        .select('*, media:image_id(filename)')
         .in('id', productIds);
 
     if (error) {
         throw new Error(error.message);
     }
 
-    return data;
+    return (data || []).map(mapProduct);
 }
 
 export async function searchProduct(query: string, options: SearchProductOptions = {}) {
@@ -46,7 +56,7 @@ export async function searchProduct(query: string, options: SearchProductOptions
 
     let request = supabase
         .from('products')
-        .select()
+        .select('*, media:image_id(filename)')
         .ilike('title', `%${query}%`);
 
     if (categoryId != null) {
@@ -77,5 +87,6 @@ export async function searchProduct(query: string, options: SearchProductOptions
         throw new Error(error.message);
     }
 
-    return data;
+    return (data || []).map(mapProduct);
 }
+

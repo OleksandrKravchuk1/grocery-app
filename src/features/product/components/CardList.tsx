@@ -8,9 +8,9 @@ import { FlatList } from "react-native";
 
 const CardList = ({ category_id }: CardListProps) => {
   const { products, isLoading, isError, error } = useCategoryProducts(category_id);
-  const { favoriteIds, loading, toggleFavorite } = useFavoriteProducts();
+  const { favoriteIds, isLoading: isFavoritesLoading, toggleFavorite } = useFavoriteProducts();
 
-  if (isLoading || loading) return <LoadingView accessibilityLabel="Loading products" />
+  if (isLoading || isFavoritesLoading) return <LoadingView accessibilityLabel="Loading products" />
   if (isError || error) return <ErrorView message={error || "Failed to load products"} />
 
   return (
