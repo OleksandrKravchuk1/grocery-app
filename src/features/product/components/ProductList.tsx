@@ -6,7 +6,7 @@ import { useCategoryProducts } from "@/src/features/product/hooks/useCategoryPro
 import { CardListProps } from "@/src/types/product";
 import { FlatList } from "react-native";
 
-const CardList = ({ category_id }: CardListProps) => {
+export function ProductList({ category_id }: CardListProps) {
   const { products, isLoading, isError, error } = useCategoryProducts(category_id);
   const { favoriteIds, isLoading: isFavoritesLoading, toggleFavorite } = useFavoriteProducts();
 
@@ -34,5 +34,3 @@ const CardList = ({ category_id }: CardListProps) => {
     />
   )
 };
-
-export default CardList;

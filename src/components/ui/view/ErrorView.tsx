@@ -19,7 +19,7 @@ export const ErrorView = ({ message, onRetry }: ErrorViewProps) => {
             <MaterialIcons name="error-outline" size={48} color={theme.danger} />
             <Text style={[styles.errorText, { color: theme.text }]}>Error</Text>
             <Text style={[styles.errorMessage, { color: theme.muted }]}>
-                Failed to load orders. Please try again.
+                {message || "An unexpected error occurred. Please try again."}
             </Text>
             <Animated.View style={[animatedStyle]}>
                 <Pressable

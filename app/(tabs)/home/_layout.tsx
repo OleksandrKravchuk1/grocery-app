@@ -1,5 +1,5 @@
-import {Stack} from "expo-router";
-import {useColorScheme} from "react-native";
+import { Stack } from "expo-router";
+import { useColorScheme } from "react-native";
 
 export default function HomeLayout() {
     const isDark = useColorScheme() === 'dark';
@@ -21,8 +21,8 @@ export default function HomeLayout() {
                 }}
             />
             <Stack.Screen
-                name="[categoryId]"
-                options={({route}) => {
+                name="[categoryId]/index"
+                options={({ route }) => {
                     const params = route.params as { title?: string } | undefined;
 
                     return {
@@ -32,6 +32,14 @@ export default function HomeLayout() {
                     };
                 }}
             />
+            <Stack.Screen
+                name="product/[id]/index"
+                options={{
+                    headerShown: false,
+                    animation: 'none',
+                }}
+            />
+
             <Stack.Screen
                 name="cart"
                 options={{

@@ -8,7 +8,7 @@ type SearchProductOptions = {
     sortBy?: SearchSortBy;
 }
 
-const mapProduct = (item: any) => ({
+export const mapProduct = (item: any) => ({
     id: item.id,
     title: item.title,
     price: item.price,
@@ -90,3 +90,16 @@ export async function searchProduct(query: string, options: SearchProductOptions
     return (data || []).map(mapProduct);
 }
 
+export async function getProductById(id: number) {
+    const {data, error} = await supabase
+        .from('products')
+        .select('*, media:image_id(filename)')
+        .eq('id', id)
+        .single();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return mapProduct(data);
+}
