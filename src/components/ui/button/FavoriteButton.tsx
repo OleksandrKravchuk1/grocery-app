@@ -5,7 +5,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Alert, Pressable, StyleSheet } from "react-native";
 
 type Props = {
-    id: number;
     onAddToFavoritesPress?: () => void;
     isFavorite?: boolean;
 };

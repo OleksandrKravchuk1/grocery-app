@@ -63,7 +63,7 @@ export default function ProductDetailScreen() {
           <View style={styles.headerRow}>
             <Text style={[styles.title, { color: theme.text }]}>{product.title}</Text>
             <View style={styles.favoriteContainer}>
-              <FavoriteButton id={product.id} onAddToFavoritesPress={() => toggleFavorite(product.id)} />
+              <FavoriteButton onAddToFavoritesPress={() => toggleFavorite(product.id)} />
             </View>
           </View>
 
@@ -201,23 +201,6 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 15,
     lineHeight: 22,
-  },
-  detailsRow: {
-    flexDirection: "row",
-    gap: 12,
-    marginTop: 24,
-  },
-  detailBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    gap: 6,
-  },
-  detailText: {
-    fontSize: 14,
-    fontWeight: "600",
   },
   bottomBar: {
     position: "absolute",

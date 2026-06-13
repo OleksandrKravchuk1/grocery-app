@@ -44,7 +44,6 @@ const ProductCard = ({ id, image, title, rating, price, cardStyle, onAddToFavori
 
       <View style={styles.favoriteButtonContainer}>
         <FavoriteButton
-          id={id}
           onAddToFavoritesPress={onAddToFavoritesPress}
           isFavorite={isFavorite}
         />

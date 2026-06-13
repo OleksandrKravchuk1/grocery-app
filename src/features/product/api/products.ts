@@ -1,5 +1,5 @@
-import {supabase} from "@/src/lib/supabase";
-import {SearchSortBy} from "@/src/types/product";
+import { supabase } from "@/src/lib/supabase";
+import { SearchSortBy } from "@/src/types/product";
 
 type SearchProductOptions = {
     categoryId?: number | null;
@@ -19,7 +19,7 @@ export const mapProduct = (item: any) => ({
 });
 
 export async function getProductsByCategoryId(category_id: number) {
-    const {data, error} = await supabase
+    const { data, error } = await supabase
         .from('products')
         .select('*, media:image_id(filename)')
         .eq('category_id', category_id);
@@ -34,7 +34,7 @@ export async function getProductsByCategoryId(category_id: number) {
 export async function getProductsByIds(productIds: number[]) {
     if (productIds.length === 0) return [];
 
-    const {data, error} = await supabase
+    const { data, error } = await supabase
         .from('products')
         .select('*, media:image_id(filename)')
         .in('id', productIds);
@@ -72,16 +72,16 @@ export async function searchProduct(query: string, options: SearchProductOptions
     }
 
     if (sortBy === "price_asc") {
-        request = request.order('price', {ascending: true});
+        request = request.order('price', { ascending: true });
     } else if (sortBy === "price_desc") {
-        request = request.order('price', {ascending: false});
+        request = request.order('price', { ascending: false });
     } else if (sortBy === "rating_desc") {
-        request = request.order('rating', {ascending: false});
+        request = request.order('rating', { ascending: false });
     } else {
-        request = request.order('title', {ascending: true});
+        request = request.order('title', { ascending: true });
     }
 
-    const {data, error} = await request.limit(40);
+    const { data, error } = await request.limit(40);
 
     if (error) {
         throw new Error(error.message);
@@ -90,8 +90,11 @@ export async function searchProduct(query: string, options: SearchProductOptions
     return (data || []).map(mapProduct);
 }
 
-export async function getProductById(id: number) {
-    const {data, error} = await supabase
+export async function getProductById(id: number | undefined) {
+    if (id === undefined) {
+        throw new Error("Product ID is required");
+    }
+    const { data, error } = await supabase
         .from('products')
         .select('*, media:image_id(filename)')
         .eq('id', id)
