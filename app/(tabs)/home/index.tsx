@@ -1,3 +1,4 @@
+import { CartButton } from "@/features/cart/components/CartButton";
 import { AddressView } from "@/features/location/components/AddressView";
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
@@ -7,13 +8,10 @@ import BannerList from "@/src/features/banners/components/BannerList";
 import CategoriesList from "@/src/features/category/components/CategoriesList";
 import CategorySection from "@/src/features/category/components/CategorySection";
 import { useCategory } from "@/src/features/category/hooks/useCategory";
-import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import { Platform, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-    const router = useRouter();
     const insets = useSafeAreaInsets();
     const theme = useTheme();
     const androidHeaderOffset = Platform.OS === 'android' ? insets.top + 56 : 0;
@@ -37,17 +35,7 @@ export default function HomeScreen() {
             {/* HEADER */}
             <View style={styles.header}>
                 <AddressView address={address} />
-                <Pressable
-                    style={styles.bagIcon}
-                    onPress={() => router.push('/home/cart')}
-                    accessibilityRole='button'
-                    accessibilityLabel='Shopping Cart'
-                    accessibilityHint='View items in your shopping cart'
-                >
-                    <Ionicons name="bag-outline" size={24}
-                        color={theme.text}
-                        accessible={false} />
-                </Pressable>
+                <CartButton />
             </View>
 
             {/* MAIN CONTENT*/}
@@ -94,10 +82,6 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         width: '100%',
         paddingTop: 8,
-    },
-    bagIcon: {
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     banner: {
         marginTop: 8,
