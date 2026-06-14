@@ -29,6 +29,6 @@ export function useReverseGeocode(coords: Coords | null) {
         queryKey: ["address", coords?.latitude, coords?.longitude],
         queryFn: () => resolveAddress(coords!),
         enabled: !!coords,
-        staleTime: Infinity, // Адреса для конкретних координат не змінюється, кешуємо назавжди
+        staleTime: Infinity,
     });
 }

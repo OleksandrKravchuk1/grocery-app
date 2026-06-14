@@ -1,10 +1,10 @@
+import { useTheme } from "@/src/constants/theme";
+import { useCart } from "@/src/features/cart/context/CartContext";
+import { useExpandAnimation } from "@/src/hooks/animations/useExpandAnimation";
+import { Product } from "@/src/types/product";
+import { Feather } from "@expo/vector-icons";
 import { Pressable, StyleProp, StyleSheet, Text, ViewStyle } from "react-native";
 import Animated from "react-native-reanimated";
-import { Feather } from "@expo/vector-icons";
-import { useCart } from "@/src/features/cart/context/CartContext";
-import { Product } from "@/src/types/product";
-import { useTheme } from "@/src/constants/theme";
-import { useExpandAnimation } from "@/src/hooks/animations/useExpandAnimation";
 
 type AddToCartButtonProps = {
     product: Product;
@@ -22,10 +22,7 @@ export const AddToCartButton = ({ product, style }: AddToCartButtonProps) => {
 
     const handleAdd = () => addToCart(product);
     const handleInc = () => updateQuantity(product, quantity + 1);
-    const handleDec = () => {
-        if (quantity === 1) removeFromCart(product);
-        else updateQuantity(product, quantity - 1);
-    };
+    const handleDec = () => quantity === 1 ? removeFromCart(product) : updateQuantity(product, quantity - 1);
 
     return (
         <Animated.View

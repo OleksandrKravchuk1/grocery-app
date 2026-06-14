@@ -1,3 +1,5 @@
+import { Feather } from "@expo/vector-icons";
+
 export type Product = {
     id: number;
     title: string;
@@ -30,3 +32,8 @@ export type SearchSortBy =
     | "price_asc"
     | "price_desc"
     | "rating_desc";
+
+export type ProductBadge = {
+    icon: keyof typeof Feather.glyphMap;
+    text: string;
+};
