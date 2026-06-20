@@ -7,10 +7,14 @@ export function CartButton() {
   const theme = useTheme();
   const router = useRouter();
 
+  const handleOnPress = () => {
+    router.push('/home/cart');
+  }
+
   return (
     <Pressable
       style={styles.bagIcon}
-      onPress={() => router.push('/home/cart')}
+      onPress={handleOnPress}
       accessibilityRole='button'
       accessibilityLabel='Shopping Cart'
       accessibilityHint='View items in your shopping cart'

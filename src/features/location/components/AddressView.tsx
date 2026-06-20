@@ -6,13 +6,18 @@ import { Pressable, StyleSheet, Text } from "react-native";
 export function AddressView({ address }: { address: string }) {
   const router = useRouter();
   const theme = useTheme();
+
+  const handleOnPress = () => {
+    router.push('/(modals)/location-picker');
+  }
+
   return (
     <Pressable
       style={styles.addressContainer}
       accessibilityRole='button'
       accessibilityLabel={`Current delivery address: ${address}`}
       accessibilityHint='Opens the location picker to select your delivery address'
-      onPress={() => router.push('/(modals)/location-picker')}
+      onPress={handleOnPress}
     >
       <MaterialIcons name="delivery-dining"
         size={28}

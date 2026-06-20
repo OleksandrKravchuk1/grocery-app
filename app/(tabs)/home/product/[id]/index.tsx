@@ -1,6 +1,7 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import { Dimensions, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import Animated, { interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { BackButton } from "@/components/ui/button/BackButton";
@@ -27,6 +28,42 @@ export default function ProductDetailScreen() {
   const { data: product, isLoading, error, refetch } = useProduct(Number(id));
   const { getQuantity, addToCart, updateQuantity, removeFromCart } = useCart();
 
+  const scrollY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
+
+  const imageAnimatedStyle = useAnimatedStyle(() => {
+    const scale = interpolate(
+      scrollY.value,
+      [-100, 0, 200],
+      [1.25, 1, 0.75],
+      "clamp"
+    );
+
+    const translateY = interpolate(
+      scrollY.value,
+      [-100, 0, 200],
+      [0, 0, -45],
+      "clamp"
+    );
+
+    const opacity = interpolate(
+      scrollY.value,
+      [0, 200],
+      [1, 0],
+      "clamp"
+    );
+
+    return {
+      transform: [{ scale }, { translateY }],
+      opacity,
+    };
+  });
+
   if (isLoading) {
     return <LoadingView />;
   }
@@ -47,17 +84,23 @@ export default function ProductDetailScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.cardContainer }]}>
-      <View style={styles.content}>
+      <Animated.View style={[styles.imageContainer, { backgroundColor: theme.screen }, imageAnimatedStyle]}>
+        <Image
+          source={{ uri: product.image }}
+          style={styles.image}
+          resizeMode="contain"
+          accessible={true}
+          accessibilityLabel={`${product.title} image`}
+        />
+      </Animated.View>
 
-        <View style={[styles.imageContainer, { backgroundColor: theme.screen }]}>
-          <Image
-            source={{ uri: product.image }}
-            style={styles.image}
-            resizeMode="contain"
-            accessible={true}
-            accessibilityLabel={`${product.title} image`}
-          />
-        </View>
+      <Animated.ScrollView
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.imageSpacer} />
 
         <View style={[styles.contentContainer, { backgroundColor: theme.card }]}>
           <View style={styles.headerRow}>
@@ -83,45 +126,45 @@ export default function ProductDetailScreen() {
           </View>
 
           <ProductBadges badges={productBadges} />
+
+          <View style={[styles.actionContainer, { paddingBottom: insets.bottom || 24 }]}>
+            {quantity === 0 && (
+              <Pressable
+                style={[styles.primaryButton, { backgroundColor: theme.text }]}
+                onPress={handleAdd}
+                accessibilityRole="button"
+                accessibilityLabel="Add to Cart"
+              >
+                <Feather name="shopping-bag" size={20} color={theme.cardContainer} />
+                <Text style={[styles.primaryButtonText, { color: theme.cardContainer }]}>Add to Cart</Text>
+              </Pressable>
+            )}
+            {quantity > 0 && (
+              <View style={[styles.quantityContainer, { borderColor: theme.border }]}>
+                <Pressable
+                  style={styles.qtyBtn}
+                  onPress={handleDec}
+                  accessibilityRole="button"
+                  accessibilityLabel="Decrease quantity"
+                >
+                  <Feather name={quantity === 1 ? "trash-2" : "minus"} size={22} color={theme.text} />
+                </Pressable>
+                <Text style={[styles.qtyText, { color: theme.text }]}>{quantity}</Text>
+                <Pressable
+                  style={styles.qtyBtn}
+                  onPress={handleInc}
+                  accessibilityRole="button"
+                  accessibilityLabel="Increase quantity"
+                >
+                  <Feather name="plus" size={22} color={theme.text} />
+                </Pressable>
+              </View>
+            )}
+          </View>
         </View>
-      </View>
+      </Animated.ScrollView>
 
       <BackButton />
-
-      <View style={[styles.bottomBar, { backgroundColor: theme.card, paddingBottom: insets.bottom || 24 }]}>
-        {quantity === 0 && (
-          <Pressable
-            style={[styles.primaryButton, { backgroundColor: theme.text }]}
-            onPress={handleAdd}
-            accessibilityRole="button"
-            accessibilityLabel="Add to Cart"
-          >
-            <Feather name="shopping-bag" size={20} color={theme.cardContainer} />
-            <Text style={[styles.primaryButtonText, { color: theme.cardContainer }]}>Add to Cart</Text>
-          </Pressable>
-        )}
-        {quantity > 0 && (
-          <View style={[styles.quantityContainer, { borderColor: theme.border }]}>
-            <Pressable
-              style={styles.qtyBtn}
-              onPress={handleDec}
-              accessibilityRole="button"
-              accessibilityLabel="Decrease quantity"
-            >
-              <Feather name={quantity === 1 ? "trash-2" : "minus"} size={22} color={theme.text} />
-            </Pressable>
-            <Text style={[styles.qtyText, { color: theme.text }]}>{quantity}</Text>
-            <Pressable
-              style={styles.qtyBtn}
-              onPress={handleInc}
-              accessibilityRole="button"
-              accessibilityLabel="Increase quantity"
-            >
-              <Feather name="plus" size={22} color={theme.text} />
-            </Pressable>
-          </View>
-        )}
-      </View>
     </View>
   );
 }
@@ -130,16 +173,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  content: {
+  scrollContent: {
     flexGrow: 1,
-    paddingBottom: 120,
   },
   imageContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
     height: height * 0.45,
-    width: "100%",
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 40,
+  },
+  imageSpacer: {
+    height: height * 0.45,
+    backgroundColor: "transparent",
   },
   image: {
     width: "80%",
@@ -202,13 +251,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
   },
-  bottomBar: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingHorizontal: 24,
-    paddingTop: 16,
+  actionContainer: {
+    marginTop: 32,
+    marginBottom: 8,
   },
   primaryButton: {
     flexDirection: "row",

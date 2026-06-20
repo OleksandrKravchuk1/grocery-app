@@ -8,9 +8,11 @@ export function BackButton() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const router = useRouter();
+
   const handlePress = () => {
     router.back();
   }
+
   return (
     <Pressable
       style={[styles.backButton, { top: insets.top + 16, backgroundColor: theme.cardContainer }]}

@@ -5,29 +5,24 @@ import Animated from "react-native-reanimated";
 
 type Props = {
   onPress: () => void;
-  title?: string;
-  isSaving: boolean;
-};
+}
 
-export function SubmitButton({ onPress, title, isSaving }: Props) {
+export function SignOutButton({ onPress }: Props) {
   const theme = useTheme();
   const { animatedStyle, onPressIn, onPressOut } = usePressAnimation({});
-
   return (
     <Animated.View style={animatedStyle}>
       <Pressable
         onPress={onPress}
         onPressIn={onPressIn}
         onPressOut={onPressOut}
-        disabled={isSaving}
-        style={[styles.button, { backgroundColor: theme.accent }, isSaving && styles.disabled]}
+        style={[styles.dangerButton, { borderColor: theme.danger }]}
         accessibilityRole="button"
-        accessibilityLabel="Submit"
-        accessibilityHint="Submits your changes"
-        accessibilityState={{ disabled: isSaving }}
+        accessibilityLabel="Sign out"
+        accessibilityHint="Signs you out of the app"
       >
-        <Text style={styles.buttonText}>
-          {title || (isSaving ? "Saving..." : "Save")}
+        <Text style={[styles.dangerButtonText, { color: theme.danger }]}>
+          Sign out
         </Text>
       </Pressable>
     </Animated.View>
@@ -35,19 +30,16 @@ export function SubmitButton({ onPress, title, isSaving }: Props) {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    marginTop: 14,
+  dangerButton: {
+    marginTop: 10,
     minHeight: 48,
     borderRadius: 12,
+    borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  buttonText: {
-    color: "#fff",
+  dangerButtonText: {
     fontSize: 16,
     fontWeight: "700",
-  },
-  disabled: {
-    opacity: 0.6,
   },
 });
