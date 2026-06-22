@@ -1,7 +1,7 @@
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
 import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
-import ProductCard from "@/src/features/product/components/ProductCard";
+import { ProductCard } from "@/src/features/product/components/ProductCard";
 import { useCategoryProducts } from "@/src/features/product/hooks/useCategoryProducts";
 import { CardListProps } from "@/src/types/product";
 import { FlatList } from "react-native";

@@ -2,7 +2,7 @@ import { colors } from "@/constants/colors";
 import { usePressAnimation } from "@/hooks/animations/usePressAnimation";
 import { useTheme } from "@/src/constants/theme";
 import { useAuth } from "@/src/features/auth/context/AuthContext";
-import CartItem from "@/src/features/cart/components/CartItem";
+import { CartItem } from "@/src/features/cart/components/CartItem";
 import { useCart } from "@/src/features/cart/context/CartContext";
 import { getCartSubtotal } from "@/src/features/cart/utilities/cart";
 import { useRouter } from "expo-router";

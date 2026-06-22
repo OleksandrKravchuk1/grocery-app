@@ -4,7 +4,7 @@ import MapView, { Marker } from "react-native-maps";
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
 import { useTheme } from "@/src/constants/theme";
-import { useCurrentLocation } from "@/src/hooks/useCurrentLocation";
+import { useCurrentLocation } from "@/src/features/location/hooks/useCurrentLocation";
 
 export function LocationPickerModalView() {
   const theme = useTheme();

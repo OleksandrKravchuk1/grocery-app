@@ -2,7 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 
 import { AnimatedLogo } from "@/components/ui/AnimatedLogo";
-import { DangerButton } from "@/src/components/ui/button/DangerButton";
+import { SignOutButton } from "@/components/ui/button/SignOutButton";
 import { SubmitButton } from "@/src/components/ui/button/SubmitButton";
 import { InputRow } from "@/src/components/ui/row/InputRow";
 import { colors } from "@/src/constants/colors";
@@ -138,7 +138,7 @@ export function SignInForm() {
         </View>
 
         <SubmitButton onPress={form.handleSubmit} isSaving={isSaving} />
-        <DangerButton onPress={signOut} isSaving={isSaving} />
+        <SignOutButton onPress={signOut} />
       </View>
     </ScrollView>
   );
