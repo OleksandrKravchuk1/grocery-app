@@ -1,72 +1,77 @@
-import {Ionicons} from "@expo/vector-icons";
-import {Pressable, StyleProp, StyleSheet, TextInput, View, ViewStyle} from "react-native";
-import {useTheme} from "@/constants/theme";
+import { useTheme } from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import { Pressable, StyleProp, StyleSheet, TextInput, View, ViewStyle } from "react-native";
 
 type SearchBarProps = {
-    value: string;
-    onChangeText: (text: string) => void;
-    onClear: () => void;
-    topInset?: number;
-    placeholder?: string;
-    style?: StyleProp<ViewStyle>;
+  value: string;
+  onChangeText: (text: string) => void;
+  onClear: () => void;
+  topInset?: number;
+  placeholder?: string;
+  style?: StyleProp<ViewStyle>;
 };
 
-export default function SearchBar({value, onChangeText, onClear, topInset = 0, placeholder = "Find products...", style}: SearchBarProps) {
-    const theme = useTheme();
+export function SearchBar({ value, onChangeText, onClear, topInset = 0, placeholder = "Find products...", style }: SearchBarProps) {
+  const theme = useTheme();
 
-    return (
-        <View
-            style={[styles.searchBar, {
-                backgroundColor: theme.inputBg,
-                borderColor: theme.inputBorder,
-                marginTop: topInset,
-            },
-                style,
-            ]}
+  return (
+    <View
+      style={[styles.searchBar, {
+        backgroundColor: theme.inputBg,
+        borderColor: theme.inputBorder,
+        marginTop: topInset,
+      },
+        style,
+      ]}
+    >
+      <Ionicons
+        name="search"
+        size={20}
+        color={theme.muted}
+        accessible={false} />
+
+      <TextInput
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        placeholderTextColor={theme.muted}
+        style={[styles.input, { color: theme.text }]}
+        autoCapitalize="none"
+        autoCorrect={false}
+        returnKeyType="search"
+        clearButtonMode="while-editing"
+        accessibilityRole="search"
+        accessibilityLabel="Search products"
+        accessibilityHint="Search for products"
+      />
+      {!!value && (
+        <Pressable
+          onPress={onClear}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Clear search"
+          accessibilityHint="Clears the current search query"
         >
-            <Ionicons name="search" size={20} color={theme.muted} accessible={false}/>
-            <TextInput
-                value={value}
-                onChangeText={onChangeText}
-                placeholder={placeholder}
-                placeholderTextColor={theme.muted}
-                style={[styles.input, {color: theme.text}]}
-                autoCapitalize="none"
-                autoCorrect={false}
-                returnKeyType="search"
-                clearButtonMode="while-editing"
-                accessibilityRole="search"
-                accessibilityLabel="Search products"
-                accessibilityHint="Search for products"
-            />
-            {!!value && (
-                <Pressable
-                    onPress={onClear}
-                    hitSlop={8}
-                    accessibilityRole="button"
-                    accessibilityLabel="Clear search"
-                    accessibilityHint="Clears the current search query"
-                >
-                    <Ionicons name="close-circle" size={20} color={theme.muted} accessible={false}/>
-                </Pressable>
-            )}
-        </View>
-    );
+          <Ionicons name="close-circle" size={20} color={theme.muted} accessible={false} />
+        </Pressable>
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    searchBar: {
-        height: 50,
-        borderWidth: 1,
-        borderRadius: 14,
-        paddingHorizontal: 14,
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 10,
-    },
-    input: {
-        flex: 1,
-        fontSize: 16,
-    },
+  searchBar: {
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+  },
 });
 

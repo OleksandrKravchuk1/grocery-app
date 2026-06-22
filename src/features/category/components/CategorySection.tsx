@@ -9,9 +9,19 @@ type Props = {
   category_id: number;
 }
 
-const CategorySection = ({ title, category_id }: Props) => {
+export function CategorySection({ title, category_id }: Props) {
   const router = useRouter();
   const theme = useTheme();
+
+  const handleOnPress = () => {
+    router.push({
+      pathname: "/(tabs)/home/[categoryId]",
+      params: {
+        categoryId: category_id.toString(),
+        title,
+      },
+    })
+  }
 
   return (
     <>
@@ -19,14 +29,7 @@ const CategorySection = ({ title, category_id }: Props) => {
         <Text style={[styles.sectionTitle, { color: theme.text }]}>
           {title}
         </Text>
-        <Pressable onPress={() => router.push({
-          pathname: "/(tabs)/home/[categoryId]",
-          params: {
-            categoryId: category_id.toString(),
-            title,
-          },
-        })}
-        >
+        <Pressable onPress={handleOnPress}>
           <Text style={styles.viewAll}>View all</Text>
         </Pressable>
 
@@ -59,5 +62,3 @@ const styles = StyleSheet.create({
     paddingRight: 16,
   },
 });
-
-export default CategorySection;

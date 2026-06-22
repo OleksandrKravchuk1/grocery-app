@@ -17,7 +17,7 @@ type Props = {
   isFavorite?: boolean;
 };
 
-const ProductCard = ({ id, image, title, rating, price, cardStyle, onAddToFavoritesPress, isFavorite = false }: Props) => {
+export function ProductCard({ id, image, title, rating, price, cardStyle, onAddToFavoritesPress, isFavorite = false }: Props) {
   const theme = useTheme();
   const router = useRouter();
 
@@ -143,5 +143,3 @@ const styles = StyleSheet.create({
     fontWeight: "700"
   },
 });
-
-export default ProductCard;

@@ -1,6 +1,6 @@
+import { useRouter } from "expo-router";
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { useRouter } from "expo-router";
 
 import { FavoriteSignInPlaceholder } from "@/features/favorites/components/FavoriteSignInPlaceholder";
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
@@ -9,7 +9,7 @@ import { useTheme } from "@/src/constants/theme";
 import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { FavoriteEmptyComponent } from "@/src/features/favorites/components/FavoriteEmptyComponent";
 import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
-import ProductCard from "@/src/features/product/components/ProductCard";
+import { ProductCard } from "@/src/features/product/components/ProductCard";
 
 export function FavoriteScreen() {
   const theme = useTheme();

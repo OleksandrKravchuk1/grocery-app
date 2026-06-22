@@ -3,7 +3,7 @@ import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
 import { useTheme } from "@/src/constants/theme";
 import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
-import ProductCard from "@/src/features/product/components/ProductCard";
+import { ProductCard } from "@/src/features/product/components/ProductCard";
 import { useCategoryProducts } from "@/src/features/product/hooks/useCategoryProducts";
 import { useFadeInSlideUp } from "@/src/hooks/animations/useFadeInSlideUp";
 import { useNumericRouteParam } from "@/src/hooks/useNumaricRouteParam";
