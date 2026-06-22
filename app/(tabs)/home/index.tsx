@@ -8,14 +8,12 @@ import { BannerList } from "@/src/features/banners/components/BannerList";
 import { CategoriesList } from "@/src/features/category/components/CategoriesList";
 import { CategorySection } from "@/src/features/category/components/CategorySection";
 import { useCategory } from "@/src/features/category/hooks/useCategory";
-import { useRouter } from "expo-router";
-import { Button, Platform, ScrollView, StyleSheet, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const router = useRouter();
   const androidHeaderOffset = Platform.OS === 'android' ? insets.top + 56 : 0;
 
   const { categories, isLoading, error } = useCategory();

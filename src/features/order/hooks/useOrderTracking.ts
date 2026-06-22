@@ -1,3 +1,4 @@
+import { useLocation } from "@/context/LocationContext";
 import { fetchRoute, LatLng } from "@/src/features/order/services/routing";
 import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
@@ -5,17 +6,21 @@ import { Animated } from "react-native";
 import { AnimatedRegion } from "react-native-maps";
 
 const RESTAURANT_COORD = { latitude: 50.4501, longitude: 30.5234 };
-const USER_COORD = { latitude: 50.4550, longitude: 30.5300 };
-
-export const INITIAL_REGION = {
-  latitude: 50.4501,
-  longitude: 30.5234,
-  latitudeDelta: 0.05,
-  longitudeDelta: 0.05,
-};
+const DEFAULT_USER_COORD = { latitude: 50.4550, longitude: 30.5300 };
 
 export function useOrderTracking() {
   const router = useRouter();
+  const { coords } = useLocation();
+  console.log('[useOrderTracking] coords from context:', coords);
+  const USER_COORD = coords ?? DEFAULT_USER_COORD;
+
+  // Center the map midway between restaurant and user, fitting both markers
+  const INITIAL_REGION = {
+    latitude: (RESTAURANT_COORD.latitude + USER_COORD.latitude) / 2,
+    longitude: (RESTAURANT_COORD.longitude + USER_COORD.longitude) / 2,
+    latitudeDelta: Math.abs(RESTAURANT_COORD.latitude - USER_COORD.latitude) * 2.5 + 0.02,
+    longitudeDelta: Math.abs(RESTAURANT_COORD.longitude - USER_COORD.longitude) * 2.5 + 0.02,
+  };
 
   const [routeCoords, setRouteCoords] = useState<LatLng[]>([]);
   const [isDelivered, setIsDelivered] = useState(false);
@@ -37,18 +42,18 @@ export function useOrderTracking() {
     let isCancelled = false;
 
     async function loadRouteAndAnimate() {
-      const coords = await fetchRoute(RESTAURANT_COORD, USER_COORD);
+      const routePoints = await fetchRoute(RESTAURANT_COORD, USER_COORD);
       if (isCancelled) return;
 
-      setRouteCoords(coords);
+      setRouteCoords(routePoints);
 
-      if (coords.length > 0) {
-        const durationPerSegment = 50000 / coords.length;
+      if (routePoints.length > 0) {
+        const durationPerSegment = 50000 / routePoints.length;
 
         let i = 0;
         function moveToNext() {
-          if (isCancelled || i >= coords.length) return;
-          const nextCoord = coords[i];
+          if (isCancelled || i >= routePoints.length) return;
+          const nextCoord = routePoints[i];
 
           courierCoord.timing({
             latitude: nextCoord.latitude,
@@ -61,7 +66,7 @@ export function useOrderTracking() {
           } as any).start(({ finished }) => {
             if (finished) {
               i++;
-              if (i >= coords.length) {
+              if (i >= routePoints.length) {
                 if (!isCancelled) {
                   setIsDelivered(true);
                   setShowRatingModal(true);
@@ -88,7 +93,7 @@ export function useOrderTracking() {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [USER_COORD.latitude, USER_COORD.longitude]);
 
   function handleConfirm() {
     setIsConfirmed(true);
@@ -103,6 +108,7 @@ export function useOrderTracking() {
     // Map data
     routeCoords,
     courierCoord,
+    INITIAL_REGION,
     RESTAURANT_COORD,
     USER_COORD,
     // Delivery state

@@ -1,6 +1,6 @@
 import { useTheme } from "@/src/constants/theme";
 import { CourierRatingModal } from "@/src/features/order/components/CourierRatingModal";
-import { INITIAL_REGION, useOrderTracking } from "@/src/features/order/hooks/useOrderTracking";
+import { useOrderTracking } from "@/src/features/order/hooks/useOrderTracking";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
@@ -14,6 +14,7 @@ export function OrderTrackingScreen() {
   const {
     routeCoords,
     courierCoord,
+    INITIAL_REGION,
     RESTAURANT_COORD,
     USER_COORD,
     isDelivered,
@@ -32,14 +33,12 @@ export function OrderTrackingScreen() {
         <Marker coordinate={RESTAURANT_COORD} title="Restaurant" pinColor="red" />
         <Marker coordinate={USER_COORD} title="You" pinColor="blue" />
 
-        {!isDelivered && (
-          <Marker.Animated
-            coordinate={courierCoord as any}
-            title="Courier"
-            pinColor="green"
-            zIndex={2}
-          />
-        )}
+        <Marker.Animated
+          coordinate={courierCoord as any}
+          title={isDelivered ? 'Delivered here 🎉' : 'Courier'}
+          pinColor="green"
+          zIndex={2}
+        />
 
         {routeCoords.length > 0 && (
           <Polyline
