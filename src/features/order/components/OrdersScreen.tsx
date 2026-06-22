@@ -29,7 +29,7 @@ export function OrdersScreen() {
         scrollEnabled={true}
         contentContainerStyle={[
           styles.listContent,
-          { paddingBottom: insets.bottom + 20 },
+          { paddingTop: insets.top + 56, paddingBottom: insets.bottom + 20 }
         ]}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={OrderEmptyComponent}
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingHorizontal: 16,
-    paddingTop: 16,
   },
   shopButton: {
     marginTop: 24,

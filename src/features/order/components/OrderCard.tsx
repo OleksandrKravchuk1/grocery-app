@@ -9,7 +9,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function OrderCard({ item }: { item: Order }) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const router = useRouter();
 
   const handleOnPress = () => {
@@ -23,7 +22,6 @@ export function OrderCard({ item }: { item: Order }) {
         {
           backgroundColor: theme.card,
           opacity: pressed ? 0.8 : 1,
-          marginTop: insets.top + 56
         },
       ]}
       onPress={handleOnPress}

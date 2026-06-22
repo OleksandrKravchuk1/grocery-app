@@ -13,7 +13,7 @@ export function useAuthForm() {
       onSubmit: authFormSchema,
     },
     onSubmit: async ({ value }) => {
-      await signIn(value.email, value.password);
+      await signIn({ email: value.email, password: value.password });
     },
   });
 
@@ -25,7 +25,7 @@ export function useAuthForm() {
 
     const { email, password } = form.state.values;
     try {
-      const { session } = await signUp(email, password);
+      const { session } = await signUp({ email, password });
       if (!session) {
         Alert.alert("Check your inbox", "Please verify your email before signing in.");
       }

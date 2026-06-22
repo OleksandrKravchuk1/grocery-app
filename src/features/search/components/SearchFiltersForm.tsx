@@ -1,4 +1,4 @@
-import Chip from "@/src/components/ui/Chip";
+import { Chip } from "@/src/components/ui/Chip";
 import { PRICE_PRESETS, PricePreset, SORT_OPTIONS } from "@/src/constants/search";
 import { useTheme } from "@/src/constants/theme";
 import { Category } from "@/src/types/category";
