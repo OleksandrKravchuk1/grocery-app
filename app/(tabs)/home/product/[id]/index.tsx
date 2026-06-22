@@ -84,7 +84,9 @@ export default function ProductDetailScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.cardContainer }]}>
-      <Animated.View style={[styles.imageContainer, { backgroundColor: theme.screen }, imageAnimatedStyle]}>
+      <Animated.View
+        pointerEvents="none"
+        style={[styles.imageContainer, { backgroundColor: theme.screen }, imageAnimatedStyle]}>
         <Image
           source={{ uri: product.image }}
           style={styles.image}
