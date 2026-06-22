@@ -1,10 +1,10 @@
-import SearchBar from "@/components/ui/SearchBar";
+import { SearchBar } from "@/src/components/ui/SearchBar";
 import { useTheme } from "@/constants/theme";
 import { useSearchFilters } from "@/context/SearchFiltersContext";
 import { useInsets } from "@/hooks/useInsets";
 import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
 import { searchProduct } from "@/src/features/product/api/products";
-import ProductCard from "@/src/features/product/components/ProductCard";
+import { ProductCard } from "@/src/features/product/components/ProductCard";
 import { getPriceRange } from "@/src/features/search/utilities/searchFilters";
 import { SearchProductItem } from "@/types/product";
 import { Ionicons } from "@expo/vector-icons";
