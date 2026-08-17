@@ -14,13 +14,15 @@ export function toGender(value?: string | null) {
 export function toFormValues(profile?: {
   firstName?: string | null;
   lastName?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
   phone?: string | null;
   gender?: string | null;
   birthday?: Date | string | null;
 }): ProfileFormValues {
   return {
-    firstName: profile?.firstName ?? "",
-    lastName: profile?.lastName ?? "",
+    firstName: profile?.firstName ?? profile?.first_name ?? "",
+    lastName: profile?.lastName ?? profile?.last_name ?? "",
     phone: profile?.phone ?? "",
     gender: toGender(profile?.gender),
     birthday: profile?.birthday

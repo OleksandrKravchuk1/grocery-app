@@ -65,10 +65,10 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="menu"
                 options={{
-                    title: "Menu",
-                    tabBarAccessibilityLabel: "Menu tab",
+                    title: "More",
+                    tabBarAccessibilityLabel: "More tab",
                     tabBarIcon: ({size, focused, color}) => (
-                        <Ionicons name={focused ? 'menu' : 'menu-outline'} color={color}
+                        <Ionicons name={focused ? 'ellipsis-horizontal' : 'ellipsis-horizontal-outline'} color={color}
                                   size={size}/>
                     ),
                 }}

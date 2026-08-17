@@ -1,92 +1,80 @@
-import {FlatList, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
-import {Ionicons} from "@expo/vector-icons";
-import {MENU_ITEMS} from "@/src/constants/menu";
-import {useTheme} from "@/src/constants/theme";
-import {useInsets} from "@/src/hooks/useInsets";
-import {useRouter} from "expo-router";
+import { MENU_ITEMS } from "@/src/constants/menu";
+import { useTheme } from "@/src/constants/theme";
+import { ProfileMenuItem } from "@/src/features/profile/components/ProfileMenuItem";
+import { useRouter } from "expo-router";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function MenuScreen() {
     const router = useRouter();
     const theme = useTheme();
-    const {topInset} = useInsets();
-
-    const renderItem = ({item}: { item: typeof MENU_ITEMS[0] }) => (
-        <Pressable
-            style={({pressed}) => [
-                styles.menuItem,
-                {borderBottomColor: theme.inputBorder},
-                pressed && {backgroundColor: theme.inputBg}
-            ]}
-            accessibilityRole='button'
-            accessibilityLabel={item.title}
-            accessibilityHint={item.route === 'menu/about'
-                ? 'Opens the project website in your browser'
-                : `Opens ${item.title.toLowerCase()} screen`}
-            onPress={() => {
-                if (item.route !== 'menu/about') {
-                    router.push(item.route as any);
-                    return;
-                }
-                router.push('https://github.com/mobileapp-developer/grocery-app');
-            }}
-        >
-            <View style={styles.menuItemContent}>
-                <Ionicons name={item.icon as any} size={24} color={theme.text} accessible={false}/>
-                <Text style={[styles.menuItemText, {color: theme.text}]}>{item.title}</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color={theme.muted} accessible={false}/>
-        </Pressable>
-    );
+    const insets = useSafeAreaInsets();
 
     return (
-        <ScrollView style={[styles.container, {
-            backgroundColor: theme.screen,
-            paddingTop: topInset,
-        }
-        ]}>
-            <FlatList
-                data={MENU_ITEMS}
-                keyExtractor={(item) => item.title}
-                renderItem={renderItem}
-                scrollEnabled={false}
-                contentContainerStyle={styles.listContent}
-                accessibilityRole='list'
-                accessibilityLabel='Menu items'
-                accessibilityHint='Browse menu, settings, support, and other app options'
-            />
+        <ScrollView
+            style={[styles.scrollView, { backgroundColor: theme.screen }]}
+            contentContainerStyle={[
+                styles.content,
+                { paddingTop: Platform.OS === "android" ? insets.top + 56 : 0, paddingBottom: insets.bottom + 24 },
+            ]}
+            contentInsetAdjustmentBehavior="automatic"
+            showsVerticalScrollIndicator={false}
+            accessibilityLabel="More"
+            accessibilityHint="Browse additional app options"
+        >
+            <View style={[styles.menuCard, { backgroundColor: theme.card, ...cardShadow }]}>
+                <Text style={[styles.menuTitle, { color: theme.text }]} accessibilityRole="header">
+                    More
+                </Text>
+
+                {MENU_ITEMS.map((item) => (
+                    <ProfileMenuItem
+                        key={item.title}
+                        icon={item.icon as any}
+                        label={item.title}
+                        onPress={() => {
+                            if (item.route !== 'menu/about') {
+                                router.push(item.route as any);
+                                return;
+                            }
+                            router.push('https://github.com/mobileapp-developer/grocery-app');
+                        }}
+                    />
+                ))}
+            </View>
         </ScrollView>
     );
-};
+}
+
+const cardShadow = Platform.select({
+    ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.06,
+        shadowRadius: 12,
+    },
+    android: {
+        elevation: 3,
+    },
+    default: {},
+}) as object;
 
 const styles = StyleSheet.create({
-    container: {
+    scrollView: {
         flex: 1,
     },
-    header: {
-        padding: 16,
-        paddingBottom: 8,
-    },
-    headerTitle: {
-        fontSize: 28,
-        fontWeight: "bold",
-    },
-    listContent: {
+    content: {
         paddingHorizontal: 16,
     },
-    menuItem: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingVertical: 16,
-        borderBottomWidth: 1,
+    menuCard: {
+        borderRadius: 16,
+        overflow: "hidden",
     },
-    menuItemContent: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    menuItemText: {
-        fontSize: 16,
-        marginLeft: 12,
-        fontWeight: "500",
+    menuTitle: {
+        fontSize: 18,
+        fontWeight: "600",
+        paddingHorizontal: 16,
+        paddingTop: 16,
+        paddingBottom: 4,
     },
 });

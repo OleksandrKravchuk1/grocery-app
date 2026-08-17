@@ -3,25 +3,36 @@ import * as z from "zod";
 export const signInFormSchema = z.object({
   firstName: z
     .string()
-    .min(2, "First name must be at least 2 characters")
-    .max(20, "First name must be at most 50 characters"),
+    .min(2, "Name must be at least 2 characters")
+    .max(30, "Name must be at most 30 characters")
+    .regex(/^[a-zA-Zа-яА-ЯіІїЇєЄґҐ\s'-]+$/, "Name contains invalid characters"),
   lastName: z
     .string()
-    .min(2, "Last name must be at least 2 characters")
-    .max(20, "Last name must be at most 20 characters"),
+    .min(2, "Surname must be at least 2 characters")
+    .max(30, "Surname must be at most 30 characters")
+    .regex(/^[a-zA-Zа-яА-ЯіІїЇєЄґҐ\s'-]+$/, "Surname contains invalid characters"),
   phone: z
     .string()
-    .min(10, "Phone number must be at least 10 characters")
-    .max(15, "Phone number must be at most 15 characters"),
+    .refine((val) => {
+      if (!val || val.trim() === "") return true;
+      return val.trim().length >= 10 && val.trim().length <= 15;
+    }, "Phone must be 10–15 characters"),
   gender: z
     .enum(["Male", "Female", "Other"], "Choose a valid gender option"),
   birthday: z
     .string()
     .refine((date) => {
-      if (!date) return true;
-      const parsedDate = new Date(date);
-      return !isNaN(parsedDate.getTime());
-    }, "Invalid date format. Use YYYY-MM-DD"),
+      if (!date || date.trim() === "") return true;
+      return /^\d{4}-\d{2}-\d{2}$/.test(date);
+    }, "Use format YYYY-MM-DD (e.g. 2000-01-31)")
+    .refine((date) => {
+      if (!date || date.trim() === "") return true;
+      const parsed = new Date(date);
+      if (isNaN(parsed.getTime())) return false;
+      const now = new Date();
+      const age = now.getFullYear() - parsed.getFullYear();
+      return age >= 13 && age <= 120;
+    }, "Enter a valid date (age must be 13–120)"),
 });
 
 export const authFormSchema = z.object({
