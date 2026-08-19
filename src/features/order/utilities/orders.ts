@@ -1,7 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
-
-export const getStatusColor = (status: string) => {
-  const theme = useTheme();
+export const getStatusColor = (status: string, theme: any) => {
   switch (status?.toLowerCase()) {
     case 'completed':
       return theme.accent;
