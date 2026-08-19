@@ -4,6 +4,7 @@ import { getFavoriteIds, toggleFavorite } from "@/src/features/favorites/service
 import { getProductsByIds } from "@/src/features/product/api/products";
 import { Product } from "@/src/types/product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import * as Haptics from "expo-haptics";
 import { Alert } from "react-native";
 
 async function fetchFavoriteProducts(userId: string): Promise<Product[]> {
@@ -47,6 +48,7 @@ export function useFavoriteProducts() {
       return toggleFavorite(user.id, productId, favoritesQuery.data ?? []);
     },
     onSuccess: () => {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
       void queryClient.invalidateQueries({ queryKey: ["favorites", user?.id] });
       void queryClient.invalidateQueries({ queryKey: ["favoriteProducts", user?.id] });
     },

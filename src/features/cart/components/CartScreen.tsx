@@ -6,7 +6,7 @@ import { CartItem } from "@/src/features/cart/components/CartItem";
 import { useCart } from "@/src/features/cart/context/CartContext";
 import { getCartSubtotal } from "@/src/features/cart/utilities/cart";
 import { useRouter } from "expo-router";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -23,7 +23,19 @@ export function CartScreen() {
   const { onPressIn, onPressOut, animatedStyle } = usePressAnimation({});
 
   const handleCheckout = () => {
-    if (!canCheckout || !user?.id) {
+    if (!canCheckout) return;
+    if (!user?.id) {
+      Alert.alert(
+        "Sign In Required",
+        "You need to sign in before proceeding to checkout.",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Sign In",
+            onPress: () => router.push("/profile" as any),
+          },
+        ],
+      );
       return;
     }
     router.push('/home/checkout');
