@@ -2,6 +2,7 @@ import { SplashScreenView } from "@/src/components/SplashScreenView";
 import { AuthProvider } from "@/src/features/auth/context/AuthContext";
 import { CartProvider } from "@/src/features/cart/context/CartContext";
 import { LocationProvider } from "@/src/context/LocationContext";
+import { ThemeProvider } from "@/src/context/ThemeContext";
 import { SearchFiltersProvider } from "@/src/context/SearchFiltersContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
@@ -41,40 +42,42 @@ export default function RootLayout() {
     }
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-                <LocationProvider>
-                    <CartProvider>
-                        <SearchFiltersProvider>
-                            <Stack
-                                initialRouteName="(tabs)"
-                                screenOptions={{
-                                    headerShown: false,
-                                }}
-                            >
-                                <Stack.Screen
-                                    name="index"
-                                    options={{
+        <ThemeProvider>
+            <QueryClientProvider client={queryClient}>
+                <AuthProvider>
+                    <LocationProvider>
+                        <CartProvider>
+                            <SearchFiltersProvider>
+                                <Stack
+                                    initialRouteName="(tabs)"
+                                    screenOptions={{
                                         headerShown: false,
                                     }}
-                                />
-                                <Stack.Screen
-                                    name="(tabs)"
-                                />
-                                <Stack.Screen
-                                    name="(modals)"
-                                    options={{
-                                        headerTitle: "modals",
-                                        headerLargeTitle: false,
-                                        headerTransparent: true,
-                                        headerBlurEffect: "light",
-                                    }}
-                                />
-                            </Stack>
-                        </SearchFiltersProvider>
-                    </CartProvider>
-                </LocationProvider>
-            </AuthProvider>
-        </QueryClientProvider>
+                                >
+                                    <Stack.Screen
+                                        name="index"
+                                        options={{
+                                            headerShown: false,
+                                        }}
+                                    />
+                                    <Stack.Screen
+                                        name="(tabs)"
+                                    />
+                                    <Stack.Screen
+                                        name="(modals)"
+                                        options={{
+                                            headerTitle: "modals",
+                                            headerLargeTitle: false,
+                                            headerTransparent: true,
+                                            headerBlurEffect: "light",
+                                        }}
+                                    />
+                                </Stack>
+                            </SearchFiltersProvider>
+                        </CartProvider>
+                    </LocationProvider>
+                </AuthProvider>
+            </QueryClientProvider>
+        </ThemeProvider>
     );
 }
