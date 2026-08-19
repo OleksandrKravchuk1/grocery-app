@@ -7,13 +7,17 @@ import { useTheme } from "@/src/constants/theme";
 import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { useCart } from "@/src/features/cart/context/CartContext";
 import { getCartItemCount, getCartSubtotal } from "@/src/features/cart/utilities/cart";
+import { createOrder } from "@/src/features/order/api/orders";
+import { fetchPaymentSheetParams } from "@/src/features/payment/api/stripe";
 import { getProfiles } from "@/src/features/profile/api/profiles";
 import { Profile } from "@/types/profile";
 import { FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useStripe } from "@stripe/stripe-react-native";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -28,8 +32,8 @@ type DeliveryType = 'priority' | 'standard';
 const BAG_FEE = 0.25;
 const SERVICE_FEE_PERCENT = 0.10;
 const DELIVERY_FEES = {
-  priority: 0.00,
-  standard: 0.00,
+  priority: 5.99,
+  standard: 2.99,
 };
 
 export default function CheckoutScreen() {
@@ -38,12 +42,15 @@ export default function CheckoutScreen() {
   const theme = useTheme();
   const { address } = useLocation();
   const { user } = useAuth();
-  const { items } = useCart();
+  const { items, clearCart } = useCart();
 
   const [deliveryType, setDeliveryType] = useState<DeliveryType>('priority');
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [invoiceRequested, setInvoiceRequested] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -74,6 +81,86 @@ export default function CheckoutScreen() {
   const serviceFee = subtotal * SERVICE_FEE_PERCENT;
   const deliveryFee = DELIVERY_FEES[deliveryType];
   const total = subtotal + BAG_FEE + serviceFee + deliveryFee;
+
+  const handlePayment = async () => {
+    if (!user?.id) return;
+    try {
+      setPaymentLoading(true);
+      
+      // 1. Fetch Payment Intent from Edge Function
+      const amount = Math.round(total * 100); // Stripe expects cents
+      const data = await fetchPaymentSheetParams(amount);
+      const { paymentIntent, ephemeralKey, customer } = data;
+
+      // 2. Initialize Payment Sheet
+      const { error: initError } = await initPaymentSheet({
+        merchantDisplayName: 'Grocery App',
+        customerId: customer,
+        customerEphemeralKeySecret: ephemeralKey,
+        paymentIntentClientSecret: paymentIntent,
+        allowsDelayedPaymentMethods: true,
+        defaultBillingDetails: {
+          name: fullName,
+        },
+        appearance: {
+          colors: {
+            primary: theme.accent,
+            background: theme.screen,
+            componentBackground: theme.card,
+            componentBorder: theme.border,
+            componentDivider: theme.border,
+            primaryText: theme.text,
+            secondaryText: theme.muted,
+            componentText: theme.text,
+            placeholderText: theme.muted,
+            icon: theme.text,
+          },
+          shapes: {
+            borderRadius: 12,
+          },
+          primaryButton: {
+            shapes: {
+              borderRadius: 10,
+            },
+            colors: {
+              background: theme.accent,
+              text: '#FFFFFF',
+            },
+          },
+        },
+      });
+
+      if (initError) {
+        Alert.alert("Error", initError.message);
+        setPaymentLoading(false);
+        return;
+      }
+
+      // 3. Present Payment Sheet
+      const { error: presentError } = await presentPaymentSheet();
+
+      if (presentError) {
+        Alert.alert("Payment Failed", presentError.message);
+      } else {
+        // Payment successful! Create order.
+        await createOrder({
+          userId: user.id,
+          items: items,
+          price: total,
+        });
+        
+        clearCart();
+        
+        Alert.alert("Success", "Your order has been placed successfully!", [
+          { text: "OK", onPress: () => router.replace("/home" as any) }
+        ]);
+      }
+    } catch (error: any) {
+      Alert.alert("Error", error.message || "An unexpected error occurred.");
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
 
   if (!user?.id) {
     router.replace("/profile" as any);
@@ -109,9 +196,10 @@ export default function CheckoutScreen() {
       <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
         <Row
           icon="location-outline"
-          label="Apartment 609"
-          subtitle={address === "Your Address..." ? "45 Soho loop street birmingham.." : address}
+          label={address === "Your Address..." ? "Delivery Address" : "Selected Address"}
+          subtitle={address === "Your Address..." ? "Tap to select delivery address" : address}
           color={theme.text}
+          onPress={() => router.push('/(modals)/location-picker')}
         />
       </View>
 
@@ -205,13 +293,18 @@ export default function CheckoutScreen() {
 
 
       <Pressable
-        style={[styles.placeOrderButton, { backgroundColor: theme.accent }]}
-        onPress={() => router.push('/home/payment')}
+        style={[styles.placeOrderButton, { backgroundColor: theme.accent }, paymentLoading && { opacity: 0.7 }]}
+        onPress={handlePayment}
+        disabled={paymentLoading}
         accessibilityRole="button"
         accessibilityLabel="Continue to payment"
         accessibilityHint="Opens the payment screen to complete your order"
       >
-        <Text style={styles.placeOrderText}>Continue to payment</Text>
+        {paymentLoading ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Text style={styles.placeOrderText}>Pay ${total.toFixed(2)}</Text>
+        )}
       </Pressable>
     </ScrollView>
   );

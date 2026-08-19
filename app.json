@@ -33,7 +33,14 @@
           "locationWhenInUsePermission": "Allow Grabber to use your location to set delivery address."
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.grabber",
+          "enableGooglePay": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
