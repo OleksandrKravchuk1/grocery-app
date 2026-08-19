@@ -5,7 +5,7 @@ import { OrderTimeline } from "@/src/features/order/components/OrderTimeline";
 import { useOrder } from "@/src/features/order/hooks/useOrder";
 import { formatDate, getStatusColor } from "@/src/features/order/utilities/orders";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter, useSegments } from "expo-router";
 import React from "react";
 import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const segments = useSegments();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 
@@ -59,7 +60,10 @@ export default function OrderDetailScreen() {
         {order.status !== 'cancelled' && order.status !== 'completed' && (
           <Pressable
             style={[styles.trackButton, { backgroundColor: theme.accent }]}
-            onPress={() => router.push(`/menu/orders/${id}/tracking` as any)}
+            onPress={() => {
+              const tabRoot = segments[1] === "profile" ? "profile" : "menu";
+              router.push(`/${tabRoot}/orders/${id}/tracking` as any);
+            }}
           >
             <Ionicons name="map-outline" size={20} color="white" />
             <Text style={styles.trackButtonText}>Live Tracking</Text>

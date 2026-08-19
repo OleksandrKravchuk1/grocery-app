@@ -1,5 +1,5 @@
-import {Stack} from "expo-router";
-import {useColorScheme} from "react-native";
+import { Stack } from "expo-router";
+import { useColorScheme } from "react-native";
 
 export default function ProfileLayout() {
     const isDark = useColorScheme() === 'dark';
@@ -7,7 +7,7 @@ export default function ProfileLayout() {
         <Stack
             screenOptions={{
                 headerShown: true,
-                headerLargeTitle: true,
+                headerLargeTitle: false,
                 headerTransparent: true,
                 headerTintColor: isDark ? 'white' : 'black',
                 headerBlurEffect: isDark ? 'systemChromeMaterial' : 'light',
@@ -17,13 +17,51 @@ export default function ProfileLayout() {
                 name="index"
                 options={{
                     headerTitle: "Profile",
+                    headerLargeTitle: true,
                 }}
             />
             <Stack.Screen
                 name="edit"
                 options={{
                     headerTitle: "Edit Profile",
-                    headerLargeTitle: false,
+                }}
+            />
+            <Stack.Screen
+                name="orders/index"
+                options={{
+                    headerTitle: "Your Orders",
+                }}
+            />
+            <Stack.Screen
+                name="orders/[id]/index"
+                options={{
+                    headerTitle: "Order Details",
+                    headerBackTitle: "Orders",
+                }}
+            />
+            <Stack.Screen
+                name="orders/[id]/tracking"
+                options={{
+                    headerTitle: "Track Order",
+                    headerBackTitle: "Details",
+                }}
+            />
+            <Stack.Screen
+                name="payment"
+                options={{
+                    headerTitle: "Payment Methods",
+                }}
+            />
+            <Stack.Screen
+                name="settings"
+                options={{
+                    headerTitle: "Settings",
+                }}
+            />
+            <Stack.Screen
+                name="support"
+                options={{
+                    headerTitle: "Support",
                 }}
             />
         </Stack>

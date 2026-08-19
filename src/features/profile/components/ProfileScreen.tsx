@@ -85,22 +85,22 @@ export function ProfileScreen() {
         <ProfileMenuItem
           icon="receipt-outline"
           label="Orders History"
-          onPress={() => router.push("/menu/orders" as any)}
+          onPress={() => router.push("/profile/orders" as any)}
         />
         <ProfileMenuItem
           icon="card-outline"
           label="Payment Methods"
-          onPress={() => router.push("/menu/payment" as any)}
+          onPress={() => router.push("/profile/payment" as any)}
         />
         <ProfileMenuItem
           icon="settings-outline"
           label="Settings"
-          onPress={() => router.push("/menu/settings" as any)}
+          onPress={() => router.push("/profile/settings" as any)}
         />
         <ProfileMenuItem
           icon="help-buoy-outline"
           label="Support"
-          onPress={() => router.push("/menu/support" as any)}
+          onPress={() => router.push("/profile/support" as any)}
         />
       </View>
 

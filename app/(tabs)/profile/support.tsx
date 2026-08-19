@@ -1,5 +1,5 @@
 import { SupportScreen } from "@/src/features/support/components/SupportScreen";
 
-export default function SupportRoute() {
+export default function ProfileSupportRoute() {
   return <SupportScreen />;
 }

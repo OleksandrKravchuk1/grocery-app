@@ -3,15 +3,19 @@ import { useTheme } from "@/src/constants/theme";
 import { formatDate, getStatusColor } from "@/src/features/order/utilities/orders";
 import { Order } from "@/src/types/order";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useRouter, useSegments } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export function OrderCard({ item }: { item: Order }) {
   const theme = useTheme();
   const router = useRouter();
+  const segments = useSegments();
+
+  // Determine which tab stack we're in (profile or menu)
+  const tabRoot = segments[1] === "profile" ? "profile" : "menu";
 
   const handleOnPress = () => {
-    router.push(`/menu/orders/${item.id}` as any)
+    router.push(`/${tabRoot}/orders/${item.id}` as any)
   }
 
   return (
