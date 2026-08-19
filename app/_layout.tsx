@@ -1,4 +1,5 @@
 import { SplashScreenView } from "@/src/components/SplashScreenView";
+import { OfflineBanner } from "@/src/components/ui/OfflineBanner";
 import { AuthProvider } from "@/src/features/auth/context/AuthContext";
 import { CartProvider } from "@/src/features/cart/context/CartContext";
 import { LocationProvider } from "@/src/context/LocationContext";
@@ -8,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
+import { View } from "react-native";
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -48,31 +50,34 @@ export default function RootLayout() {
                     <LocationProvider>
                         <CartProvider>
                             <SearchFiltersProvider>
-                                <Stack
-                                    initialRouteName="(tabs)"
-                                    screenOptions={{
-                                        headerShown: false,
-                                    }}
-                                >
-                                    <Stack.Screen
-                                        name="index"
-                                        options={{
+                                <View style={{ flex: 1 }}>
+                                    <Stack
+                                        initialRouteName="(tabs)"
+                                        screenOptions={{
                                             headerShown: false,
                                         }}
-                                    />
-                                    <Stack.Screen
-                                        name="(tabs)"
-                                    />
-                                    <Stack.Screen
-                                        name="(modals)"
-                                        options={{
-                                            headerTitle: "modals",
-                                            headerLargeTitle: false,
-                                            headerTransparent: true,
-                                            headerBlurEffect: "light",
-                                        }}
-                                    />
-                                </Stack>
+                                    >
+                                        <Stack.Screen
+                                            name="index"
+                                            options={{
+                                                headerShown: false,
+                                            }}
+                                        />
+                                        <Stack.Screen
+                                            name="(tabs)"
+                                        />
+                                        <Stack.Screen
+                                            name="(modals)"
+                                            options={{
+                                                headerTitle: "modals",
+                                                headerLargeTitle: false,
+                                                headerTransparent: true,
+                                                headerBlurEffect: "light",
+                                            }}
+                                        />
+                                    </Stack>
+                                    <OfflineBanner />
+                                </View>
                             </SearchFiltersProvider>
                         </CartProvider>
                     </LocationProvider>

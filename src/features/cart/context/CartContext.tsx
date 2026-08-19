@@ -1,6 +1,7 @@
 import { addItem, getItemQuantity, normalizeCartItems, removeItem, updateItemQuantity } from "@/src/features/cart/utilities/cart";
 import { CartItem, Product } from "@/src/types/product";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Haptics from "expo-haptics";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 const CART_STORAGE_KEY = "cart:v1";
@@ -72,10 +73,12 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const addToCart = useCallback((product: Product) => {
     setItems((prev) => addItem(prev, product))
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
   }, [])
 
   const removeFromCart = useCallback((product: Product) => {
     setItems((prev) => removeItem(prev, product))
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
   }, [])
 
   const updateQuantity = useCallback((product: Product, quantity: number) => {

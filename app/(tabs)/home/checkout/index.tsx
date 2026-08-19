@@ -75,6 +75,11 @@ export default function CheckoutScreen() {
   const deliveryFee = DELIVERY_FEES[deliveryType];
   const total = subtotal + BAG_FEE + serviceFee + deliveryFee;
 
+  if (!user?.id) {
+    router.replace("/profile" as any);
+    return null;
+  }
+
   if (loading) {
     return (
       <View style={[styles.container, { backgroundColor: theme.screen }]}>
