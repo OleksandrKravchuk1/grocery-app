@@ -5,7 +5,6 @@ import { Order } from "@/src/types/order";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function OrderCard({ item }: { item: Order }) {
   const theme = useTheme();
@@ -38,10 +37,10 @@ export function OrderCard({ item }: { item: Order }) {
         <View
           style={[
             styles.statusBadge,
-            { backgroundColor: getStatusColor(item.status) + '20' },
+            { backgroundColor: getStatusColor(item.status, theme) + '20' },
           ]}
         >
-          <Text style={[styles.statusText, { color: getStatusColor(item.status) }]}>
+          <Text style={[styles.statusText, { color: getStatusColor(item.status, theme) }]}>
             {item.status?.charAt(0).toUpperCase() + item.status?.slice(1).toLowerCase()}
           </Text>
         </View>

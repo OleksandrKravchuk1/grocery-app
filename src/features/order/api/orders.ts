@@ -50,3 +50,32 @@ export async function getOrdersByUserId(userId: string) {
 
   return orders;
 };
+
+export async function getOrderById(orderId: string) {
+  const { data: order, error } = await supabase
+    .from('orders')
+    .select('*, order_items(*, product:products(*, media:image_id(filename)))')
+    .eq('id', orderId)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  // Map product images correctly
+  if (order.order_items) {
+    order.order_items = order.order_items.map((item: any) => {
+      if (item.product) {
+        item.product = {
+          ...item.product,
+          image: item.product.media?.filename
+            ? `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/products/${item.product.media.filename}`
+            : '',
+        };
+      }
+      return item;
+    });
+  }
+
+  return order;
+}
