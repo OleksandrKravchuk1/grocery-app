@@ -24,7 +24,7 @@ export default function ProductDetailScreen() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 
-  const { toggleFavorite } = useFavoriteProducts();
+  const { toggleFavorite, favoriteIds } = useFavoriteProducts();
   const { data: product, isLoading, error, refetch } = useProduct(Number(id));
   const { getQuantity, addToCart, updateQuantity, removeFromCart } = useCart();
 
@@ -108,7 +108,10 @@ export default function ProductDetailScreen() {
           <View style={styles.headerRow}>
             <Text style={[styles.title, { color: theme.text }]}>{product.title}</Text>
             <View style={styles.favoriteContainer}>
-              <FavoriteButton onAddToFavoritesPress={() => toggleFavorite(product.id)} />
+              <FavoriteButton 
+                onAddToFavoritesPress={() => toggleFavorite(product.id)} 
+                isFavorite={favoriteIds.includes(product.id)} 
+              />
             </View>
           </View>
 

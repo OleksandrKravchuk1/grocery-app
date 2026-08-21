@@ -1,34 +1,20 @@
-import { supabase } from "@/src/lib/supabase";
+
+import { api } from "@/api/client";
 import { Profile } from "@/src/types/profile";
 
-export async function getProfiles(userId: string) {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select()
-    .eq('id', userId)
-    .single();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
+export async function getProfiles() {
+  const { data } = await api.get('/users/me');
   return data;
 }
 
 export async function upsertProfile(userId: string, data: Profile) {
-  const { error } = await supabase
-    .from('profiles')
-    .upsert({
-      id: userId,
-      first_name: data.first_name,
-      last_name: data.last_name,
-      phone: data.phone,
-      gender: data.gender,
-      birthday: data.birthday,
-    });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-  return data;
+  const { data: updatedProfile } = await api.patch('/users/me', {
+    id: userId,
+    firstName: data.first_name,
+    lastName: data.last_name,
+    phone: data.phone,
+    gender: data.gender,
+    birthDay: data.birthday,
+  });
+  return updatedProfile;
 }

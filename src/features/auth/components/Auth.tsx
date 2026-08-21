@@ -75,6 +75,7 @@ export default function Auth() {
 
         <View style={[styles.card, { backgroundColor: theme.card }]}>
           <SubmitButton
+            title='Sign In'
             onPress={handleSignIn}
             isSaving={isSubmitting}
           />
