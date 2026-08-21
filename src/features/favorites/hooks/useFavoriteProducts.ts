@@ -7,8 +7,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Haptics from "expo-haptics";
 import { Alert } from "react-native";
 
-async function fetchFavoriteProducts(userId: string): Promise<Product[]> {
-  const favorites = await getFavorites(userId);
+async function fetchFavoriteProducts(): Promise<Product[]> {
+  const favorites = await getFavorites();
   const productIds = (favorites ?? []).map((item) => item.product_id as number);
 
   if (productIds.length === 0) return [];
@@ -35,7 +35,7 @@ export function useFavoriteProducts() {
   // 2. Query full Products list (used on Favorites Screen)
   const productsQuery = useQuery({
     queryKey: ["favoriteProducts", user?.id],
-    queryFn: () => fetchFavoriteProducts(user!.id),
+    queryFn: () => fetchFavoriteProducts(),
     enabled: !!user?.id,
   });
 
@@ -48,7 +48,7 @@ export function useFavoriteProducts() {
       return toggleFavorite(user.id, productId, favoritesQuery.data ?? []);
     },
     onSuccess: () => {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => { });
       void queryClient.invalidateQueries({ queryKey: ["favorites", user?.id] });
       void queryClient.invalidateQueries({ queryKey: ["favoriteProducts", user?.id] });
     },
@@ -56,7 +56,7 @@ export function useFavoriteProducts() {
 
   // 4. Remove favorite mutation (specifically for list view with optimistic updates)
   const removeFavoriteMutation = useMutation({
-    mutationFn: (productId: number) => removeFavorite(user!.id, productId),
+    mutationFn: (productId: number) => removeFavorite(productId),
     onMutate: async (productId) => {
       await queryClient.cancelQueries({ queryKey: ["favoriteProducts", user?.id] });
       const previous = queryClient.getQueryData<Product[]>(["favoriteProducts", user?.id]);

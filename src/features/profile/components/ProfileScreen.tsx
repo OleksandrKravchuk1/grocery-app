@@ -3,10 +3,10 @@ import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { useSignOut } from "@/src/features/auth/hooks/useSignOut";
 import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
 import { useOrders } from "@/src/features/order/hooks/useOrders";
-import { useProfile } from "@/src/features/profile/hooks/useProfile";
 import { ProfileHeader } from "@/src/features/profile/components/ProfileHeader";
 import { ProfileMenuItem } from "@/src/features/profile/components/ProfileMenuItem";
 import { ProfileStats } from "@/src/features/profile/components/ProfileStats";
+import { useProfile } from "@/src/features/profile/hooks/useProfile";
 import { useRouter } from "expo-router";
 import React, { useMemo } from "react";
 import { Alert, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -27,7 +27,7 @@ export function ProfileScreen() {
   const favouritesCount = favoriteIds.length;
   const totalSpent = useMemo(() => {
     if (!orders || orders.length === 0) return 0;
-    return orders.reduce((sum: number, order: any) => sum + (order.total_price ?? 0), 0);
+    return orders.reduce((sum: number, order: any) => sum + parseFloat(order.total_price ?? 0), 0);
   }, [orders]);
 
   const handleSignOut = () => {

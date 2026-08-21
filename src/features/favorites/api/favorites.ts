@@ -1,36 +1,15 @@
-import { supabase } from "@/src/lib/supabase";
+import { api } from "@/api/client";
 
-export async function getFavorites(userId: string) {
-  const { data, error } = await supabase
-    .from('favourites')
-    .select('*')
-    .eq('user_id', userId);
-
-  if (error) throw new Error(error.message);
-
+export async function getFavorites() {
+  const { data } = await api.get('/favourites');
   return data;
 }
 
-export async function addFavorite(userId: string, productId: number) {
-  const { data, error } = await supabase
-    .from('favourites')
-    .insert({
-      product_id: productId,
-      user_id: userId,
-    });
-  if (error) throw new Error(error.message);
-
+export async function addFavorite(productId: number) {
+  const { data } = await api.post(`/favourites/${productId}`);
   return data;
 }
-
-export async function removeFavorite(userId: string, productId: number) {
-  const { data, error } = await supabase
-    .from('favourites')
-    .delete()
-    .eq('user_id', userId)
-    .eq('product_id', productId);
-
-  if (error) throw new Error(error.message);
-
+export async function removeFavorite(productId: number) {
+  const { data } = await api.delete(`/favourites/${productId}`);
   return data;
 }
