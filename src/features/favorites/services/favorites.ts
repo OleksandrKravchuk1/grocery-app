@@ -5,7 +5,7 @@ type FavoriteRow = {
 };
 
 export async function getFavoriteIds(userId: string) {
-  const data = await getFavorites(userId);
+  const data = await getFavorites();
   return (data ?? []).map((item: FavoriteRow) => item.product_id);
 }
 
@@ -13,8 +13,8 @@ export async function toggleFavorite(userId: string, productId: number, favorite
   const isFavorite = favoriteIds.includes(productId);
 
   if (isFavorite) {
-    await removeFavorite(userId, productId);
+    await removeFavorite(productId);
   } else {
-    await addFavorite(userId, productId);
+    await addFavorite(productId);
   }
 }

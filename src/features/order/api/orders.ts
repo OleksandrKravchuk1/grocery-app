@@ -1,4 +1,4 @@
-import { supabase } from "@/src/lib/supabase";
+import { api } from '@/src/api/client';
 import { CartItem } from "@/src/types/product";
 
 type OrderProps = {
@@ -7,75 +7,58 @@ type OrderProps = {
   price: number;
 };
 
-export async function createOrder({ userId, items, price }: OrderProps) {
-  const { data: order, error } = await supabase
-    .from('orders')
-    .insert({
-      user_id: userId,
-      total_price: price,
-      status: 'pending',
-    })
-    .select()
-    .single();
-
-  if (error) {
-    throw new Error(error.message);
+export async function createOrder({ items, price }: OrderProps) {
+  const payload = {
+    totalPrice: price,
+    items: items.map((item) => ({
+      productId: item.product.id,
+      quantity: item.quantity,
+      price: item.product.price,
+    })),
   };
 
-  const orderItems = items.map((item) => ({
-    order_id: order.id,
-    product_id: item.product.id,
-    quantity: item.quantity,
-    price: item.product.price,
+  try {
+    const { data } = await api.post('/orders', payload);
+    return data;
+  } catch (error: any) {
+    console.error("Backend error:", error.response?.data || error.message);
+    throw error;
+  }
+}
+
+const mapOrderItems = (orderItems: any[]) => {
+  if (!orderItems) return [];
+  return orderItems.map((item: any) => {
+    if (item.products) {
+      item.product = {
+        ...item.products,
+        image: item.products.media?.filename
+          ? `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/products/${item.products.media.filename}`
+          : '',
+      };
+      delete item.products;
+    }
+    return item;
+  });
+};
+
+export async function getOrdersByUserId() {
+  const { data } = await api.get('/orders');
+  return data.map((order: any) => ({
+    ...order,
+    total_price: parseFloat(order.total_price || 0),
+    order_items: mapOrderItems(order.order_items),
   }));
-
-  const { error: itemsError } = await supabase
-    .from('order_items')
-    .insert(orderItems);
-
-  if (itemsError) throw new Error(itemsError.message);
-
-  return order;
-};
-
-export async function getOrdersByUserId(userId: string) {
-  const { data: orders, error } = await supabase
-    .from('orders')
-    .select('*, order_items(*)')
-    .eq('user_id', userId);
-
-  if (error) {
-    throw new Error(error.message);
-  };
-
-  return orders;
-};
+}
 
 export async function getOrderById(orderId: string) {
-  const { data: order, error } = await supabase
-    .from('orders')
-    .select('*, order_items(*, product:products(*, media:image_id(filename)))')
-    .eq('id', orderId)
-    .single();
+  const { data } = await api.get('/orders');
+  const order = data.find((o: any) => o.id === Number(orderId));
 
-  if (error) {
-    throw new Error(error.message);
-  }
+  if (!order) throw new Error("Order not found");
 
-  // Map product images correctly
-  if (order.order_items) {
-    order.order_items = order.order_items.map((item: any) => {
-      if (item.product) {
-        item.product = {
-          ...item.product,
-          image: item.product.media?.filename
-            ? `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/products/${item.product.media.filename}`
-            : '',
-        };
-      }
-      return item;
-    });
-  }
+  order.total_price = parseFloat(order.total_price || 0);
+  order.order_items = mapOrderItems(order.order_items);
 
   return order;
 }

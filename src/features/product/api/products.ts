@@ -1,4 +1,4 @@
-import { supabase } from "@/src/lib/supabase";
+import { api } from '@/src/api/client';
 import { SearchSortBy } from "@/src/types/product";
 
 type SearchProductOptions = {
@@ -9,100 +9,70 @@ type SearchProductOptions = {
 }
 
 export const mapProduct = (item: any) => ({
-  id: item.id,
-  title: item.title,
-  price: item.price,
-  rating: item.rating,
+  ...item,
+  price: parseFloat(item.price || 0),
+  rating: parseFloat(item.rating || 0),
   image: item.media?.filename
     ? `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/products/${item.media.filename}`
     : '',
 });
 
+export async function getProducts() {
+  const { data } = await api.get('/products');
+  return data.map(mapProduct);
+}
+
 export async function getProductsByCategoryId(category_id: number) {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*, media:image_id(filename)')
-    .eq('category_id', category_id);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return (data || []).map(mapProduct);
+  const { data } = await api.get('/products');
+  const filtered = data.filter((p: any) => p.category_id === category_id);
+  return filtered.map(mapProduct);
 }
 
 export async function getProductsByIds(productIds: number[]) {
   if (productIds.length === 0) return [];
-
-  const { data, error } = await supabase
-    .from('products')
-    .select('*, media:image_id(filename)')
-    .in('id', productIds);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return (data || []).map(mapProduct);
+  const { data } = await api.get('/products');
+  const filtered = data.filter((p: any) => productIds.includes(p.id));
+  return filtered.map(mapProduct);
 }
 
 export async function searchProduct(query: string, options: SearchProductOptions = {}) {
-  const {
-    categoryId,
-    minPrice,
-    maxPrice,
-    sortBy = "relevance",
-  } = options;
+  const { data } = await api.get('/products');
+  let filtered = data;
 
-  let request = supabase
-    .from('products')
-    .select('*, media:image_id(filename)')
-    .ilike('title', `%${query}%`);
-
-  if (categoryId != null) {
-    request = request.eq('category_id', categoryId);
+  if (query) {
+    const q = query.toLowerCase();
+    filtered = filtered.filter((p: any) => p.title.toLowerCase().includes(q));
   }
 
-  if (minPrice != null) {
-    request = request.gte('price', minPrice);
+  if (options.categoryId != null) {
+    filtered = filtered.filter((p: any) => p.category_id === options.categoryId);
   }
 
-  if (maxPrice != null) {
-    request = request.lte('price', maxPrice);
+  if (options.minPrice != null) {
+    filtered = filtered.filter((p: any) => p.price >= options.minPrice!);
   }
 
-  if (sortBy === "price_asc") {
-    request = request.order('price', { ascending: true });
-  } else if (sortBy === "price_desc") {
-    request = request.order('price', { ascending: false });
-  } else if (sortBy === "rating_desc") {
-    request = request.order('rating', { ascending: false });
+  if (options.maxPrice != null) {
+    filtered = filtered.filter((p: any) => p.price <= options.maxPrice!);
+  }
+
+  if (options.sortBy === "price_asc") {
+    filtered.sort((a: any, b: any) => a.price - b.price);
+  } else if (options.sortBy === "price_desc") {
+    filtered.sort((a: any, b: any) => b.price - a.price);
+  } else if (options.sortBy === "rating_desc") {
+    filtered.sort((a: any, b: any) => b.rating - a.rating);
   } else {
-    request = request.order('title', { ascending: true });
+    filtered.sort((a: any, b: any) => a.title.localeCompare(b.title));
   }
 
-  const { data, error } = await request.limit(40);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return (data || []).map(mapProduct);
+  return filtered.slice(0, 40).map(mapProduct);
 }
 
 export async function getProductById(id: number | undefined) {
   if (id === undefined) {
     throw new Error("Product ID is required");
   }
-  const { data, error } = await supabase
-    .from('products')
-    .select('*, media:image_id(filename)')
-    .eq('id', id)
-    .single();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return mapProduct(data);
+  const { data } = await api.get(`/products/${id}`);
+  return data ? mapProduct(data) : null;
 }

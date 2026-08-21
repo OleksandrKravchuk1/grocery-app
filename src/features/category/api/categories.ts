@@ -1,14 +1,6 @@
-import { supabase } from "@/src/lib/supabase";
+import { api } from '@/src/api/client';
 
 export async function getCategories() {
-  const { data, error } = await supabase
-    .from('categories')
-    .select()
-    .order('id', { ascending: true });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
+  const { data } = await api.get('/products/categories');
   return data;
 }
