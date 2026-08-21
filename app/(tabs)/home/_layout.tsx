@@ -28,7 +28,7 @@ export default function HomeLayout() {
           return {
             headerShown: true,
             headerTitle: params?.title ?? 'All',
-            animation: 'none',
+            animation: 'slide_from_right',
           };
         }}
       />
@@ -36,7 +36,7 @@ export default function HomeLayout() {
         name="product/[id]/index"
         options={{
           headerShown: false,
-          animation: 'none',
+          animation: 'slide_from_right',
         }}
       />
 
@@ -46,6 +46,7 @@ export default function HomeLayout() {
           headerShown: true,
           headerTitle: 'Cart',
           headerLargeTitleEnabled: false,
+          animation: 'slide_from_right',
         }}
       />
       <Stack.Screen

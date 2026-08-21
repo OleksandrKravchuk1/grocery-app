@@ -49,19 +49,19 @@ export default function ProfileLayout() {
             <Stack.Screen
                 name="payment"
                 options={{
-                    headerTitle: "Payment Methods",
+                    headerShown: false,
                 }}
             />
             <Stack.Screen
                 name="settings"
                 options={{
-                    headerTitle: "Settings",
+                    headerShown: false,
                 }}
             />
             <Stack.Screen
                 name="support"
                 options={{
-                    headerTitle: "Support",
+                    headerShown: false,
                 }}
             />
         </Stack>
