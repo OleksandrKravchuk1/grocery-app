@@ -1,18 +1,12 @@
-import { useTheme } from "@/src/constants/theme";
+﻿import { useTheme } from "@/src/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { STEPS } from "../constants/order";
 
 type Props = {
   status: string;
 };
-
-const STEPS = [
-  { id: 'pending', label: 'Order placed' },
-  { id: 'processing', label: 'Preparing' },
-  { id: 'delivering', label: 'On the way' },
-  { id: 'completed', label: 'Delivered' },
-];
 
 export function OrderTimeline({ status: currentStatusStr }: Props) {
   const theme = useTheme();
@@ -20,10 +14,11 @@ export function OrderTimeline({ status: currentStatusStr }: Props) {
   const currentStatus = currentStatusStr?.toLowerCase() || 'pending';
 
   // Find current step index
-  let currentIndex = STEPS.findIndex(s => s.id === currentStatus);
+  let currentIndex = STEPS.findIndex(
+    (s) => s.id === currentStatus || s.aliases.includes(currentStatus),
+  );
   if (currentIndex === -1) {
-    if (currentStatus === 'cancelled') currentIndex = 0; // Show only first step if cancelled
-    else currentIndex = 0;
+    currentIndex = 0;
   }
 
   const isCancelled = currentStatus === 'cancelled';
@@ -69,7 +64,7 @@ export function OrderTimeline({ status: currentStatusStr }: Props) {
                 style={[
                   styles.label,
                   {
-                    color: isFuture || isCancelled && !isCurrent ? theme.muted : theme.text,
+                    color: isFuture || (isCancelled && !isCurrent) ? theme.muted : theme.text,
                     fontWeight: isCurrent ? '700' : '500'
                   }
                 ]}
@@ -78,7 +73,13 @@ export function OrderTimeline({ status: currentStatusStr }: Props) {
               </Text>
               {isCurrent && !isCancelled && (
                 <Text style={[styles.subLabel, { color: theme.accent }]}>
-                  {currentStatus === 'delivering' ? 'Courier is arriving soon' : 'In progress'}
+                  {step.id === 'shipped'
+                    ? 'Courier is arriving soon'
+                    : step.id === 'processing'
+                      ? 'Restaurant is preparing your order'
+                      : step.id === 'delivered'
+                        ? 'Order delivered successfully'
+                        : 'In progress'}
                 </Text>
               )}
             </View>

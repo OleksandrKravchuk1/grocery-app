@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+﻿import { useTheme } from "@/src/constants/theme";
 import { CourierRatingModal } from "@/src/features/order/components/CourierRatingModal";
 import { useOrderTracking } from "@/src/features/order/hooks/useOrderTracking";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,15 +6,17 @@ import React from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { getStatusLabel } from "../utilities/orders";
 
 export function OrderTrackingScreen() {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 
   const {
+    status,
     routeCoords,
     courierCoord,
-    INITIAL_REGION,
+    initialRegion,
     RESTAURANT_COORD,
     USER_COORD,
     isDelivered,
@@ -29,13 +31,13 @@ export function OrderTrackingScreen() {
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} initialRegion={INITIAL_REGION}>
+      <MapView style={styles.map} initialRegion={initialRegion}>
         <Marker coordinate={RESTAURANT_COORD} title="Restaurant" pinColor="red" />
         <Marker coordinate={USER_COORD} title="You" pinColor="blue" />
 
         <Marker.Animated
           coordinate={courierCoord as any}
-          title={isDelivered ? 'Delivered here 🎉' : 'Courier'}
+          title={isDelivered ? 'Delivered here 🛵' : 'Courier'}
           pinColor="green"
           zIndex={2}
         />
@@ -58,7 +60,7 @@ export function OrderTrackingScreen() {
               {isDelivered ? 'Delivered! 🎉' : '15-20 min.'}
             </Text>
             <Text style={[styles.statusText, { color: theme.muted }]}>
-              {isDelivered ? 'Your order has arrived' : 'Courier is on the way'}
+              {getStatusLabel(status)}
             </Text>
           </View>
 
@@ -105,8 +107,12 @@ export function OrderTrackingScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  map: { ...StyleSheet.absoluteFillObject },
+  container: {
+    flex: 1,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
   bottomPanel: {
     position: 'absolute',
     bottom: 0,
@@ -120,16 +126,59 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 10,
   },
-  deliveryInfo: { marginBottom: 20 },
-  etaText: { fontSize: 24, fontWeight: '800' },
-  statusText: { fontSize: 16, marginTop: 4 },
-  courierProfile: { flexDirection: 'row', alignItems: 'center' },
-  avatar: { width: 50, height: 50, borderRadius: 25, backgroundColor: '#eee' },
-  courierDetails: { flex: 1, marginLeft: 12 },
-  courierName: { fontSize: 16, fontWeight: '600' },
-  courierVehicle: { fontSize: 14, marginTop: 2 },
-  callButton: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center' },
-  deliveredRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
-  doneButton: { padding: 16, borderRadius: 100, alignItems: 'center' },
-  doneButtonText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
+  deliveryInfo: {
+    marginBottom: 20,
+  },
+  etaText: {
+    fontSize: 24,
+    fontWeight: '800',
+  },
+  statusText: {
+    fontSize: 16,
+    marginTop: 4,
+  },
+  courierProfile: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#eee',
+  },
+  courierDetails: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  courierName: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  courierVehicle: {
+    fontSize: 14,
+    marginTop: 2,
+  },
+  callButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  deliveredRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  doneButton: {
+    padding: 16,
+    borderRadius: 100,
+    alignItems: 'center',
+  },
+  doneButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });

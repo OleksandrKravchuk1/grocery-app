@@ -1,5 +1,6 @@
 import { api } from '@/src/api/client';
 import { CartItem } from "@/src/types/product";
+import { DeliveryStatusResponse } from '@/types/delivery';
 
 type OrderProps = {
   userId: string;
@@ -61,4 +62,9 @@ export async function getOrderById(orderId: string) {
   order.order_items = mapOrderItems(order.order_items);
 
   return order;
+}
+
+export async function getDeliveryStatus(orderId: number): Promise<DeliveryStatusResponse> {
+  const { data } = await api.get<DeliveryStatusResponse>(`/deliveries/${orderId}/status`);
+  return data;
 }
