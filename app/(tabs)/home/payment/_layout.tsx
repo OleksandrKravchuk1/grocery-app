@@ -1,11 +1,11 @@
-import { colors } from "@/constants/colors";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
-import { Pressable, useColorScheme } from "react-native";
+import { Pressable } from "react-native";
 
 export default function PaymentLayout() {
   const router = useRouter();
-  const isDark = useColorScheme() === "dark";
+  const { colors: theme, isDark } = useAppTheme();
 
   return (
     <Stack
@@ -31,7 +31,7 @@ export default function PaymentLayout() {
               <Ionicons
                 name="chevron-back"
                 size={24}
-                color={isDark ? colors.white : colors.textLight}
+                color={theme.text}
                 accessible={false}
               />
             </Pressable>

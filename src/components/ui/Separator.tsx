@@ -1,8 +1,8 @@
-import { useTheme } from "@/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { StyleSheet, View } from "react-native";
 
 export function Separator() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   return (
     <View style={[styles.separator, { backgroundColor: theme.border }]} />
   );

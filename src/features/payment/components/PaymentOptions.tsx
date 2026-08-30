@@ -1,4 +1,4 @@
-import { useTheme } from '@/src/constants/theme';
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Switch, Text, View } from 'react-native';
@@ -10,7 +10,7 @@ interface PaymentOptionsProps {
 }
 
 export function PaymentOptions({ preferences, onChange }: PaymentOptionsProps) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   return (
     <View style={styles.container}>

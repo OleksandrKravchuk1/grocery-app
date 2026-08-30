@@ -1,5 +1,5 @@
-import { colors } from "@/src/constants/colors";
-import { useTheme } from "@/src/constants/theme";
+
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { usePressAnimation } from "@/src/hooks/animations/usePressAnimation";
 import { usePulseAnimation } from "@/src/hooks/animations/usePulseAnimation";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,18 +12,18 @@ type Props = {
 };
 
 export function FavoriteSignInPlaceholder({ onSignInPress }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { animatedStyle: buttonAnimatedStyle, onPressIn, onPressOut } = usePressAnimation({});
   const { ring1Style, ring2Style } = usePulseAnimation();
 
   return (
     <View style={[styles.container, { backgroundColor: theme.screen }]}>
       <View style={styles.artworkContainer}>
-        <Animated.View style={[styles.pulseRing, ring2Style, { borderColor: colors.favouriteActive }]} />
-        <Animated.View style={[styles.pulseRing, ring1Style, { borderColor: colors.favouriteActive }]} />
+        <Animated.View style={[styles.pulseRing, ring2Style, { borderColor: theme.favouriteActive }]} />
+        <Animated.View style={[styles.pulseRing, ring1Style, { borderColor: theme.favouriteActive }]} />
 
         <View style={[styles.centerCircle, { backgroundColor: theme.card, borderColor: theme.border }]}>
-          <Ionicons name="heart" size={54} color={colors.favouriteActive} />
+          <Ionicons name="heart" size={54} color={theme.favouriteActive} />
         </View>
       </View>
 

@@ -1,14 +1,14 @@
+import { useAppTheme } from "@/src/context/ThemeContext";
 import {router, Stack} from "expo-router";
 import {HeaderBackButton} from "@react-navigation/elements";
-import {useColorScheme} from "react-native";
 
 const ModalLayout = () => {
-    const colorScheme = useColorScheme();
+    const { isDark } = useAppTheme();
 
     return (
         <Stack
             screenOptions={{
-                headerBlurEffect: colorScheme === 'dark' ? 'systemThickMaterialDark' : 'light',
+                headerBlurEffect: isDark ? 'systemThickMaterialDark' : 'light',
             }}
         >
             <Stack.Screen

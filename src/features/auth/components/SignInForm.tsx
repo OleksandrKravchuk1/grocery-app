@@ -1,12 +1,12 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { AnimatedLogo } from "@/components/ui/AnimatedLogo";
 import { SignOutButton } from "@/components/ui/button/SignOutButton";
 import { SubmitButton } from "@/src/components/ui/button/SubmitButton";
 import { InputRow } from "@/src/components/ui/row/InputRow";
-import { colors } from "@/src/constants/colors";
-import { useTheme } from "@/src/constants/theme";
+
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { useSignOut } from "@/src/features/auth/hooks/useSignOut";
 import { useProfileForm } from "@/src/features/profile/hooks/useProfileForm";
@@ -18,8 +18,7 @@ export function SignInForm() {
   const { user } = useAuth();
   const { form, isSaving } = useProfileForm();
   const signOut = useSignOut();
-  const theme = useTheme();
-  const isDark = useColorScheme() === "dark";
+  const { colors: theme } = useAppTheme();
 
   return (
     <ScrollView
@@ -89,9 +88,7 @@ export function SignInForm() {
                       styles.genderButton,
                       {
                         backgroundColor: selected
-                          ? isDark
-                            ? colors.selectedGenderDark
-                            : colors.selectedGenderLight
+                          ? theme.genderSelectedBg
                           : theme.card,
                         borderColor: selected ? theme.accent : theme.inputBorder,
                       },

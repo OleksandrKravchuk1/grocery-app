@@ -1,6 +1,6 @@
-import { colors } from "@/constants/colors";
+import { palette } from "@/src/constants/colors";
 import { usePressAnimation } from "@/hooks/animations/usePressAnimation";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { CartItem } from "@/src/features/cart/components/CartItem";
 import { useCart } from "@/src/features/cart/context/CartContext";
@@ -13,7 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export function CartScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   const { user } = useAuth();
   const { items, updateQuantity, removeFromCart } = useCart();
@@ -118,14 +118,14 @@ const styles = StyleSheet.create({
     margin: 16,
     paddingVertical: 14,
     borderRadius: 12,
-    backgroundColor: colors.green,
+    backgroundColor: palette.green,
     alignItems: "center",
   },
   buttonDisabled: {
     opacity: 0.5,
   },
   buttonText: {
-    color: colors.white,
+    color: palette.white,
     fontSize: 16,
     fontWeight: "700",
   },
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   separator: {
-    borderColor: colors.lightGrey,
+    borderColor: palette.grey100,
     borderWidth: 1
   },
 });

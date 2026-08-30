@@ -1,7 +1,7 @@
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
-import { colors } from "@/src/constants/colors";
-import { useTheme } from "@/src/constants/theme";
+import { palette } from "@/src/constants/colors";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useCategory } from "@/src/features/category/hooks/useCategory";
 import { useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
@@ -10,7 +10,7 @@ export function CategoriesList() {
   const { categories, isLoading, error } = useCategory();
 
   const router = useRouter();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   const handleOnPress = (categoryId: string, categoryName: string) => {
     router.push({
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: 36,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.lightGrey,
+    backgroundColor: palette.grey100,
   },
   icon: {
     fontSize: 26,

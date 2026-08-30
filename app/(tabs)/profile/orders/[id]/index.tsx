@@ -1,6 +1,6 @@
-﻿import { LoadingView } from "@/components/ui/view/LoadingView";
+import { LoadingView } from "@/components/ui/view/LoadingView";
 import { useLocation } from "@/context/LocationContext";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { OrderItemList } from "@/src/features/order/components/OrderItemList";
 import { OrderTimeline } from "@/src/features/order/components/OrderTimeline";
 import { useDeliveryStatus } from "@/src/features/order/hooks/useDeliveryStatus.query";
@@ -16,7 +16,7 @@ export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const segments = useSegments();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const insets = useSafeAreaInsets();
 
   const { data: order, isLoading, isError } = useOrder(id);

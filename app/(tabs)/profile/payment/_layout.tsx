@@ -1,8 +1,8 @@
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Stack } from "expo-router";
-import { useColorScheme } from "react-native";
 
 export default function PaymentLayout() {
-  const isDark = useColorScheme() === "dark";
+  const { isDark } = useAppTheme();
 
   return (
     <Stack

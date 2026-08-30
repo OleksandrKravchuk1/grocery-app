@@ -10,7 +10,7 @@ import { useFavoriteProducts } from "@/features/favorites/hooks/useFavoriteProdu
 import { getMockBadges } from "@/features/product/services/product";
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useCart } from "@/src/features/cart/context/CartContext";
 import { ProductBadges } from "@/src/features/product/components/ProductBadges";
 import { useProduct } from "@/src/features/product/hooks/useProduct";
@@ -21,7 +21,7 @@ const { height } = Dimensions.get("window");
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const insets = useSafeAreaInsets();
 
   const { toggleFavorite, favoriteIds } = useFavoriteProducts();

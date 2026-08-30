@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useRef } from "react";
 import {
@@ -27,7 +27,7 @@ export function CourierRatingModal({
   onRate,
   onConfirm,
 }: CourierRatingModalProps) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const insets = useSafeAreaInsets();
 
   const starScales = useRef([1, 2, 3, 4, 5].map(() => new Animated.Value(1))).current;

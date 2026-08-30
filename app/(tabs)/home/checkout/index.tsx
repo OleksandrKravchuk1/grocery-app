@@ -1,9 +1,9 @@
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { DeliveryRow } from "@/components/ui/row/DeliveryRow";
 import { Row } from "@/components/ui/row/Row";
-import { colors } from "@/constants/colors";
+import { palette } from "@/src/constants/colors";
 import { useLocation } from "@/context/LocationContext";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { useCart } from "@/src/features/cart/context/CartContext";
 import { getCartItemCount, getCartSubtotal } from "@/src/features/cart/utilities/cart";
@@ -39,7 +39,7 @@ const DELIVERY_FEES = {
 export default function CheckoutScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { address } = useLocation();
   const { user } = useAuth();
   const { items, clearCart } = useCart();
@@ -266,7 +266,7 @@ export default function CheckoutScreen() {
           value={invoiceRequested}
           onValueChange={setInvoiceRequested}
           trackColor={{ false: theme.border, true: theme.accent }}
-          thumbColor={invoiceRequested ? colors.white : colors.white}
+          thumbColor={invoiceRequested ? palette.white : palette.white}
           accessibilityRole="switch"
           accessibilityLabel="Request an invoice"
           accessibilityHint="Toggles whether you want an invoice for this order"
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   placeOrderText: {
-    color: colors.white,
+    color: palette.white,
     fontSize: 18,
     fontWeight: "700",
   },

@@ -1,4 +1,4 @@
-import { useTheme } from '@/src/constants/theme';
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { formatCardNumber, formatCvc, formatExpiry } from '@/src/utilities/formatCard';
 import { useForm, useStore } from '@tanstack/react-form';
 import React, { useState } from 'react';
@@ -10,7 +10,7 @@ import { CreditCardView } from './CreditCardView';
 import { FormInput } from './FormInput';
 
 export function AddCardForm({ onSave, onCancel }: AddCardFormProps) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);

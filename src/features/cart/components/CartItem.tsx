@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Feather } from "@expo/vector-icons";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -13,7 +13,7 @@ type Props = {
 }
 
 export function CartItem({ price, title, image, quantity, onIncrease, onDecrease, onRemove }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   return (
     <View style={[styles.card, { backgroundColor: theme.imageContainer }]}>

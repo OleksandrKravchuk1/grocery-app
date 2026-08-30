@@ -1,4 +1,4 @@
-import { useTheme } from "@/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Pressable, StyleSheet, Text } from "react-native";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export function Chip({ label, selected, onPress }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   return (
     <Pressable style={[styles.chip, {

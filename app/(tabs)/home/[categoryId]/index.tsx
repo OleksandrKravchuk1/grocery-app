@@ -1,7 +1,7 @@
 import { CategoryEmptyComponent } from "@/features/category/components/CategoryEmptyComponent";
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
 import { ProductCard } from "@/src/features/product/components/ProductCard";
 import { useCategoryProducts } from "@/src/features/product/hooks/useCategoryProducts";
@@ -11,7 +11,7 @@ import { StyleSheet, View } from "react-native";
 import Animated from "react-native-reanimated";
 
 export default function CategoryProductsScreen() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { favoriteIds, toggleFavorite } = useFavoriteProducts();
 
   const parsedCategoryId = useNumericRouteParam("categoryId");

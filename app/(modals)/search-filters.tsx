@@ -2,16 +2,15 @@ import {useState} from "react";
 import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {router} from "expo-router";
 import {useCategory} from "@/src/features/category/hooks/useCategory";
-import {colors} from "@/src/constants/colors";
+import {palette} from "@/src/constants/colors";
 import SearchFiltersForm from "@/src/features/search/components/SearchFiltersForm";
 import {SearchSortBy} from "@/src/types/product";
 import {PricePreset} from "@/src/constants/search";
 import {useInsets} from "@/src/hooks/useInsets";
 import {useSearchFilters} from "@/src/context/SearchFiltersContext";
-import {useTheme} from "@/src/constants/theme";
-
+import { useAppTheme } from "@/src/context/ThemeContext";
 export default function SearchFiltersModal() {
-    const theme = useTheme();
+    const { colors: theme } = useAppTheme();
 
     const {topInset} = useInsets();
     const {categories} = useCategory();
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
     },
     secondaryButtonText: {
-        color: colors.black,
+        color: palette.black,
         fontSize: 14,
         fontWeight: "700",
     },
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     applyButtonText: {
-        color: colors.white,
+        color: palette.white,
         fontSize: 16,
         fontWeight: "700",
     },

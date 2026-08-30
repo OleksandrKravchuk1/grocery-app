@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import React, { ComponentProps } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export function ProfileStats({ ordersCount, favouritesCount, totalSpent }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   const stats: StatItem[] = [
     {

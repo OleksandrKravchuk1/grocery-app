@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { ProductBadge } from "@/types/product";
 import { Feather } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export function ProductBadges({ badges }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   if (!badges || badges.length === 0) return null;
 

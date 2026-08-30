@@ -1,5 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
-import { ThemeMode, useThemeMode } from "@/src/context/ThemeContext";
+import { ThemeMode, useAppTheme } from "@/src/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
@@ -24,9 +23,8 @@ const THEME_OPTIONS: { value: ThemeMode; label: string; icon: string }[] = [
 ];
 
 export function SettingsScreen() {
-  const theme = useTheme();
+  const { colors: theme, mode: themeMode, setMode: setThemeMode } = useAppTheme();
   const insets = useSafeAreaInsets();
-  const { themeMode, setThemeMode } = useThemeMode();
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 

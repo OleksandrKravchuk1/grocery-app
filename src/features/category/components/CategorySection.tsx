@@ -1,5 +1,5 @@
-import { colors } from "@/src/constants/colors";
-import { useTheme } from "@/src/constants/theme";
+import { palette } from "@/src/constants/colors";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { ProductList } from "@/src/features/product/components/ProductList";
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -11,7 +11,7 @@ type Props = {
 
 export function CategorySection({ title, category_id }: Props) {
   const router = useRouter();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   const handleOnPress = () => {
     router.push({
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   viewAll: {
     fontSize: 16,
     fontWeight: '500',
-    color: colors.green,
+    color: palette.green,
     paddingRight: 16,
   },
 });

@@ -1,11 +1,11 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Order } from "@/src/types/order";
 import { Image } from "expo-image";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 export function OrderItemList({ items }: { items: Order['order_items'] }) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   if (!items || items.length === 0) {
     return <Text style={{ color: theme.muted }}>No items found.</Text>;

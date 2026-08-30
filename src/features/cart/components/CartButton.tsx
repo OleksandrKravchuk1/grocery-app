@@ -1,4 +1,4 @@
-import { useTheme } from "@/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, View, Text } from "react-native";
@@ -7,7 +7,7 @@ import { useCart } from "@/src/features/cart/context/CartContext";
 import { getCartItemCount } from "@/src/features/cart/utilities/cart";
 
 export function CartButton() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const router = useRouter();
   const { items } = useCart();
   const itemCount = getCartItemCount(items);

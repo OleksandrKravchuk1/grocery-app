@@ -2,7 +2,7 @@ import { CartButton } from "@/features/cart/components/CartButton";
 import { AddressView } from "@/features/location/components/AddressView";
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useLocation } from "@/src/context/LocationContext";
 import { BannerList } from "@/src/features/banners/components/BannerList";
 import { CategoriesList } from "@/src/features/category/components/CategoriesList";
@@ -13,7 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const androidHeaderOffset = Platform.OS === 'android' ? insets.top + 56 : 0;
 
   const { categories, isLoading, error } = useCategory();
