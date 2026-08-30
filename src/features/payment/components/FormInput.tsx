@@ -1,4 +1,4 @@
-import { useTheme } from '@/src/constants/theme';
+import { useAppTheme } from "@/src/context/ThemeContext";
 import React from 'react';
 import { StyleProp, StyleSheet, Text, TextInput, TextInputProps, View, ViewStyle } from 'react-native';
 
@@ -25,7 +25,7 @@ export function FormInput({
   onChangeText,
   ...textInputProps
 }: FormInputProps) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   // Determine values/handlers from either field or individual props
   const inputValue = field ? field.state.value : value;

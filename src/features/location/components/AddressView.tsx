@@ -1,11 +1,11 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text } from "react-native";
 
 export function AddressView({ address }: { address: string }) {
   const router = useRouter();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   const handleOnPress = () => {
     router.push('/(modals)/location-picker');

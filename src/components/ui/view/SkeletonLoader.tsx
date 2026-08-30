@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import React, { useEffect } from "react";
 import { StyleSheet, View, ViewStyle } from "react-native";
 import Animated, {
@@ -21,7 +21,7 @@ export function SkeletonLoader({
   borderRadius = 8,
   style,
 }: SkeletonLoaderProps) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const opacity = useSharedValue(0.3);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export function SkeletonLoader({
 /** Pre-built skeleton patterns for common screen layouts */
 
 export function SkeletonCard({ style }: { style?: ViewStyle }) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   return (
     <View style={[skeletonStyles.card, { backgroundColor: theme.card }, style]}>
       <SkeletonLoader width="100%" height={16} borderRadius={6} />
@@ -66,7 +66,7 @@ export function SkeletonCard({ style }: { style?: ViewStyle }) {
 }
 
 export function SkeletonProductCard({ style }: { style?: ViewStyle }) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   return (
     <View style={[skeletonStyles.productCard, { backgroundColor: theme.card }, style]}>
       <SkeletonLoader width="100%" height={120} borderRadius={12} />
@@ -77,7 +77,7 @@ export function SkeletonProductCard({ style }: { style?: ViewStyle }) {
 }
 
 export function SkeletonProfileHeader() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   return (
     <View style={[skeletonStyles.profileHeader, { backgroundColor: theme.card }]}>
       <SkeletonLoader width={80} height={80} borderRadius={40} />
@@ -88,7 +88,7 @@ export function SkeletonProfileHeader() {
 }
 
 export function SkeletonListItem() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   return (
     <View style={[skeletonStyles.listItem, { borderBottomColor: theme.border }]}>
       <SkeletonLoader width={36} height={36} borderRadius={10} />
@@ -98,7 +98,7 @@ export function SkeletonListItem() {
 }
 
 export function SkeletonSettingsScreen() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   return (
     <View style={[skeletonStyles.screenContainer, { backgroundColor: theme.screen }]}>
       <View style={[skeletonStyles.card, { backgroundColor: theme.card }]}>
@@ -123,7 +123,7 @@ export function SkeletonSettingsScreen() {
 }
 
 export function SkeletonSupportScreen() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   return (
     <View style={[skeletonStyles.screenContainer, { backgroundColor: theme.screen }]}>
       <View style={[skeletonStyles.card, { backgroundColor: theme.card }]}>
@@ -149,7 +149,7 @@ export function SkeletonSupportScreen() {
 }
 
 export function SkeletonOrderDetail() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   return (
     <View style={[skeletonStyles.screenContainer, { backgroundColor: theme.screen }]}>
       {/* Header card */}
@@ -188,7 +188,7 @@ export function SkeletonOrderDetail() {
 }
 
 export function SkeletonHomeScreen() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   return (
     <View style={[skeletonStyles.screenContainer, { backgroundColor: theme.screen }]}>
       {/* Address + Cart button */}
@@ -216,7 +216,7 @@ export function SkeletonHomeScreen() {
 }
 
 export function SkeletonOrdersList() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   return (
     <View style={[skeletonStyles.screenContainer, { backgroundColor: theme.screen }]}>
       {[1, 2, 3].map((i) => (

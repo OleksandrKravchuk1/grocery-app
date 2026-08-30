@@ -1,5 +1,5 @@
 import { LoadingView } from '@/components/ui/view/LoadingView';
-import { useTheme } from '@/src/constants/theme';
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { AddCardForm } from '@/src/features/payment/components/AddCardForm';
 import { PaymentOptions } from '@/src/features/payment/components/PaymentOptions';
 import { SavedCardsCarousel } from '@/src/features/payment/components/SavedCardsCarousel';
@@ -18,7 +18,7 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function PaymentScreen() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const insets = useSafeAreaInsets();
   const [showAddCard, setShowAddCard] = useState(false);
 

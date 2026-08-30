@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Dimensions, Image, ImageSourcePropType, Pressable, StyleSheet, Text, View } from "react-native";
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 
 export function BannerCard({ title, subtitle, color, titleColor, subtitleColor, buttonColor, image }: Props) {
   const { width } = Dimensions.get('window');
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   return (
     <View style={styles.container}>

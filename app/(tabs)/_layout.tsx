@@ -1,20 +1,20 @@
-import { colors } from "@/src/constants/colors";
+import { useAppTheme } from "@/src/context/ThemeContext";
+import { palette } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { useColorScheme } from "react-native";
 
 export default function TabLayout() {
-  const isDark = useColorScheme() === 'dark'
+  const { isDark } = useAppTheme();
 
   return (
     <Tabs screenOptions={{
       headerShown: false,
       animation: "shift",
-      tabBarActiveTintColor: colors.green,
-      tabBarInactiveTintColor: isDark ? colors.mutedDark : colors.black,
+      tabBarActiveTintColor: palette.green,
+      tabBarInactiveTintColor: isDark ? palette.grey500 : palette.black,
       tabBarStyle: {
-        backgroundColor: isDark ? colors.black : colors.white,
-        borderTopColor: isDark ? colors.black : colors.white,
+        backgroundColor: isDark ? palette.black : palette.white,
+        borderTopColor: isDark ? palette.black : palette.white,
       }
     }}>
       <Tabs.Screen

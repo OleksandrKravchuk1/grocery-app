@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
@@ -21,7 +21,7 @@ function getInitials(firstName: string, lastName: string): string {
 }
 
 export function ProfileHeader({ firstName, lastName, email }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { ring1Style, ring2Style } = usePulseAnimation();
   const initials = getInitials(firstName, lastName);
   const fullName = [firstName, lastName].filter(Boolean).join(" ").trim();

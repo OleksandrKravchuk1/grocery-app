@@ -3,12 +3,12 @@ import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-n
 import { AnimatedLogo } from "@/components/ui/AnimatedLogo";
 import { SubmitButton } from "@/src/components/ui/button/SubmitButton";
 import { InputRow } from "@/src/components/ui/row/InputRow";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useAuthForm } from "@/src/features/auth/hooks/useAuthForm";
 
 export default function Auth() {
   const { form, handleSignIn, handleSignUp, isSubmitting } = useAuthForm();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.screen }}>

@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { FAQ_ITEMS } from "@/src/features/support/constants/faq";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useCallback, useState } from "react";
@@ -23,7 +23,7 @@ if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 export function SupportScreen() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const insets = useSafeAreaInsets();
 
   // FAQ

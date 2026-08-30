@@ -1,4 +1,4 @@
-import { useTheme } from "@/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { MaterialIcons } from "@expo/vector-icons";
 import { StyleProp, StyleSheet, TextInput, View, ViewStyle } from "react-native";
 
@@ -29,7 +29,7 @@ export function InputRow({
   accessibilityLabel,
   accessibilityHint,
 }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   return (
     <View style={[styles.inputRow, { backgroundColor: theme.inputBg, borderColor: theme.inputBorder }, style]}>

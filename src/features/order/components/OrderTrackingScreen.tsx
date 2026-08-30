@@ -1,4 +1,4 @@
-﻿import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { CourierRatingModal } from "@/src/features/order/components/CourierRatingModal";
 import { useOrderTracking } from "@/src/features/order/hooks/useOrderTracking";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,7 +10,7 @@ import { getStatusLabel } from "../utilities/orders";
 
 export function OrderTrackingScreen() {
   const insets = useSafeAreaInsets();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   const {
     status,
@@ -37,7 +37,7 @@ export function OrderTrackingScreen() {
 
         <Marker.Animated
           coordinate={courierCoord as any}
-          title={isDelivered ? 'Delivered here 🛵' : 'Courier'}
+          title={isDelivered ? 'Delivered here ??' : 'Courier'}
           pinColor="green"
           zIndex={2}
         />
@@ -57,7 +57,7 @@ export function OrderTrackingScreen() {
         <View style={[styles.bottomPanel, { backgroundColor: theme.card, paddingBottom: insets.bottom + 24 }]}>
           <View style={styles.deliveryInfo}>
             <Text style={[styles.etaText, { color: isDelivered ? theme.accent : theme.text }]}>
-              {isDelivered ? 'Delivered! 🎉' : '15-20 min.'}
+              {isDelivered ? 'Delivered! ??' : '15-20 min.'}
             </Text>
             <Text style={[styles.statusText, { color: theme.muted }]}>
               {getStatusLabel(status)}
@@ -68,7 +68,7 @@ export function OrderTrackingScreen() {
             <Image source={{ uri: 'https://i.pravatar.cc/100' }} style={styles.avatar} />
             <View style={styles.courierDetails}>
               <Text style={[styles.courierName, { color: theme.text }]}>Nick</Text>
-              <Text style={[styles.courierVehicle, { color: theme.muted }]}>Honda Dio • KA1234IK</Text>
+              <Text style={[styles.courierVehicle, { color: theme.muted }]}>Honda Dio � KA1234IK</Text>
             </View>
 
             {!isDelivered && (
@@ -85,7 +85,7 @@ export function OrderTrackingScreen() {
             <View style={{ marginLeft: 12 }}>
               <Text style={[styles.etaText, { color: theme.text }]}>Order complete</Text>
               <Text style={[styles.statusText, { color: theme.muted }]}>
-                {'⭐'.repeat(rating) || 'Not rated'}
+                {'?'.repeat(rating) || 'Not rated'}
               </Text>
             </View>
           </View>

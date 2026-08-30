@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { usePressAnimation } from "@/src/hooks/animations/usePressAnimation";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps } from "react";
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export function ProfileMenuItem({ icon, label, onPress, danger = false, showChevron = true }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { animatedStyle, onPressIn, onPressOut } = usePressAnimation({ toValue: 0.97 });
 
   const color = danger ? theme.danger : theme.text;

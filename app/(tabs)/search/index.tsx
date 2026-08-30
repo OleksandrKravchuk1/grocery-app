@@ -1,5 +1,5 @@
 import { SearchBar } from "@/src/components/ui/SearchBar";
-import { useTheme } from "@/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useSearchFilters } from "@/context/SearchFiltersContext";
 import { useInsets } from "@/hooks/useInsets";
 import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
@@ -13,7 +13,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
 
 export default function SearchScreen() {
-    const theme = useTheme();
+    const { colors: theme } = useAppTheme();
     const { topInset } = useInsets();
     const { favoriteIds, toggleFavorite } = useFavoriteProducts();
     const { filters } = useSearchFilters();

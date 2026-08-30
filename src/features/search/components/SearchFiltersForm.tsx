@@ -1,6 +1,6 @@
 import { Chip } from "@/src/components/ui/Chip";
 import { PRICE_PRESETS, PricePreset, SORT_OPTIONS } from "@/src/constants/search";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Category } from "@/src/types/category";
 import { SearchSortBy } from "@/src/types/product";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -26,7 +26,7 @@ export default function SearchFiltersForm({
   selectedSortBy,
   onSelectSortBy,
 }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   return (
     <View style={styles.container}>

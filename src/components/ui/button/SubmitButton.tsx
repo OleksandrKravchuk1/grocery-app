@@ -1,4 +1,4 @@
-import { useTheme } from "@/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { usePressAnimation } from "@/hooks/animations/usePressAnimation";
 import { Pressable, StyleSheet, Text } from "react-native";
 import Animated from "react-native-reanimated";
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export function SubmitButton({ onPress, title, isSaving }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { animatedStyle, onPressIn, onPressOut } = usePressAnimation({});
 
   return (

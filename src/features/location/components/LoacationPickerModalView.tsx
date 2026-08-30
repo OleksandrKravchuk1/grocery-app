@@ -3,11 +3,11 @@ import MapView, { Marker } from "react-native-maps";
 
 import { ErrorView } from "@/src/components/ui/view/ErrorView";
 import { LoadingView } from "@/src/components/ui/view/LoadingView";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useCurrentLocation } from "@/src/features/location/hooks/useCurrentLocation";
 
 export function LocationPickerModalView() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { region, picked, loading, error, addressLabel, onMapPress, onConfirm } = useCurrentLocation();
 
   if (loading) return <LoadingView accessibilityLabel="Loading location picker" />;

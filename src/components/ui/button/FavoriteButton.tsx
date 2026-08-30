@@ -1,6 +1,6 @@
-import { useTheme } from "@/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useAuth } from "@/features/auth/context/AuthContext";
-import { colors } from "@/src/constants/colors";
+
 import { FontAwesome } from "@expo/vector-icons";
 import { Alert, Pressable, StyleSheet } from "react-native";
 
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export function FavoriteButton({ onAddToFavoritesPress, isFavorite }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { user } = useAuth();
 
   const handlePress = () => {
@@ -36,7 +36,7 @@ export function FavoriteButton({ onAddToFavoritesPress, isFavorite }: Props) {
       <FontAwesome
         name={isFavorite ? "heart" : "heart-o"}
         size={20}
-        color={isFavorite ? colors.favouriteActive : theme.text}
+        color={isFavorite ? theme.favouriteActive : theme.text}
         accessible={false}
       />
     </Pressable>

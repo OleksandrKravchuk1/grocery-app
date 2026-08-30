@@ -1,6 +1,6 @@
 import { AddToCartButton } from "@/components/ui/button/AddToCartButton";
 import { FavoriteButton } from "@/src/components/ui/button/FavoriteButton";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Product } from "@/src/types/product";
 import { FontAwesome } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export function ProductCard({ id, image, title, rating, price, cardStyle, onAddToFavoritesPress, isFavorite = false }: Props) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const router = useRouter();
 
   const product: Product = { id, image, title, rating, price };

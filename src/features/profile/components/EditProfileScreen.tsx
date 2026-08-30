@@ -1,11 +1,11 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { SubmitButton } from "@/src/components/ui/button/SubmitButton";
 import { InputRow } from "@/src/components/ui/row/InputRow";
-import { colors } from "@/src/constants/colors";
-import { useTheme } from "@/src/constants/theme";
+
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { useProfileForm } from "@/src/features/profile/hooks/useProfileForm";
 import { GenderOption } from "@/src/types/profile";
@@ -21,8 +21,7 @@ function FieldError({ errors }: { errors: any[] }) {
 export function EditProfileScreen() {
   const { user } = useAuth();
   const { form, isSaving } = useProfileForm();
-  const theme = useTheme();
-  const isDark = useColorScheme() === "dark";
+  const { colors: theme } = useAppTheme();
   const insets = useSafeAreaInsets();
 
   return (
@@ -123,9 +122,7 @@ export function EditProfileScreen() {
                       styles.genderButton,
                       {
                         backgroundColor: selected
-                          ? isDark
-                            ? colors.selectedGenderDark
-                            : colors.selectedGenderLight
+                          ? theme.genderSelectedBg
                           : theme.card,
                         borderColor: selected ? theme.accent : theme.inputBorder,
                       },

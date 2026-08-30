@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useShakeAnimation } from "@/src/hooks/animations/useShakeAnimation";
 import { usePressAnimation } from "@/src/hooks/animations/usePressAnimation";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -15,7 +15,7 @@ type ErrorViewProps = {
 };
 
 export function ErrorView({ message, onRetry, isOffline = false }: ErrorViewProps) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const insets = useSafeAreaInsets();
   const { onPressIn, onPressOut, animatedStyle: buttonAnim } = usePressAnimation({});
   const { animatedStyle: shakeAnim } = useShakeAnimation();

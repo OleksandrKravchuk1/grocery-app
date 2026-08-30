@@ -1,14 +1,13 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
-import { Pressable, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
 
 export function CategoryEmptyComponent() {
   const router = useRouter();
-  const theme = useTheme();
-  const isDark = useColorScheme() === "dark";
+  const { colors: theme, isDark } = useAppTheme();
 
   const pingScale = useSharedValue(1);
   const pingOpacity = useSharedValue(0.4);

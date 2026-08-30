@@ -1,4 +1,4 @@
-import { useTheme } from "@/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleProp, StyleSheet, TextInput, View, ViewStyle } from "react-native";
 
@@ -12,7 +12,7 @@ type SearchBarProps = {
 };
 
 export function SearchBar({ value, onChangeText, onClear, topInset = 0, placeholder = "Find products...", style }: SearchBarProps) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
 
   return (
     <View

@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useNetworkStatus } from "@/src/hooks/useNetworkStatus";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
@@ -12,7 +12,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function OfflineBanner() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const insets = useSafeAreaInsets();
   const { isConnected, isInternetReachable } = useNetworkStatus();
   const isOffline = !isConnected || !isInternetReachable;

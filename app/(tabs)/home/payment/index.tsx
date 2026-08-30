@@ -1,6 +1,6 @@
 import { PaymentOption } from "@/app/(tabs)/home/payment/components/PaymentOption";
-import { colors } from "@/constants/colors";
-import { useTheme } from "@/src/constants/theme";
+import { palette } from "@/src/constants/colors";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { useCart } from "@/src/features/cart/context/CartContext";
 import { getCartSubtotal } from "@/src/features/cart/utilities/cart";
@@ -19,7 +19,7 @@ type PaymentMethod = "apple" | "card";
 export default function PaymentScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { user } = useAuth();
 
   const { items, clearCart } = useCart();
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   confirmText: {
-    color: colors.white,
+    color: palette.white,
     fontSize: 16,
     fontWeight: "700",
   },

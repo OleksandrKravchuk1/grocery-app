@@ -1,6 +1,6 @@
 import { ErrorView } from '@/src/components/ui/view/ErrorView';
 import { LoadingView } from '@/src/components/ui/view/LoadingView';
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { OrderCard } from '@/src/features/order/components/OrderCard';
 import { useOrders } from "@/src/features/order/hooks/useOrders";
 import { FlatList, StyleSheet } from 'react-native';
@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { OrderEmptyComponent } from './OrderEmptyComponent';
 
 export function OrdersScreen() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const insets = useSafeAreaInsets();
 
   const { data: orders = [], isLoading, error, refetch } = useOrders();

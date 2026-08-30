@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useAuth } from "@/src/features/auth/context/AuthContext";
 import { useSignOut } from "@/src/features/auth/hooks/useSignOut";
 import { useFavoriteProducts } from "@/src/features/favorites/hooks/useFavoriteProducts";
@@ -13,7 +13,7 @@ import { Alert, Platform, ScrollView, StyleSheet, Text, View } from "react-nativ
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function ProfileScreen() {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user } = useAuth();

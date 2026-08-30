@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { useCart } from "@/src/features/cart/context/CartContext";
 import { useExpandAnimation } from "@/src/hooks/animations/useExpandAnimation";
 import { Product } from "@/src/types/product";
@@ -12,7 +12,7 @@ type AddToCartButtonProps = {
 };
 
 export function AddToCartButton({ product, style }: AddToCartButtonProps) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { getQuantity, addToCart, updateQuantity, removeFromCart } = useCart();
 
   const quantity = getQuantity(product);

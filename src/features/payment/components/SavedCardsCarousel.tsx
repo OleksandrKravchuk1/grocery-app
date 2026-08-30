@@ -1,4 +1,4 @@
-import { useTheme } from '@/src/constants/theme';
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { Ionicons } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react';
 import {
@@ -24,7 +24,7 @@ export function SavedCardsCarousel({
   onDelete,
   onSetDefault,
 }: SavedCardsCarouselProps) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const { width: screenWidth } = useWindowDimensions();
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);

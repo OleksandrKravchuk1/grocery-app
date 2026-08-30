@@ -1,5 +1,5 @@
 import { Separator } from "@/src/components/ui/Separator";
-import { useTheme } from "@/src/constants/theme";
+import { useAppTheme } from "@/src/context/ThemeContext";
 import { formatDate, getStatusColor } from "@/src/features/order/utilities/orders";
 import { Order } from "@/src/types/order";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,7 +8,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useDeliveryStatus } from "../hooks/useDeliveryStatus.query";
 
 export function OrderCard({ item }: { item: Order }) {
-  const theme = useTheme();
+  const { colors: theme } = useAppTheme();
   const router = useRouter();
   const segments = useSegments();
 
