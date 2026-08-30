@@ -61,7 +61,7 @@ export default function CheckoutScreen() {
 
       try {
         setLoading(true);
-        const data = await getProfiles(user.id);
+        const data = await getProfiles();
         setProfile(data);
       } catch (error) {
         console.error('Failed to load profile:', error);
@@ -86,7 +86,7 @@ export default function CheckoutScreen() {
     if (!user?.id) return;
     try {
       setPaymentLoading(true);
-      
+
       // 1. Fetch Payment Intent from Edge Function
       const amount = Math.round(total * 100); // Stripe expects cents
       const data = await fetchPaymentSheetParams(amount);
@@ -148,11 +148,11 @@ export default function CheckoutScreen() {
           items: items,
           price: total,
         });
-        
+
         clearCart();
-        
+
         Alert.alert("Success", "Your order has been placed successfully!", [
-          { text: "OK", onPress: () => router.replace("/home" as any) }
+          { text: "OK", onPress: () => router.replace("/profile/orders" as any) }
         ]);
       }
     } catch (error: any) {
