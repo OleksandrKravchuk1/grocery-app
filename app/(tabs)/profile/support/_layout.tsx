@@ -1,14 +1,24 @@
 import { Stack } from "expo-router";
+import { useColorScheme } from "react-native";
 
 export default function SupportLayout() {
-    return (
-        <Stack>
-            <Stack.Screen
-                name="index"
-                options={{
-                    headerShown: false,
-                }}
-            />
-        </Stack>
-    );
+  const isDark = useColorScheme() === 'dark';
+
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: true,
+        headerTransparent: true,
+        headerTintColor: isDark ? 'white' : 'black',
+        headerBlurEffect: isDark ? 'systemChromeMaterial' : 'light',
+      }}
+    >
+      <Stack.Screen
+        name="index"
+        options={{
+          headerTitle: "Settings",
+        }}
+      />
+    </Stack>
+  );
 }

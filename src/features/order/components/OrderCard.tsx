@@ -5,11 +5,17 @@ import { Order } from "@/src/types/order";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, useSegments } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useDeliveryStatus } from "../hooks/useDeliveryStatus.query";
 
 export function OrderCard({ item }: { item: Order }) {
   const theme = useTheme();
   const router = useRouter();
   const segments = useSegments();
+
+  const orderId = Number(item.id);
+
+  const { data: delivery } = useDeliveryStatus(orderId);
+  const currentStatus = delivery?.status ?? item.status ?? 'pending';
 
   // Determine which tab stack we're in (profile or menu)
   const tabRoot = segments[1] === "profile" ? "profile" : "menu";
@@ -41,11 +47,11 @@ export function OrderCard({ item }: { item: Order }) {
         <View
           style={[
             styles.statusBadge,
-            { backgroundColor: getStatusColor(item.status, theme) + '20' },
+            { backgroundColor: getStatusColor(currentStatus, theme) + '20' },
           ]}
         >
-          <Text style={[styles.statusText, { color: getStatusColor(item.status, theme) }]}>
-            {item.status?.charAt(0).toUpperCase() + item.status?.slice(1).toLowerCase()}
+          <Text style={[styles.statusText, { color: getStatusColor(currentStatus, theme) }]}>
+            {currentStatus?.charAt(0).toUpperCase() + currentStatus?.slice(1).toLowerCase()}
           </Text>
         </View>
       </View>

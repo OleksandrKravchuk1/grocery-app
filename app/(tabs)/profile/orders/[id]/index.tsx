@@ -1,7 +1,9 @@
-import { LoadingView } from "@/components/ui/view/LoadingView";
+﻿import { LoadingView } from "@/components/ui/view/LoadingView";
+import { useLocation } from "@/context/LocationContext";
 import { useTheme } from "@/src/constants/theme";
 import { OrderItemList } from "@/src/features/order/components/OrderItemList";
 import { OrderTimeline } from "@/src/features/order/components/OrderTimeline";
+import { useDeliveryStatus } from "@/src/features/order/hooks/useDeliveryStatus.query";
 import { useOrder } from "@/src/features/order/hooks/useOrder";
 import { formatDate, getStatusColor } from "@/src/features/order/utilities/orders";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,6 +20,9 @@ export default function OrderDetailScreen() {
   const insets = useSafeAreaInsets();
 
   const { data: order, isLoading, isError } = useOrder(id);
+  const { data: delivery } = useDeliveryStatus(id ? Number(id) : undefined);
+
+  const { address } = useLocation();
 
   if (isLoading) return <LoadingView />;
   if (isError || !order) {
@@ -28,7 +33,7 @@ export default function OrderDetailScreen() {
     );
   }
 
-  const mockAddress = "123 Main St, Apt 4B, New York, NY 10001";
+  const currentStatus = delivery?.status ?? order.status ?? 'pending';
   const mockPayment = "Apple Pay";
 
   return (
@@ -44,9 +49,9 @@ export default function OrderDetailScreen() {
       <View style={[styles.headerCard, { backgroundColor: theme.card, ...cardShadow }]}>
         <View style={styles.headerTop}>
           <Text style={[styles.orderId, { color: theme.text }]}>Order #{order.id.toString().slice(0, 8)}</Text>
-          <View style={[styles.statusBadge, { backgroundColor: getStatusColor(order.status, theme) + '20' }]}>
-            <Text style={[styles.statusText, { color: getStatusColor(order.status, theme) }]}>
-              {order.status?.charAt(0).toUpperCase() + order.status?.slice(1).toLowerCase()}
+          <View style={[styles.statusBadge, { backgroundColor: getStatusColor(currentStatus, theme) + '20' }]}>
+            <Text style={[styles.statusText, { color: getStatusColor(currentStatus, theme) }]}>
+              {currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1).toLowerCase()}
             </Text>
           </View>
         </View>
@@ -55,9 +60,9 @@ export default function OrderDetailScreen() {
 
       <View style={[styles.card, { backgroundColor: theme.card, ...cardShadow }]}>
         <Text style={[styles.sectionTitle, { color: theme.text }]}>Track Order</Text>
-        <OrderTimeline status={order.status} />
+        <OrderTimeline status={currentStatus} />
 
-        {order.status !== 'cancelled' && order.status !== 'completed' && (
+        {currentStatus !== 'cancelled' && currentStatus !== 'completed' && currentStatus !== 'delivered' && (
           <Pressable
             style={[styles.trackButton, { backgroundColor: theme.accent }]}
             onPress={() => {
@@ -77,7 +82,7 @@ export default function OrderDetailScreen() {
           <View style={[styles.iconWrap, { backgroundColor: `${theme.accent}15` }]}>
             <Ionicons name="location-outline" size={20} color={theme.accent} />
           </View>
-          <Text style={[styles.infoText, { color: theme.text }]}>{mockAddress}</Text>
+          <Text style={[styles.infoText, { color: theme.text }]}>{address}</Text>
         </View>
       </View>
 

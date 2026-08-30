@@ -1,29 +1,30 @@
-import { useLocation } from "@/context/LocationContext";
-import { fetchRoute, LatLng } from "@/src/features/order/services/routing";
-import { useRouter } from "expo-router";
+﻿import { useLocation } from "@/context/LocationContext";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { Animated } from "react-native";
 import { AnimatedRegion } from "react-native-maps";
-
-const RESTAURANT_COORD = { latitude: 50.4501, longitude: 30.5234 };
-const DEFAULT_USER_COORD = { latitude: 50.4550, longitude: 30.5300 };
+import { DEFAULT_USER_COORD, RESTAURANT_COORD } from "../constants/order";
+import { fetchRoute, LatLng } from "../services/routing";
+import { useDeliveryStatus } from "./useDeliveryStatus.query";
 
 export function useOrderTracking() {
   const router = useRouter();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const orderId = Number(id);
+
   const { coords } = useLocation();
-  console.log('[useOrderTracking] coords from context:', coords);
   const USER_COORD = coords ?? DEFAULT_USER_COORD;
 
-  // Center the map midway between restaurant and user, fitting both markers
-  const INITIAL_REGION = {
+  const initialRegion = {
     latitude: (RESTAURANT_COORD.latitude + USER_COORD.latitude) / 2,
     longitude: (RESTAURANT_COORD.longitude + USER_COORD.longitude) / 2,
     latitudeDelta: Math.abs(RESTAURANT_COORD.latitude - USER_COORD.latitude) * 2.5 + 0.02,
     longitudeDelta: Math.abs(RESTAURANT_COORD.longitude - USER_COORD.longitude) * 2.5 + 0.02,
   };
 
+  const { data: delivery } = useDeliveryStatus(orderId);
+
   const [routeCoords, setRouteCoords] = useState<LatLng[]>([]);
-  const [isDelivered, setIsDelivered] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [rating, setRating] = useState(0);
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -39,61 +40,36 @@ export function useOrderTracking() {
   ).current;
 
   useEffect(() => {
-    let isCancelled = false;
+    async function loadRoute() {
+      const points = await fetchRoute(RESTAURANT_COORD, USER_COORD);
+      setRouteCoords(points);
+    }
+    loadRoute();
+  }, [USER_COORD.latitude, USER_COORD.longitude]);
 
-    async function loadRouteAndAnimate() {
-      const routePoints = await fetchRoute(RESTAURANT_COORD, USER_COORD);
-      if (isCancelled) return;
-
-      setRouteCoords(routePoints);
-
-      if (routePoints.length > 0) {
-        const durationPerSegment = 50000 / routePoints.length;
-
-        let i = 0;
-        function moveToNext() {
-          if (isCancelled || i >= routePoints.length) return;
-          const nextCoord = routePoints[i];
-
-          courierCoord.timing({
-            latitude: nextCoord.latitude,
-            longitude: nextCoord.longitude,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
-            duration: durationPerSegment,
-            useNativeDriver: false,
-            toValue: 0,
-          } as any).start(({ finished }) => {
-            if (finished) {
-              i++;
-              if (i >= routePoints.length) {
-                if (!isCancelled) {
-                  setIsDelivered(true);
-                  setShowRatingModal(true);
-                  Animated.spring(modalSlide, {
-                    toValue: 0,
-                    useNativeDriver: true,
-                    tension: 65,
-                    friction: 11,
-                  }).start();
-                }
-              } else {
-                moveToNext();
-              }
-            }
-          });
-        }
-
-        setTimeout(moveToNext, 1000);
-      }
+  useEffect(() => {
+    if (delivery?.location) {
+      courierCoord.timing({
+        latitude: delivery.location.latitude,
+        longitude: delivery.location.longitude,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+        duration: 2500,
+        useNativeDriver: false,
+        toValue: 0,
+      } as any).start();
     }
 
-    loadRouteAndAnimate();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [USER_COORD.latitude, USER_COORD.longitude]);
+    if (delivery?.status === 'delivered') {
+      setShowRatingModal(true);
+      Animated.spring(modalSlide, {
+        toValue: 0,
+        useNativeDriver: true,
+        tension: 65,
+        friction: 11,
+      }).start();
+    }
+  }, [delivery?.location?.latitude, delivery?.location?.longitude, delivery?.status]);
 
   function handleConfirm() {
     setIsConfirmed(true);
@@ -105,21 +81,19 @@ export function useOrderTracking() {
   }
 
   return {
-    // Map data
+    orderId,
+    status: delivery?.status ?? 'pending',
+    isDelivered: delivery?.status === 'delivered',
     routeCoords,
     courierCoord,
-    INITIAL_REGION,
+    initialRegion,
     RESTAURANT_COORD,
     USER_COORD,
-    // Delivery state
-    isDelivered,
     isConfirmed,
-    // Rating modal
     showRatingModal,
     rating,
     setRating,
     modalSlide,
-    // Actions
     handleConfirm,
     handleGoBack,
   };
